@@ -1,5 +1,7 @@
 import argparse, json, time
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from preprocessing.dataset import read_annotations
 from preprocessing.config import resolve_video_path
 from preprocessing.video_loader import get_video_metadata, read_frames
