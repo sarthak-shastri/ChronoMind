@@ -3,7 +3,6 @@
   "sampled_videos": [
     {
       "video_path": "Hawk_UAV/NJ/DJI_0157_d4_01.mp4",
-      "cache_path": "C:\\Users\\Sarthak\\.cache\\huggingface\\hub\\datasets--ReVA-Benchmark--ReVA\\snapshots\\06224fa1b42e5e35677a8b7f2145e06307a9a4ee\\Hawk_UAV\\NJ\\DJI_0157_d4_01.mp4",
       "file_bytes": 907649,
       "fps": 29.97002997002997,
       "frame_count": 180,
@@ -15,11 +14,11 @@
         360,
         640,
         3
-      ]
+      ],
+      "cache_location": "Hugging Face cache (local path omitted)"
     },
     {
       "video_path": "VisDrone/uav0000009_03358_v_01.mp4",
-      "cache_path": "C:\\Users\\Sarthak\\.cache\\huggingface\\hub\\datasets--ReVA-Benchmark--ReVA\\snapshots\\06224fa1b42e5e35677a8b7f2145e06307a9a4ee\\VisDrone\\uav0000009_03358_v_01.mp4",
       "file_bytes": 556837,
       "fps": 30.0,
       "frame_count": 180,
@@ -31,11 +30,11 @@
         360,
         640,
         3
-      ]
+      ],
+      "cache_location": "Hugging Face cache (local path omitted)"
     },
     {
       "video_path": "Hawk_UAV/BE/DJI_0092_d4_04.mp4",
-      "cache_path": "C:\\Users\\Sarthak\\.cache\\huggingface\\hub\\datasets--ReVA-Benchmark--ReVA\\snapshots\\06224fa1b42e5e35677a8b7f2145e06307a9a4ee\\Hawk_UAV\\BE\\DJI_0092_d4_04.mp4",
       "file_bytes": 748141,
       "fps": 29.97002997002997,
       "frame_count": 179,
@@ -47,7 +46,8 @@
         360,
         640,
         3
-      ]
+      ],
+      "cache_location": "Hugging Face cache (local path omitted)"
     }
   ]
 }

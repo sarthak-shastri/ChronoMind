@@ -1,5 +1,5 @@
 {
-  "annotation_file": "C:\\Users\\Sarthak\\.cache\\huggingface\\hub\\datasets--ReVA-Benchmark--ReVA\\snapshots\\06224fa1b42e5e35677a8b7f2145e06307a9a4ee\\train.json",
+  "annotation_file": "train.json (Hugging Face cache; local path omitted)",
   "records": 15773,
   "top_level_keys": [
     "category",
