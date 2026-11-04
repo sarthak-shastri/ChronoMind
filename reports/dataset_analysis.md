@@ -1,0 +1,5 @@
+# Dataset inspection status
+
+The official Hugging Face dataset card was reviewed on 2026-11-05. Its rendered documentation describes a `metadata` object and a `QA` list with fields such as `qa_id`, `video_path`, `question`, `options`, `correct_answer`, `category`, and `task`. The card text gives conflicting annotation filenames: one layout shows `train_set.json`/`valid_set.json`/`test_set.json`, while its annotation section shows `train.json`/`valid.json`/`test.json`. It reports roughly 29.9 GB total.
+
+The live repository manifest and annotation files have not yet been retrieved: direct Hugging Face API access from this environment failed with a DNS/network error. Therefore this report does not claim actual file counts, revision, split counts, path validity, or video properties. In a network-enabled environment run `python scripts/download_dataset.py` to list actual files and write `manifests/reva_manifest.json`; then download exact annotation filenames selected from that manifest and run `python scripts/inspect_dataset.py <file> --video-root <dataset-root>`. Source: [official dataset card](https://huggingface.co/datasets/ReVA-Benchmark/ReVA).

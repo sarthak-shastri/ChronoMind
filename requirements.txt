@@ -1,0 +1,11 @@
+huggingface_hub
+numpy
+opencv-python-headless
+Pillow
+torch
+PyYAML
+pytest
+matplotlib
+seaborn
+pandas
+nbformat

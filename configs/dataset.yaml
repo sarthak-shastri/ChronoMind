@@ -1,0 +1,8 @@
+repo_id: ReVA-Benchmark/ReVA
+split: train
+video_root: data/raw/ReVA
+num_frames: 8
+sampling: uniform
+image_size: [224, 224]
+normalize: true
+cache_dir: data/cache/frames
