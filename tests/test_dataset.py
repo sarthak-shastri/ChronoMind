@@ -50,3 +50,23 @@ def test_frame_cache_miss_then_hit(tmp_path):
     actual=cache.get('sample')
     assert np.array_equal(actual,expected)
     assert cache.misses==1 and cache.hits==1
+
+
+def test_feature_cache_round_trip(tmp_path):
+    from preprocessing.feature_cache import NumpyFeatureCache
+    cache=NumpyFeatureCache(tmp_path)
+    assert cache.get('video-a') is None
+    features=np.arange(12,dtype=np.float32).reshape(3,4)
+    cache.put('video-a',features)
+    assert np.array_equal(cache.get('video-a'),features)
+    assert cache.hits==1 and cache.misses==1
+
+
+def test_split_filter_uses_split_named_annotation_file(tmp_path):
+    f=tmp_path/'train.json'
+    f.write_text(json.dumps({'QA':[{'qa_id':'train_1'}]}),encoding='utf-8')
+    ds=ReVADataset(f,video_root=tmp_path,split='train',missing_video='zeros')
+    assert len(ds)==1
+    import pytest
+    with pytest.raises(ValueError,match="not 'val'"):
+        ReVADataset(f,video_root=tmp_path,split='val')

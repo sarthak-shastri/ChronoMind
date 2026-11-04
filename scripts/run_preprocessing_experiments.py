@@ -62,7 +62,7 @@ def main():
     parser.add_argument('--sample-report',default='reports/video_sample_analysis.json')
     parser.add_argument('--output-root',default='reports/preprocessing_runs')
     parser.add_argument('--cache-root',default='data/cache/preprocessing_experiments')
-    parser.add_argument('--limit-videos',type=int,default=3)
+    parser.add_argument('--limit-videos',type=int,default=18)
     args=parser.parse_args()
     source=json.loads(Path(args.sample_report).read_text(encoding='utf-8'))
     paths=list(dict.fromkeys(v['video_path'] for v in source['sampled_videos']))[:args.limit_videos]
@@ -74,7 +74,7 @@ def main():
         results.append(run_config(name,count,strategy,paths,repo,revision,target))
         print(f"{name}: {results[-1]['successfully_processed_videos']}/{len(paths)} videos")
     output={'dataset_repo':repo,'dataset_revision':revision,'sample_video_count':len(paths),
-            'sample_video_paths':paths,'scope':'three-video pilot; not a dataset-wide benchmark',
+            'sample_video_paths':paths,'scope':f'{len(paths)}-video source-stratified pilot; not a dataset-wide benchmark',
             'experiments':results}
     out=root/'results.json'; out.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8')
     print(f'Results saved to {out}')

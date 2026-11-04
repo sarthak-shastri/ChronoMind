@@ -44,11 +44,11 @@ sample = dataset[0]
 
 Each item preserves the source sample ID, ordered A/B/C/D choices, answer if supplied, video ID, category, and task. `video_frames` is `torch.float32 [T,3,H,W]`, RGB, resized to 224x224 by default, scaled to [0,1] and ImageNet normalized. `missing_video='zeros'` returns a zero tensor and records the failure on the dataset instance; default `raise` surfaces errors.
 
-Supported frame counts are 4, 8, 12, 16, and 32. Sampling is deterministic for a given video and configuration. The adaptive helper accepts motion scores supplied by a caller; automatic motion-score calculation remains a future experiment.
+Supported frame counts are 4, 8, 12, 16, and 32. Sampling is deterministic for a given video and configuration. Adaptive mode computes low-resolution per-frame motion scores and uses motion-weighted temporal quantiles.
 
 ## Verification and limitations
 
-Run `python -m pytest -q`. Video decoding requires OpenCV (`opencv-python-headless`). Tests use synthetic annotations and do not substitute for real video validation. The dataset API was unreachable from the current runtime during setup, so current repository revision, true filenames, real sample statistics, and end-to-end real-video validation are still pending; see `reports/dataset_analysis.md`.
+Run `python -m pytest -q`. Video decoding requires OpenCV (`opencv-python-headless`). The unit suite covers parser, sampling, cache, missing/corrupt video, tensor contract, unlabeled test answers, and collation. The three actual annotation splits were inspected, and end-to-end samples plus an 18-video source-stratified video analysis were run. Full-dataset video properties and corruption rates remain unknown; see `reports/dataset_analysis.md`.
 
 Team flow: work on a member branch and open a PR into `dev`; promote stable `dev` changes to `main` after review.
 ## Access only what you need from Hugging Face
@@ -86,10 +86,29 @@ Use a separate cache folder such as `D:\ChronoMind_HF_Cache`, not inside the Git
 
 ## Run the preprocessing pilot
 
-After the manifest and the three small example videos are available in the Hugging Face cache, run:
+After the manifest and the selected 18 source-stratified videos are available in the Hugging Face cache, run:
 
 ```powershell
-python scripts/run_preprocessing_experiments.py --limit-videos 3
+python scripts/run_preprocessing_experiments.py --limit-videos 18
 ```
 
-The script runs E1-E7, writes metrics under `reports/preprocessing_runs/`, and places frame-cache arrays under ignored `data/cache/`. It does not download the complete video collection. Increase `--limit-videos` only when you have enough disk and time.
+The script runs E1-E7, writes metrics under `reports/preprocessing_runs/`, and places frame-cache arrays under ignored `data/cache/`. It does not download the complete video collection. The default sample covers 18 observed dataset/subdirectory strata. Increase `--limit-videos` only when you have enough disk and time.
+## Optional Colab/Drive and feature-cache setup
+
+The cache roots can be resolved from configuration. In Colab, mount Drive yourself, then point the persistent cache root at the mounted folder; temporary work remains on the local runtime disk:
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+from preprocessing.storage import resolve_storage_paths
+storage = resolve_storage_paths({"storage": {
+    "drive_root": "/content/drive/MyDrive/ReVA_cache",
+    "local_cache_root": "/content/reva_tmp"
+}})
+```
+
+Pass `storage["hf_cache_dir"]` to `hf_cache_dir` and `storage["frame_cache_dir"]` to `cache_dir` when creating `ReVADataset`. If no Drive root is configured, both persistent caches use the configured local cache root. `storage["local_temp_dir"]` is for temporary extraction work. Drive mounting itself has not been tested in this environment because it requires your Google login.
+
+For model-produced arrays, `NumpyFeatureCache` implements the optional `FeatureCache` `get`/`put` interface; it is separate from the raw-frame cache and does not run any model.
+
+The `preprocessing.collate` module provides the DataLoader collator/factory. `preprocessing.feature_cache.NumpyFeatureCache` is an optional disk cache for NumPy-compatible model features.

@@ -8,4 +8,6 @@ sampling: uniform
 image_size: [224, 224]
 normalize: true
 cache_dir: data/cache/frames
-hf_cache_dir: null  # optionally configure a local or Drive-backed Hub cache
+storage:
+  drive_root: null  # set to a mounted Drive path in Colab for persistence
+  local_cache_root: data/cache  # local temporary/cache root

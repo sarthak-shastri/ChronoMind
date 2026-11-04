@@ -1,17 +1,17 @@
 # Preprocessing comparison
 
-E1-E7 were run on the same three small videos (the pilot sample listed in `video_sample_analysis.json`). Their video files were already in the Hugging Face cache. The first pass therefore measures decoding/sampling/transformation from cached files; the second pass measures reads from the extracted-frame cache. These results are a three-video pilot, not dataset-wide resource estimates.
+E1–E7 ran on the same 18 source-stratified videos from the pinned ReVA revision. The videos were already present in the Hugging Face file cache. First-pass timings cover video metadata access, frame decode/sampling and transform; warm-pass timings cover cached sampled-frame reads and transforms. These are measurements for this selected sample, not a full-corpus estimate.
 
-| Experiment | Frames | Strategy | Success | First pass sec/video | Warm pass sec/video | Cached frame storage | Combined cache hit rate | Sampled process RSS |
+| Experiment | Frames | Strategy | Success / failures | First pass sec/video | Warm pass sec/video | Sample cache storage | Combined cache hit rate | Observed process RSS |
 |---|---:|---|---:|---:|---:|---:|---:|---:|
-| E1 | 4 | uniform | 3/3 | 0.343 | 0.069 | 5.24 MiB | 50% (second pass 100%) | 242.5 MiB |
-| E2 | 8 | uniform | 3/3 | 0.570 | 0.095 | 10.58 MiB | 50% (second pass 100%) | 269.8 MiB |
-| E3 | 12 | uniform | 3/3 | 0.804 | 0.111 | 15.88 MiB | 50% (second pass 100%) | 308.5 MiB |
-| E4 | 16 | uniform | 3/3 | 1.009 | 0.129 | 21.18 MiB | 50% (second pass 100%) | 300.6 MiB |
-| E5 | 32 | uniform | 3/3 | 1.959 | 0.245 | 42.44 MiB | 50% (second pass 100%) | 363.5 MiB |
-| E6 | 8 | adaptive | 3/3 | 0.615 | 0.070 | 10.60 MiB | 50% (second pass 100%) | 342.3 MiB |
-| E7 | 12 | adaptive | 3/3 | 0.839 | 0.102 | 15.93 MiB | 50% (second pass 100%) | 332.1 MiB |
+| E1 | 4 | uniform | 18/18 / 0 | 0.456 | 0.086 | 36.24 MiB | 50% (warm pass 100%) | 284.3 MiB |
+| E2 | 8 | uniform | 18/18 / 0 | 0.753 | 0.121 | 73.47 MiB | 50% (warm pass 100%) | 333.5 MiB |
+| E3 | 12 | uniform | 18/18 / 0 | 1.077 | 0.162 | 110.26 MiB | 50% (warm pass 100%) | 370.3 MiB |
+| E4 | 16 | uniform | 18/18 / 0 | 1.118 | 0.150 | 147.37 MiB | 50% (warm pass 100%) | 341.4 MiB |
+| E5 | 32 | uniform | 18/18 / 0 | 2.551 | 0.381 | 295.30 MiB | 50% (warm pass 100%) | 385.9 MiB |
+| E6 | 8 | adaptive | 18/18 / 0 | 0.967 | 0.143 | 73.98 MiB | 50% (warm pass 100%) | 340.7 MiB |
+| E7 | 12 | adaptive | 18/18 / 0 | 1.290 | 0.169 | 111.01 MiB | 50% (warm pass 100%) | 373.5 MiB |
 
-All seven settings processed all three videos with no failures. The subset was 640x360, about six seconds per video. Cache-hit rate is 50% over two passes (first-pass misses plus warm-pass hits); the second-pass hit rate was 100%. RSS is the process working set sampled after each video and includes the Python/PyTorch runtime, so it is not incremental frame-only memory. Compressed sampled-frame caches are under ignored `data/cache/`, not Git. See `reports/preprocessing_runs/20261104T195122Z/results.json` for per-pass timings and exact measurements.
+All seven settings processed 18 videos without failures. The cache-hit rate is 50% across both passes because the first pass populated the frame cache and the second pass hit it; warm-pass hit rate was 100%. The observed process RSS is sampled after each video and includes the Python/PyTorch runtime, so it is not incremental frame-only memory. Compressed frame caches were written under ignored `data/cache/`; the measured per-experiment storage is in the table and detailed data is in `reports/preprocessing_runs/20261104T201206Z/results.json`.
 
-The adaptive strategy uses per-frame absolute grayscale differences on 64x36 sequentially decoded frames as motion scores, then deterministically samples weighted temporal quantiles. The three-video experiment does not establish a QA accuracy benefit; no model evaluation was performed.
+Adaptive sampling computes per-frame absolute grayscale differences at 64x36 during a sequential video decode and uses deterministic motion-weighted temporal quantiles. These experiments measure preprocessing behavior only; they do not measure QA accuracy or imply that more frames improve task performance.

@@ -1,9 +1,246 @@
 {
   "revision": "06224fa1b42e5e35677a8b7f2145e06307a9a4ee",
+  "sampling_design": "one QA-referenced video per observed dataset_name/subdir stratum; 18 videos total",
   "sampled_videos": [
     {
-      "video_path": "Hawk_UAV/NJ/DJI_0157_d4_01.mp4",
-      "file_bytes": 907649,
+      "video_path": "ERA_Select/Baseball/Baseball_025.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Baseball",
+      "file_bytes": 1084730,
+      "fps": 24.0,
+      "frame_count": 139,
+      "duration_seconds": 5.791666666666667,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Basketball/Basketball_013.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Basketball",
+      "file_bytes": 2368870,
+      "fps": 24.0,
+      "frame_count": 134,
+      "duration_seconds": 5.583333333333333,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Boating/Boating_023.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Boating",
+      "file_bytes": 1018893,
+      "fps": 24.0,
+      "frame_count": 140,
+      "duration_seconds": 5.833333333333333,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/CarRacing/CarRacing_021.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "CarRacing",
+      "file_bytes": 2305531,
+      "fps": 24.0,
+      "frame_count": 136,
+      "duration_seconds": 5.666666666666667,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Cycling/Cycling_001.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Cycling",
+      "file_bytes": 2291252,
+      "fps": 24.0,
+      "frame_count": 135,
+      "duration_seconds": 5.625,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Fire/Fire_009.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Fire",
+      "file_bytes": 1105178,
+      "fps": 24.0,
+      "frame_count": 139,
+      "duration_seconds": 5.791666666666667,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Flood/Flood_025.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Flood",
+      "file_bytes": 2332954,
+      "fps": 24.0,
+      "frame_count": 136,
+      "duration_seconds": 5.666666666666667,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Harvesting/Harvesting_002.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Harvesting",
+      "file_bytes": 1061061,
+      "fps": 24.0,
+      "frame_count": 139,
+      "duration_seconds": 5.791666666666667,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Landslide/Landslide_002.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Landslide",
+      "file_bytes": 2338649,
+      "fps": 24.0,
+      "frame_count": 135,
+      "duration_seconds": 5.625,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/NonEvent/NonEvent_030.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "NonEvent",
+      "file_bytes": 2390854,
+      "fps": 24.0,
+      "frame_count": 135,
+      "duration_seconds": 5.625,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/Soccer/Soccer_001.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "Soccer",
+      "file_bytes": 583342,
+      "fps": 23.304347826086957,
+      "frame_count": 134,
+      "duration_seconds": 5.75,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "ERA_Select/TrafficCongestion/TrafficCongestion_001.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "TrafficCongestion",
+      "file_bytes": 2242360,
+      "fps": 24.0,
+      "frame_count": 136,
+      "duration_seconds": 5.666666666666667,
+      "width": 640,
+      "height": 640,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        640,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "Hawk_UAV/BE/DJI_0352_08.mp4",
+      "dataset_name": "Hawk_UAV",
+      "subdir": "BE",
+      "file_bytes": 538199,
+      "fps": 29.97002997002997,
+      "frame_count": 130,
+      "duration_seconds": 4.337666666666666,
+      "width": 640,
+      "height": 360,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        360,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "Hawk_UAV/IL/DJI_0012_d4_03.mp4",
+      "dataset_name": "Hawk_UAV",
+      "subdir": "IL",
+      "file_bytes": 708914,
       "fps": 29.97002997002997,
       "frame_count": 180,
       "duration_seconds": 6.006,
@@ -15,30 +252,16 @@
         640,
         3
       ],
-      "cache_location": "Hugging Face cache (local path omitted)"
+      "cache_location": "Hugging Face cache (path omitted)"
     },
     {
-      "video_path": "VisDrone/uav0000009_03358_v_01.mp4",
-      "file_bytes": 556837,
-      "fps": 30.0,
-      "frame_count": 180,
-      "duration_seconds": 6.0,
-      "width": 640,
-      "height": 360,
-      "decoded_frames": 8,
-      "frame_shape_rgb": [
-        360,
-        640,
-        3
-      ],
-      "cache_location": "Hugging Face cache (local path omitted)"
-    },
-    {
-      "video_path": "Hawk_UAV/BE/DJI_0092_d4_04.mp4",
-      "file_bytes": 748141,
+      "video_path": "Hawk_UAV/NJ/DJI_0174_d4_01.mp4",
+      "dataset_name": "Hawk_UAV",
+      "subdir": "NJ",
+      "file_bytes": 1148230,
       "fps": 29.97002997002997,
-      "frame_count": 179,
-      "duration_seconds": 5.9726333333333335,
+      "frame_count": 180,
+      "duration_seconds": 6.006,
       "width": 640,
       "height": 360,
       "decoded_frames": 8,
@@ -47,7 +270,61 @@
         640,
         3
       ],
-      "cache_location": "Hugging Face cache (local path omitted)"
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "Hawk_UAV/PH/DJI_0217_d4_01.mp4",
+      "dataset_name": "Hawk_UAV",
+      "subdir": "PH",
+      "file_bytes": 637036,
+      "fps": 29.97002997002997,
+      "frame_count": 180,
+      "duration_seconds": 6.006,
+      "width": 640,
+      "height": 360,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        360,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "UAVDT/S0307.mp4",
+      "dataset_name": "UAVDT",
+      "subdir": "UAVDT",
+      "file_bytes": 1376987,
+      "fps": 30.0,
+      "frame_count": 414,
+      "duration_seconds": 13.8,
+      "width": 640,
+      "height": 360,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        360,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
+    },
+    {
+      "video_path": "VisDrone/uav0000020_00406_v_03.mp4",
+      "dataset_name": "VisDrone",
+      "subdir": "VisDrone",
+      "file_bytes": 490254,
+      "fps": 30.0,
+      "frame_count": 141,
+      "duration_seconds": 4.7,
+      "width": 640,
+      "height": 360,
+      "decoded_frames": 8,
+      "frame_shape_rgb": [
+        360,
+        640,
+        3
+      ],
+      "cache_location": "Hugging Face cache (path omitted)"
     }
   ]
 }

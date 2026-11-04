@@ -1,6 +1,6 @@
 # Dataset analysis (official ReVA Hub revision `06224fa1b42e5e35677a8b7f2145e06307a9a4ee`)
 
-The pinned Hub manifest lists 1,273 files. Actual annotation filenames are `train.json`, `val.json`, and `test.json`. All three annotation files were inspected; three MP4s under 1 MB each were fetched for a decode pilot. No complete video corpus was downloaded.
+The pinned Hub manifest lists 1,273 files. Actual annotation filenames are `train.json`, `val.json`, and `test.json`. All three annotation files were inspected. For video analysis, 18 MP4s (26.0 MB total), one per observed `dataset_name`/`subdir` stratum, were selectively fetched and decoded. No complete video corpus was downloaded.
 
 ## Split summary
 
@@ -10,7 +10,7 @@ The pinned Hub manifest lists 1,273 files. Actual annotation filenames are `trai
 | val | 2,000 | 379 | 1–14 | B 500; A 500; C 500; D 500 | 0 | 0 | 0 |
 | test | 4,000 | 1,014 | 1–12 | <empty> 4,000 | 0 | 0 | 0 |
 
-The JSON files contain a `metadata` object and `QA` list. Observed QA fields include `qa_id`, `video_path`, `subdir`, `dataset_name`, `category`, `task`, `question`, `options`, and `correct_answer`. All rows in the three splits have the core fields populated, exactly A/B/C/D choice keys, no duplicate sample IDs, and referenced video paths present in the pinned manifest. Every test `correct_answer` is empty, as expected. Full per-split details are in `train_inspection.json`, `val_inspection.json`, and `test_inspection.json`.
+The JSON files contain a `metadata` object and `QA` list. Observed QA fields include `qa_id`, `video_path`, `subdir`, `dataset_name`, `category`, `task`, `question`, `options`, and `correct_answer`. The annotations do not provide a separate `video_id` field; the shared interface therefore returns `video_id=None` and uses the preserved `video_path` to resolve/cache the clip. All rows in the three splits have the core fields populated, exactly A/B/C/D choice keys, no duplicate sample IDs, and referenced video paths present in the pinned manifest. Every test `correct_answer` is empty, as expected. Full per-split details are in `train_inspection.json`, `val_inspection.json`, and `test_inspection.json`.
 
 The same video paths appear in multiple splits: train/val share 378 paths, train/test share 1,012, and val/test share 366. This indicates the split is not video-disjoint (inference from exact path overlap); it should be surfaced to the evaluation owner and considered when interpreting validation results. Official split files were not changed.
 
@@ -47,6 +47,17 @@ The same video paths appear in multiple splits: train/val share 378 paths, train
 | train / test | 1,012 |
 | val / test | 366 |
 
-## Video sample and remaining scope
+## Video properties sample
 
-Three small MP4s were fetched and decoded (see `video_sample_analysis.json`). They were all 640x360, around 30 FPS, about six seconds long, and each yielded eight RGB frames. This is a pilot only; it does not estimate full-dataset video properties or failure rate. E1–E7 sample metrics are in `preprocessing_comparison.md`.
+The 18-video sample covers all 18 observed dataset/subdirectory strata. All 18 videos decoded and eight RGB frames were extracted from each. These are sample statistics only.
+
+| Property | Sample result |
+|---|---|
+| Videos | 18 / 18 decoded; 0 failures |
+| Downloaded video bytes | 26,023,294 (24.82 MiB) |
+| Resolution counts | 640x360: 6, 640x640: 12 |
+| FPS counts (rounded to 0.01) | 23.3: 1, 24: 11, 29.97: 4, 30: 2 |
+| Duration (min / median / max) | 4.34s / 5.71s / 13.80s |
+| Frame count (min / median / max) | 130 / 137.5 / 414 |
+
+The sample does not estimate the full collection’s video-property distributions or corruption rate. See `reports/video_sample_analysis.json` for per-video measurements.

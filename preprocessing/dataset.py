@@ -1,13 +1,14 @@
 import json
 from pathlib import Path
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 from .config import resolve_video_path, SUPPORTED_FRAME_COUNTS
 from .video_loader import get_video_metadata, motion_scores, read_frames, VideoLoadError
 from .frame_sampling import uniform_indices, adaptive_indices
 from .transformations import transform_frames
 from .cache_manager import FrameCache
 from .hf_access import fetch_dataset_file
+from .collate import collate_reva, make_dataloader
 
 
 def read_annotations(path):
@@ -52,10 +53,27 @@ class ReVADataset(Dataset):
             raise ValueError("missing_video must be 'raise' or 'zeros'")
         self.cache = FrameCache(cache_dir) if cache_dir else None
         rows = read_annotations(annotation_file)
-        ids = set(sample_ids) if sample_ids is not None else None
-        self.rows = [r for r in rows if (split is None or r.get("split") in (None, split))
-                     and (ids is None or str(r.get("qa_id", r.get("sample_id", r.get("id")))) in ids)]
+        ids = set(str(value) for value in sample_ids) if sample_ids is not None else None
+        if split is not None:
+            wanted = self._normalize_split(split)
+            row_splits = [self._normalize_split(row.get("split")) for row in rows if row.get("split")]
+            if row_splits:
+                rows = [row for row in rows if self._normalize_split(row.get("split")) == wanted]
+            else:
+                filename_split = self._normalize_split(Path(annotation_file).stem)
+                if filename_split is None:
+                    raise ValueError("split filtering requires a split field or split-named annotation file")
+                if filename_split != wanted:
+                    raise ValueError(f"annotation file is for split '{filename_split}', not '{wanted}'")
+        self.rows = [r for r in rows if ids is None or str(r.get("qa_id", r.get("sample_id", r.get("id")))) in ids]
         self.errors = []
+
+    @staticmethod
+    def _normalize_split(value):
+        if value is None:
+            return None
+        value = str(value).strip().casefold()
+        return {"valid":"val", "validation":"val"}.get(value, value)
 
     def __len__(self):
         return len(self.rows)
@@ -121,17 +139,3 @@ class ReVAVideoDataset(ReVADataset):
         return {k: s[k] for k in ("video_frames", "video_id", "sample_id")}
 
 
-def collate_reva(batch):
-    if not batch:
-        return {}
-    result = {k: [item.get(k) for item in batch] for k in batch[0]}
-    try:
-        result["video_frames"] = torch.stack([item["video_frames"] for item in batch])
-    except (KeyError, TypeError, RuntimeError):
-        pass
-    return result
-
-
-def make_dataloader(dataset, batch_size=1, shuffle=False, num_workers=0, **kwargs):
-    return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers,
-                      collate_fn=collate_reva, **kwargs)
