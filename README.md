@@ -115,4 +115,4 @@ The `preprocessing.collate` module provides the DataLoader collator/factory. `pr
 
 ## One-click Colab/Drive setup
 
-Open the ready-to-run notebook from the `sarthak` branch: [ChronoMind Colab Drive setup](https://colab.research.google.com/github/sarthak-shastri/ChronoMind/blob/sarthak/notebooks/colab_drive_setup.ipynb). Run its cells in order and authorize the Drive mount when prompted. It fetches one train annotation file and one referenced MP4 to verify access; it does not download the full dataset.
+Open the ready-to-run notebook from the `sarthak` branch: [ChronoMind Colab Drive setup](https://colab.research.google.com/github/sarthak-shastri/ChronoMind/blob/sarthak/notebooks/colab_drive_setup.ipynb). Run its cells in order. It fetches one train annotation file and one referenced MP4 to verify access; it does not download the full dataset. Drive is optional: if mounting fails, the notebook continues with temporary Colab storage, which is cleared when the runtime ends.
