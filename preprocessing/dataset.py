@@ -81,7 +81,7 @@ class ReVADataset(Dataset):
         choices = {k: opts.get(k) for k in ("A", "B", "C", "D")}
         answer = row.get("correct_answer", row.get("answer")) or None
         sample = {"video_frames": None, "question": row.get("question"), "choices": choices,
-                  "answer": answer, "video_id": row.get("video_id") or row.get("video_path") or row.get("file_path"),
+                  "answer": answer, "video_id": row.get("video_id"),
                   "sample_id": row.get("qa_id", row.get("sample_id", row.get("id"))),
                   "category": row.get("category"), "task": row.get("task")}
         try:
@@ -103,7 +103,14 @@ class ReVAVideoDataset(ReVADataset):
 
 
 def collate_reva(batch):
-    return {k: [item.get(k) for item in batch] for k in batch[0]} if batch else {}
+    if not batch:
+        return {}
+    result = {k: [item.get(k) for item in batch] for k in batch[0]}
+    try:
+        result["video_frames"] = torch.stack([item["video_frames"] for item in batch])
+    except (KeyError, TypeError, RuntimeError):
+        pass
+    return result
 
 
 def make_dataloader(dataset, batch_size=1, shuffle=False, num_workers=0, **kwargs):
