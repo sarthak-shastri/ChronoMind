@@ -7,6 +7,7 @@ from .video_loader import get_video_metadata, read_frames, VideoLoadError
 from .frame_sampling import uniform_indices, adaptive_indices
 from .transformations import transform_frames
 from .cache_manager import FrameCache
+from .hf_access import fetch_dataset_file
 
 
 def read_annotations(path):
@@ -29,14 +30,21 @@ def read_annotations(path):
 
 
 class ReVADataset(Dataset):
-    def __init__(self, annotation_file, video_root, num_frames=8, sampling="uniform",
+    def __init__(self, annotation_file, video_root=None, num_frames=8, sampling="uniform",
                  split=None, sample_ids=None, image_size=(224, 224), normalize=True,
-                 cache_dir=None, missing_video="raise"):
+                 cache_dir=None, missing_video="raise", dataset_repo_id=None,
+                 revision=None, hf_cache_dir=None, local_files_only=False):
         if num_frames not in SUPPORTED_FRAME_COUNTS:
             raise ValueError(f"num_frames must be one of {SUPPORTED_FRAME_COUNTS}")
         if sampling not in {"uniform", "adaptive"}:
             raise ValueError("sampling must be 'uniform' or 'adaptive'")
-        self.video_root = Path(video_root)
+        self.video_root = Path(video_root) if video_root is not None else None
+        self.dataset_repo_id = dataset_repo_id
+        self.revision = revision
+        self.hf_cache_dir = Path(hf_cache_dir).expanduser() if hf_cache_dir else None
+        self.local_files_only = local_files_only
+        if self.video_root is None and not self.dataset_repo_id:
+            raise ValueError("Provide video_root for local data or dataset_repo_id for Hugging Face data")
         self.num_frames, self.sampling = num_frames, sampling
         self.image_size, self.normalize = image_size, normalize
         self.missing_video = missing_video
@@ -56,10 +64,17 @@ class ReVADataset(Dataset):
         rel = row.get("video_path", row.get("file_path"))
         if not rel:
             raise VideoLoadError("Annotation has no video_path/file_path")
-        path = resolve_video_path(self.video_root, rel)
-        if not path.is_file():
-            raise VideoLoadError(f"Video file not found: {path}")
-        key = f"{path.resolve()}|{path.stat().st_size}|{self.num_frames}|{self.sampling}|{self.image_size}|{self.normalize}"
+        path = resolve_video_path(self.video_root, rel) if self.video_root is not None else None
+        if path is None or not path.is_file():
+            if not self.dataset_repo_id:
+                raise VideoLoadError(f"Video file not found: {path}")
+            try:
+                path = fetch_dataset_file(self.dataset_repo_id, str(rel), revision=self.revision,
+                                          cache_dir=self.hf_cache_dir,
+                                          local_files_only=self.local_files_only)
+            except Exception as exc:
+                raise VideoLoadError(f"Could not fetch {rel} from {self.dataset_repo_id}: {exc}") from exc
+        key = f"{self.revision}|{path.resolve()}|{path.stat().st_size}|{self.num_frames}|{self.sampling}|{self.image_size}|{self.normalize}"
         frames = self.cache.get(key) if self.cache else None
         if frames is None:
             meta = get_video_metadata(path)

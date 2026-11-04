@@ -1,8 +1,11 @@
 repo_id: ReVA-Benchmark/ReVA
+revision: main  # replace with pinned revision from manifests/reva_manifest.json for reproducibility
 split: train
-video_root: data/raw/ReVA
+annotation_file: data/annotations/train.json
+video_root: null
 num_frames: 8
 sampling: uniform
 image_size: [224, 224]
 normalize: true
 cache_dir: data/cache/frames
+hf_cache_dir: D:/ChronoMind_HF_Cache

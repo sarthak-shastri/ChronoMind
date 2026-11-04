@@ -17,3 +17,25 @@ def test_transform_contract():
 def test_test_split_without_answer(tmp_path):
     f=tmp_path/'test.json'; row={'qa_id':'test_1','video_path':'missing.mp4','question':'q','options':dict(A='a',B='b',C='c',D='d'),'correct_answer':''}; f.write_text(json.dumps({'QA':[row]}),encoding='utf-8')
     s=ReVADataset(f,tmp_path,missing_video='zeros')[0]; assert s['sample_id']=='test_1' and s['answer'] is None and list(s['choices'])==list('ABCD') and tuple(s['video_frames'].shape)==(8,3,224,224)
+
+
+def test_huggingface_video_is_fetched_lazily(tmp_path, monkeypatch):
+    import preprocessing.dataset as module
+    annotation = tmp_path / "train.json"
+    row = {"qa_id": "train_1", "video_path": "VisDrone/clip.mp4", "question": "q",
+           "options": {"A": "a", "B": "b", "C": "c", "D": "d"}, "correct_answer": "A"}
+    annotation.write_text(json.dumps({"QA": [row]}), encoding="utf-8")
+    cached_video = tmp_path / "clip.mp4"
+    cached_video.write_bytes(b"fake video bytes")
+    calls = []
+    def fake_fetch(repo_id, filename, **kwargs):
+        calls.append((repo_id, filename, kwargs.get("revision")))
+        return cached_video
+    monkeypatch.setattr(module, "fetch_dataset_file", fake_fetch)
+    monkeypatch.setattr(module, "get_video_metadata", lambda _: {"frame_count": 2})
+    monkeypatch.setattr(module, "read_frames", lambda _p, _i: [np.zeros((4, 4, 3), dtype=np.uint8)] * 8)
+    ds = ReVADataset(annotation, num_frames=8, dataset_repo_id="ReVA-Benchmark/ReVA", revision="abc123")
+    sample = ds[0]
+    assert calls == [("ReVA-Benchmark/ReVA", "VisDrone/clip.mp4", "abc123")]
+    assert sample["sample_id"] == "train_1"
+    assert tuple(sample["video_frames"].shape) == (8, 3, 224, 224)

@@ -51,3 +51,36 @@ Supported frame counts are 4, 8, 12, 16, and 32. Sampling is deterministic for a
 Run `python -m pytest -q`. Video decoding requires OpenCV (`opencv-python-headless`). Tests use synthetic annotations and do not substitute for real video validation. The dataset API was unreachable from the current runtime during setup, so current repository revision, true filenames, real sample statistics, and end-to-end real-video validation are still pending; see `reports/dataset_analysis.md`.
 
 Team flow: work on a member branch and open a PR into `dev`; promote stable `dev` changes to `main` after review.
+## Access only what you need from Hugging Face
+
+The videos are not a Python package to install. The full dataset card reports about 29.9 GB, but each member should fetch only annotation files and videos they actually use. `huggingface_hub` keeps downloaded files in a cache and reuses them on later requests; it does not create a shared live mount of every remote video ([Hub download guide](https://huggingface.co/docs/huggingface_hub/guides/download), [cache guide](https://huggingface.co/docs/huggingface_hub/guides/manage-cache)). Each video still has to be transferred once before OpenCV can decode it. The loader now supports fetching each referenced MP4 lazily through the Hub and caching it locally.
+
+First list the current files and write a revision-pinned manifest:
+
+```powershell
+python scripts/download_dataset.py
+```
+
+Copy the exact train annotation filename from the output, then fetch only that file (and repeat with validation if needed):
+
+```powershell
+python scripts/download_dataset.py --filename <exact-train-annotation-filename>
+```
+
+For direct video fetches, use the annotation file path cached by the Hub and pass `dataset_repo_id` plus the manifest `revision`:
+
+```python
+from preprocessing import ReVADataset
+from preprocessing.hf_access import fetch_annotation_file
+
+repo = "ReVA-Benchmark/ReVA"
+revision = "<revision-from-manifest>"
+cache = r"D:\ChronoMind_HF_Cache"
+annotation = fetch_annotation_file(repo, "<exact-annotation-filename>", revision, cache)
+dataset = ReVADataset(annotation, dataset_repo_id=repo, revision=revision,
+                      hf_cache_dir=cache, num_frames=8, sampling="uniform")
+sample = dataset[0]  # fetches only that sample's video; later reads use the Hub cache
+```
+
+Use a separate cache folder such as `D:\ChronoMind_HF_Cache`, not inside the Git repository. In Colab, mount Drive and set the cache to a folder under `MyDrive` if you want fetched files to survive runtime resets. A Drive-backed cache is persistent but can be slower; use `/content` for faster temporary downloads and persist the smaller sampled-frame cache to Drive if needed. Mounting Drive does not make remote videos stream without transfer.
+
