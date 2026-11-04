@@ -1,0 +1,36 @@
+{
+  "annotation_file": "C:\\Users\\Sarthak\\.cache\\huggingface\\hub\\datasets--ReVA-Benchmark--ReVA\\snapshots\\06224fa1b42e5e35677a8b7f2145e06307a9a4ee\\train.json",
+  "records": 15773,
+  "top_level_keys": [
+    "category",
+    "correct_answer",
+    "dataset_name",
+    "options",
+    "qa_id",
+    "question",
+    "subdir",
+    "task",
+    "video_path"
+  ],
+  "duplicate_sample_ids": [],
+  "category_counts": {
+    "Factual Perception": 3763,
+    "Temporal Understanding": 3572,
+    "Spatial Reasoning": 7180,
+    "Causal Reasoning": 1258
+  },
+  "task_counts": {
+    "General Understanding": 1032,
+    "Object and Land Cover Recognition": 1719,
+    "Change Detection": 1012,
+    "Temporal Grounding": 1884,
+    "Trend and Pattern": 1688,
+    "Geometric Relation": 2875,
+    "Structural Layout": 2258,
+    "Perspective and Viewpoint": 2047,
+    "Causation Reasoning": 401,
+    "Consequence Reasoning": 461,
+    "Hypothetical Reasoning": 396
+  },
+  "missing_video_reference": 0
+}
