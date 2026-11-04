@@ -112,3 +112,7 @@ Pass `storage["hf_cache_dir"]` to `hf_cache_dir` and `storage["frame_cache_dir"]
 For model-produced arrays, `NumpyFeatureCache` implements the optional `FeatureCache` `get`/`put` interface; it is separate from the raw-frame cache and does not run any model.
 
 The `preprocessing.collate` module provides the DataLoader collator/factory. `preprocessing.feature_cache.NumpyFeatureCache` is an optional disk cache for NumPy-compatible model features.
+
+## One-click Colab/Drive setup
+
+Open the ready-to-run notebook from the `sarthak` branch: [ChronoMind Colab Drive setup](https://colab.research.google.com/github/sarthak-shastri/ChronoMind/blob/sarthak/notebooks/colab_drive_setup.ipynb). Run its cells in order and authorize the Drive mount when prompted. It fetches one train annotation file and one referenced MP4 to verify access; it does not download the full dataset.
