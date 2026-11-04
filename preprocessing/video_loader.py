@@ -19,6 +19,23 @@ def get_video_metadata(path):
         return {'fps':fps if fps>0 else None,'frame_count':count or None,'duration_seconds':count/fps if fps>0 and count>0 else None,'width':width or None,'height':height or None}
     finally: cap.release()
 
+def motion_scores(path, size=(64, 36)):
+    """Compute per-frame low-resolution grayscale motion scores in one sequential decode."""
+    import numpy as np
+    cv2=_cv2(); cap=cv2.VideoCapture(str(path)); scores=[]; previous=None
+    try:
+        if not cap.isOpened(): raise VideoLoadError(f'Cannot open video: {path}')
+        while True:
+            ok, frame=cap.read()
+            if not ok: break
+            gray=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+            gray=cv2.resize(gray,size,interpolation=cv2.INTER_AREA)
+            scores.append(0.0 if previous is None else float(cv2.absdiff(gray,previous).mean()))
+            previous=gray
+    finally: cap.release()
+    if not scores: raise VideoLoadError(f'No decodable frames: {path}')
+    return np.asarray(scores,dtype=np.float32)
+
 def read_frames(path,indices):
     cv2=_cv2(); cap=cv2.VideoCapture(str(path)); frames=[]
     try:

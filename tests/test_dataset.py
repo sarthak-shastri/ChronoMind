@@ -39,3 +39,14 @@ def test_huggingface_video_is_fetched_lazily(tmp_path, monkeypatch):
     assert calls == [("ReVA-Benchmark/ReVA", "VisDrone/clip.mp4", "abc123")]
     assert sample["sample_id"] == "train_1"
     assert tuple(sample["video_frames"].shape) == (8, 3, 224, 224)
+
+
+def test_frame_cache_miss_then_hit(tmp_path):
+    from preprocessing.cache_manager import FrameCache
+    cache=FrameCache(tmp_path)
+    assert cache.get('sample') is None
+    expected=np.zeros((2,5,6,3),dtype=np.uint8)
+    cache.put('sample',expected)
+    actual=cache.get('sample')
+    assert np.array_equal(actual,expected)
+    assert cache.misses==1 and cache.hits==1

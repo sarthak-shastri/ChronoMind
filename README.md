@@ -84,3 +84,12 @@ sample = dataset[0]  # fetches only that sample's video; later reads use the Hub
 
 Use a separate cache folder such as `D:\ChronoMind_HF_Cache`, not inside the Git repository. In Colab, mount Drive and set the cache to a folder under `MyDrive` if you want fetched files to survive runtime resets. A Drive-backed cache is persistent but can be slower; use `/content` for faster temporary downloads and persist the smaller sampled-frame cache to Drive if needed. Mounting Drive does not make remote videos stream without transfer.
 
+## Run the preprocessing pilot
+
+After the manifest and the three small example videos are available in the Hugging Face cache, run:
+
+```powershell
+python scripts/run_preprocessing_experiments.py --limit-videos 3
+```
+
+The script runs E1-E7, writes metrics under `reports/preprocessing_runs/`, and places frame-cache arrays under ignored `data/cache/`. It does not download the complete video collection. Increase `--limit-videos` only when you have enough disk and time.

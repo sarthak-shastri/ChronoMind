@@ -8,4 +8,4 @@ sampling: uniform
 image_size: [224, 224]
 normalize: true
 cache_dir: data/cache/frames
-hf_cache_dir: D:/ChronoMind_HF_Cache
+hf_cache_dir: null  # optionally configure a local or Drive-backed Hub cache

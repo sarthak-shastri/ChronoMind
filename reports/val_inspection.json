@@ -12,7 +12,14 @@
     "task",
     "video_path"
   ],
-  "duplicate_sample_ids": [],
+  "duplicate_sample_ids": 0,
+  "missing_core_fields": {
+    "qa_id": 0,
+    "video_path": 0,
+    "question": 0,
+    "options": 0
+  },
+  "invalid_option_records": 0,
   "category_counts": {
     "Temporal Understanding": 500,
     "Factual Perception": 670,
@@ -32,5 +39,15 @@
     "Causation Reasoning": 90,
     "General Understanding": 90
   },
-  "missing_video_reference": 0
+  "answer_counts": {
+    "B": 500,
+    "A": 500,
+    "C": 500,
+    "D": 500
+  },
+  "missing_video_reference": 0,
+  "unique_video_paths": 379,
+  "questions_per_video_min": 1,
+  "questions_per_video_max": 14,
+  "paths_missing_from_manifest": 0
 }

@@ -3,7 +3,7 @@ from pathlib import Path
 import torch
 from torch.utils.data import Dataset, DataLoader
 from .config import resolve_video_path, SUPPORTED_FRAME_COUNTS
-from .video_loader import get_video_metadata, read_frames, VideoLoadError
+from .video_loader import get_video_metadata, motion_scores, read_frames, VideoLoadError
 from .frame_sampling import uniform_indices, adaptive_indices
 from .transformations import transform_frames
 from .cache_manager import FrameCache
@@ -81,7 +81,11 @@ class ReVADataset(Dataset):
             count = meta["frame_count"]
             if not count:
                 raise VideoLoadError(f"Video has no readable frames: {path}")
-            indices = uniform_indices(count, self.num_frames) if self.sampling == "uniform" else adaptive_indices(count, self.num_frames)
+            if self.sampling == "uniform":
+                indices = uniform_indices(count, self.num_frames)
+            else:
+                scores = motion_scores(path)
+                indices = adaptive_indices(count, self.num_frames, scores)
             indices = indices.tolist()
             if len(indices) < self.num_frames:
                 indices = (indices + [indices[-1]] * self.num_frames)[:self.num_frames]

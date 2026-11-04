@@ -1,0 +1,391 @@
+{
+  "dataset_repo": "ReVA-Benchmark/ReVA",
+  "dataset_revision": "06224fa1b42e5e35677a8b7f2145e06307a9a4ee",
+  "sample_video_count": 3,
+  "sample_video_paths": [
+    "Hawk_UAV/NJ/DJI_0157_d4_01.mp4",
+    "VisDrone/uav0000009_03358_v_01.mp4",
+    "Hawk_UAV/BE/DJI_0092_d4_04.mp4"
+  ],
+  "scope": "three-video pilot; not a dataset-wide benchmark",
+  "experiments": [
+    {
+      "experiment": "E1",
+      "frames": 4,
+      "strategy": "uniform",
+      "videos_requested": 3,
+      "successfully_processed_videos": 3,
+      "failed_videos": [],
+      "pass_timings": [
+        {
+          "pass": 1,
+          "successes": 3,
+          "elapsed_seconds": 1.0275800999997955,
+          "seconds_per_success": 0.34252709999994596
+        },
+        {
+          "pass": 2,
+          "successes": 3,
+          "elapsed_seconds": 0.20815979999952106,
+          "seconds_per_success": 0.06938696666657052
+        }
+      ],
+      "storage_bytes": 5496751,
+      "cache_hits": 3,
+      "cache_misses": 3,
+      "cache_hit_rate": 0.5,
+      "second_pass_hit_rate": 1.0,
+      "peak_observed_process_rss_bytes": 254246912,
+      "resolution_counts": {
+        "640x360": 3
+      },
+      "video_properties": [
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 6.006,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 30.0,
+          "duration_seconds": 6.0,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 5.9726333333333335,
+          "frame_count": 179
+        }
+      ]
+    },
+    {
+      "experiment": "E2",
+      "frames": 8,
+      "strategy": "uniform",
+      "videos_requested": 3,
+      "successfully_processed_videos": 3,
+      "failed_videos": [],
+      "pass_timings": [
+        {
+          "pass": 1,
+          "successes": 3,
+          "elapsed_seconds": 1.7087885000000824,
+          "seconds_per_success": 0.5695963999999852
+        },
+        {
+          "pass": 2,
+          "successes": 3,
+          "elapsed_seconds": 0.28369199999997363,
+          "seconds_per_success": 0.09456440000000536
+        }
+      ],
+      "storage_bytes": 11092151,
+      "cache_hits": 3,
+      "cache_misses": 3,
+      "cache_hit_rate": 0.5,
+      "second_pass_hit_rate": 1.0,
+      "peak_observed_process_rss_bytes": 282861568,
+      "resolution_counts": {
+        "640x360": 3
+      },
+      "video_properties": [
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 6.006,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 30.0,
+          "duration_seconds": 6.0,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 5.9726333333333335,
+          "frame_count": 179
+        }
+      ]
+    },
+    {
+      "experiment": "E3",
+      "frames": 12,
+      "strategy": "uniform",
+      "videos_requested": 3,
+      "successfully_processed_videos": 3,
+      "failed_videos": [],
+      "pass_timings": [
+        {
+          "pass": 1,
+          "successes": 3,
+          "elapsed_seconds": 2.412501699999666,
+          "seconds_per_success": 0.8041676333332362
+        },
+        {
+          "pass": 2,
+          "successes": 3,
+          "elapsed_seconds": 0.3324929999998858,
+          "seconds_per_success": 0.11083133333310495
+        }
+      ],
+      "storage_bytes": 16646933,
+      "cache_hits": 3,
+      "cache_misses": 3,
+      "cache_hit_rate": 0.5,
+      "second_pass_hit_rate": 1.0,
+      "peak_observed_process_rss_bytes": 323473408,
+      "resolution_counts": {
+        "640x360": 3
+      },
+      "video_properties": [
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 6.006,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 30.0,
+          "duration_seconds": 6.0,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 5.9726333333333335,
+          "frame_count": 179
+        }
+      ]
+    },
+    {
+      "experiment": "E4",
+      "frames": 16,
+      "strategy": "uniform",
+      "videos_requested": 3,
+      "successfully_processed_videos": 3,
+      "failed_videos": [],
+      "pass_timings": [
+        {
+          "pass": 1,
+          "successes": 3,
+          "elapsed_seconds": 3.025886100000207,
+          "seconds_per_success": 1.008629033333212
+        },
+        {
+          "pass": 2,
+          "successes": 3,
+          "elapsed_seconds": 0.38574070000049687,
+          "seconds_per_success": 0.1285806333335131
+        }
+      ],
+      "storage_bytes": 22213373,
+      "cache_hits": 3,
+      "cache_misses": 3,
+      "cache_hit_rate": 0.5,
+      "second_pass_hit_rate": 1.0,
+      "peak_observed_process_rss_bytes": 315174912,
+      "resolution_counts": {
+        "640x360": 3
+      },
+      "video_properties": [
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 6.006,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 30.0,
+          "duration_seconds": 6.0,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 5.9726333333333335,
+          "frame_count": 179
+        }
+      ]
+    },
+    {
+      "experiment": "E5",
+      "frames": 32,
+      "strategy": "uniform",
+      "videos_requested": 3,
+      "successfully_processed_videos": 3,
+      "failed_videos": [],
+      "pass_timings": [
+        {
+          "pass": 1,
+          "successes": 3,
+          "elapsed_seconds": 5.8756750000002285,
+          "seconds_per_success": 1.9585586333335716
+        },
+        {
+          "pass": 2,
+          "successes": 3,
+          "elapsed_seconds": 0.7347220000001471,
+          "seconds_per_success": 0.24490750000010544
+        }
+      ],
+      "storage_bytes": 44501047,
+      "cache_hits": 3,
+      "cache_misses": 3,
+      "cache_hit_rate": 0.5,
+      "second_pass_hit_rate": 1.0,
+      "peak_observed_process_rss_bytes": 381108224,
+      "resolution_counts": {
+        "640x360": 3
+      },
+      "video_properties": [
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 6.006,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 30.0,
+          "duration_seconds": 6.0,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 5.9726333333333335,
+          "frame_count": 179
+        }
+      ]
+    },
+    {
+      "experiment": "E6",
+      "frames": 8,
+      "strategy": "adaptive",
+      "videos_requested": 3,
+      "successfully_processed_videos": 3,
+      "failed_videos": [],
+      "pass_timings": [
+        {
+          "pass": 1,
+          "successes": 3,
+          "elapsed_seconds": 1.8449509000001854,
+          "seconds_per_success": 0.6149838666666861
+        },
+        {
+          "pass": 2,
+          "successes": 3,
+          "elapsed_seconds": 0.2114953999998761,
+          "seconds_per_success": 0.07049873333350358
+        }
+      ],
+      "storage_bytes": 11112348,
+      "cache_hits": 3,
+      "cache_misses": 3,
+      "cache_hit_rate": 0.5,
+      "second_pass_hit_rate": 1.0,
+      "peak_observed_process_rss_bytes": 358895616,
+      "resolution_counts": {
+        "640x360": 3
+      },
+      "video_properties": [
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 6.006,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 30.0,
+          "duration_seconds": 6.0,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 5.9726333333333335,
+          "frame_count": 179
+        }
+      ]
+    },
+    {
+      "experiment": "E7",
+      "frames": 12,
+      "strategy": "adaptive",
+      "videos_requested": 3,
+      "successfully_processed_videos": 3,
+      "failed_videos": [],
+      "pass_timings": [
+        {
+          "pass": 1,
+          "successes": 3,
+          "elapsed_seconds": 2.5172162999997454,
+          "seconds_per_success": 0.8390722666666383
+        },
+        {
+          "pass": 2,
+          "successes": 3,
+          "elapsed_seconds": 0.3066281000001254,
+          "seconds_per_success": 0.1022096666665675
+        }
+      ],
+      "storage_bytes": 16702355,
+      "cache_hits": 3,
+      "cache_misses": 3,
+      "cache_hit_rate": 0.5,
+      "second_pass_hit_rate": 1.0,
+      "peak_observed_process_rss_bytes": 348196864,
+      "resolution_counts": {
+        "640x360": 3
+      },
+      "video_properties": [
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 6.006,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 30.0,
+          "duration_seconds": 6.0,
+          "frame_count": 180
+        },
+        {
+          "width": 640,
+          "height": 360,
+          "fps": 29.97002997002997,
+          "duration_seconds": 5.9726333333333335,
+          "frame_count": 179
+        }
+      ]
+    }
+  ]
+}

@@ -12,7 +12,14 @@
     "task",
     "video_path"
   ],
-  "duplicate_sample_ids": [],
+  "duplicate_sample_ids": 0,
+  "missing_core_fields": {
+    "qa_id": 0,
+    "video_path": 0,
+    "question": 0,
+    "options": 0
+  },
+  "invalid_option_records": 0,
   "category_counts": {
     "Factual Perception": 3763,
     "Temporal Understanding": 3572,
@@ -32,5 +39,15 @@
     "Consequence Reasoning": 461,
     "Hypothetical Reasoning": 396
   },
-  "missing_video_reference": 0
+  "answer_counts": {
+    "B": 3943,
+    "A": 3943,
+    "C": 3943,
+    "D": 3944
+  },
+  "missing_video_reference": 0,
+  "unique_video_paths": 1045,
+  "questions_per_video_min": 1,
+  "questions_per_video_max": 23,
+  "paths_missing_from_manifest": 0
 }

@@ -9,3 +9,5 @@ matplotlib
 seaborn
 pandas
 nbformat
+psutil
+ipykernel
