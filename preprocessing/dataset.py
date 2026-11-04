@@ -137,5 +137,3 @@ class ReVAVideoDataset(ReVADataset):
     def __getitem__(self, index):
         s = super().__getitem__(index)
         return {k: s[k] for k in ("video_frames", "video_id", "sample_id")}
-
-
