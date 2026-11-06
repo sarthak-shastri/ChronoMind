@@ -1,0 +1,13 @@
+repo_id: ReVA-Benchmark/ReVA
+revision: main  # replace with pinned revision from manifests/reva_manifest.json for reproducibility
+split: train
+annotation_file: data/annotations/train.json
+video_root: null
+num_frames: 8
+sampling: uniform
+image_size: [224, 224]
+normalize: true
+cache_dir: data/cache/frames
+storage:
+  drive_root: null  # set to a mounted Drive path in Colab for persistence
+  local_cache_root: data/cache  # local temporary/cache root
