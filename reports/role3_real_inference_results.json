@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "status": "not_run",
+  "reason": "The notebook has not been executed in Google Colab; no actual model, dataset, runtime, or GPU measurements are available yet.",
+  "repository": {
+    "role3_branch": "suraj-role3-foundation",
+    "role3_commit_at_notebook_creation": "e387abc0721fba11cfcff31b8cfbd396992ff5a",
+    "preprocessing_branch": "sarthak"
+  },
+  "dataset": {
+    "repo_id": "ReVA-Benchmark/ReVA",
+    "revision": "06224fa1b42e5e35677a8b7f2145e06307a9a4ee",
+    "annotation_file": "val.json",
+    "validation_records_reported_by_branch_inspection": 2000
+  },
+  "model": {
+    "checkpoint_id": "openai/clip-vit-base-patch32",
+    "revision": null,
+    "class": "CLIPVisionModelWithProjection",
+    "projected_dimension": 512
+  },
+  "environment": {
+    "python_version": null,
+    "pytorch_version": null,
+    "transformers_version": null,
+    "gpu_name": null,
+    "gpu_total_memory_mb": null
+  },
+  "preprocessing": {
+    "sampling": "uniform",
+    "frame_counts": [
+      4,
+      8,
+      16
+    ],
+    "batch_size": 1,
+    "image_size": [
+      224,
+      224
+    ],
+    "channel_order": "RGB",
+    "input_dtype": "torch.float32",
+    "input_normalization": "ImageNet; converted to CLIP normalization in Role 3 extractor",
+    "missing_video": "raise"
+  },
+  "runs": [
+    {
+      "frame_count": 4,
+      "status": "not_executed",
+      "input_shape": null,
+      "frame_features_shape": null,
+      "video_features_shape": null,
+      "output_dtype": null,
+      "output_device": null,
+      "contains_nan": null,
+      "contains_inf": null,
+      "inference_time_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "frame_chunk_size": null,
+      "error": null
+    },
+    {
+      "frame_count": 8,
+      "status": "not_executed",
+      "input_shape": null,
+      "frame_features_shape": null,
+      "video_features_shape": null,
+      "output_dtype": null,
+      "output_device": null,
+      "contains_nan": null,
+      "contains_inf": null,
+      "inference_time_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "frame_chunk_size": null,
+      "error": null
+    },
+    {
+      "frame_count": 16,
+      "status": "not_executed",
+      "input_shape": null,
+      "frame_features_shape": null,
+      "video_features_shape": null,
+      "output_dtype": null,
+      "output_device": null,
+      "contains_nan": null,
+      "contains_inf": null,
+      "inference_time_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "frame_chunk_size": null,
+      "error": null
+    }
+  ],
+  "training_behavior_check": {
+    "status": "not_executed"
+  }
+}
