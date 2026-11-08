@@ -6,6 +6,7 @@ from torch import nn
 from advanced_models.qa.multimodal_qa_model import MultimodalVideoQAModel
 from advanced_models.qa.text_encoder import CLIPTextFeatureExtractor
 from advanced_models.qa.clip_similarity import clip_similarity_logits
+from advanced_models.qa.data import collate_qa
 from advanced_models.temporal.temporal_encoder import TransformerTemporalEncoder
 from advanced_models.vision.feature_extractor import CLIPVisionFeatureExtractor
 from scripts.evaluate_reva_qa import calculate_metrics, LETTERS
@@ -42,6 +43,23 @@ class QASmoke(unittest.TestCase):
             payload={'schema_version':'1.0','dataset':'ReVA','split':'validation','model':{'name':'mock'},'predictions':[{'sample_id':'v_1','prediction':'A','scores':dict(zip(LETTERS,[.7,.1,.1,.1])),'inference_time_seconds':.1}]}
             fp=Path(d)/'predictions.json'; fp.write_text(json.dumps(payload)); loaded=json.loads(fp.read_text())
             self.assertEqual(set(loaded['predictions'][0]['scores']),set(LETTERS))
+    def test_metrics_recognize_canonical_labels_and_unlabeled_samples(self):
+        base={'category':'Factual Perception','inference_time_seconds':0.02}
+        labeled=[{**base,'prediction':'B','ground_truth':'B'},{**base,'prediction':'A','ground_truth':'C'}]
+        metrics=calculate_metrics(labeled)
+        self.assertEqual(metrics['labeled_count'],2); self.assertEqual(metrics['accuracy'],0.5)
+        self.assertEqual(metrics['confusion_matrix'][1][1],1)
+        self.assertEqual(metrics['confusion_matrix'][2][0],1)
+        unlabeled=[{**base,'prediction':'D','ground_truth':None}]
+        metrics=calculate_metrics(unlabeled)
+        self.assertEqual(metrics['labeled_count'],0); self.assertIsNone(metrics['accuracy'])
+        self.assertEqual(metrics['category_accuracy'],{})
+    def test_collator_preserves_canonical_answer_and_index_mapping(self):
+        sample={'video_frames':torch.zeros(4,3,224,224),'question':'q','choices':dict(A='a',B='b',C='c',D='d'),
+                'answer':'C','label':2,'sample_id':'val_000001','category':'Temporal Understanding','task':'Temporal Grounding','video_path':'x/y.mp4'}
+        batch=collate_qa([sample])
+        self.assertEqual(batch['answers'],['C']); self.assertEqual(batch['labels'].tolist(),[2])
+        self.assertEqual(list(batch['choices'][0]),['A','B','C','D']); self.assertEqual(batch['video_paths'],['x/y.mp4'])
     def test_frame_counts_and_baseline_shape(self):
         m=self.model().eval(); choices=[dict(A='a',B='b',C='c',D='d')]
         for t in (4,8,16): self.assertEqual(m(torch.rand(1,t,3,224,224),['q'],choices)['answer_logits'].shape,(1,4))

@@ -12,7 +12,7 @@ def calculate_metrics(rows):
     for r in labeled:
         y=LETTERS.index(r['ground_truth']); p=LETTERS.index(r['prediction']); matrix[y][p]+=1
         cats[r.get('category','Unknown')][0]+=int(y==p); cats[r.get('category','Unknown')][1]+=1
-    return {'sample_count':len(rows),'labeled_count':len(labeled),'accuracy':sum(sum(matrix[i][j] for j in range(4) if i==j) for i in range(4))/max(1,len(labeled)),
+    return {'sample_count':len(rows),'labeled_count':len(labeled),'accuracy':(sum(matrix[i][i] for i in range(4))/len(labeled) if labeled else None),
             'category_accuracy':{k:{'correct':v[0],'total':v[1],'accuracy':v[0]/v[1]} for k,v in sorted(cats.items())},'confusion_matrix':matrix,'confusion_matrix_labels':list(LETTERS),
             'mean_inference_time_seconds':statistics.mean([r['inference_time_seconds'] for r in rows]) if rows else None,
             'median_inference_time_seconds':statistics.median([r['inference_time_seconds'] for r in rows]) if rows else None}
@@ -43,7 +43,9 @@ def main():
    if device.type=='cuda': torch.cuda.synchronize()
    elapsed=(time.perf_counter()-start)/len(b['sample_ids']); logits=out['answer_logits'][0].float().cpu(); probs=torch.softmax(logits,dim=-1); pred=LETTERS[int(logits.argmax())]
    rec={'sample_id':b['sample_ids'][0],'prediction':pred,'scores':{k:float(probs[i]) for i,k in enumerate(LETTERS)},'inference_time_seconds':elapsed}
-   predictions.append(rec); metric_rows.append({**rec,'ground_truth':b['labels'][0].item() if b['labels'] is not None else None,'category':b['categories'][0]})
+   # Use the canonical string answer returned by Sarthak (from correct_answer).
+   # Never derive ground truth from model output or from a guessed label.
+   predictions.append(rec); metric_rows.append({**rec,'ground_truth':b['answers'][0],'category':b['categories'][0]})
  outdir=Path(a.output_dir); outdir.mkdir(parents=True,exist_ok=True)
  payload={'schema_version':'1.0','dataset':'ReVA','split':'validation','model':{'name':'ChronoMind temporal multimodal QA','version':str(ckpt.get('epoch')),'metadata':{'checkpoint':str(Path(a.checkpoint).name),'frame_count':ckpt.get('frame_count')}},'score_semantics':'probabilities','option_order':list(LETTERS),'predictions':predictions}
  (outdir/'predictions.json').write_text(json.dumps(payload,indent=2),encoding='utf-8'); (outdir/'metrics.json').write_text(json.dumps(calculate_metrics(metric_rows),indent=2),encoding='utf-8')

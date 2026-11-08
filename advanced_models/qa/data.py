@@ -35,6 +35,7 @@ def collate_qa(samples):
             "questions": [s["question"] for s in samples],
             "choices": [s["choices"] for s in samples],
             "labels": torch.tensor([s["label"] for s in samples], dtype=torch.long) if all("label" in s for s in samples) else None,
+            "answers": [s.get("answer") for s in samples],
             "sample_ids": [str(s["sample_id"]) for s in samples],
             "categories": [s.get("category") for s in samples],
             "video_paths": [s.get("video_path") for s in samples]}
