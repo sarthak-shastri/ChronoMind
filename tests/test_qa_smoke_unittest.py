@@ -9,7 +9,7 @@ from advanced_models.qa.clip_similarity import clip_similarity_logits
 from advanced_models.qa.data import collate_qa
 from advanced_models.temporal.temporal_encoder import TransformerTemporalEncoder
 from advanced_models.vision.feature_extractor import CLIPVisionFeatureExtractor
-from scripts.evaluate_reva_qa import calculate_metrics, LETTERS
+from scripts.evaluate_reva_qa import calculate_metrics, make_prediction_records, LETTERS
 
 class Vision(nn.Module):
     def __init__(self): super().__init__(); self.scale=nn.Parameter(torch.ones(()))
@@ -60,6 +60,14 @@ class QASmoke(unittest.TestCase):
         batch=collate_qa([sample])
         self.assertEqual(batch['answers'],['C']); self.assertEqual(batch['labels'].tolist(),[2])
         self.assertEqual(list(batch['choices'][0]),['A','B','C','D']); self.assertEqual(batch['video_paths'],['x/y.mp4'])
+    def test_batchwise_predictions_cover_every_row_and_match_fp32_metrics(self):
+        logits=torch.tensor([[0.,3.,1.,-1.],[4.,0.,1.,0.]],dtype=torch.float32)
+        pred,rows=make_prediction_records(logits,['v1','v2'],['B','C'],['Temporal Understanding','Factual Perception'],.02)
+        self.assertEqual([x['prediction'] for x in pred],['B','A'])
+        self.assertEqual([x['ground_truth'] for x in rows],['B','C'])
+        m=calculate_metrics(rows); self.assertEqual(m['labeled_count'],2); self.assertEqual(m['confusion_matrix'][2][0],1)
+        m2=calculate_metrics([{'prediction':'A','ground_truth':None,'category':None,'inference_time_seconds':.01}])
+        self.assertIsNone(m2['accuracy']); self.assertEqual(m2['labeled_count'],0)
     def test_frame_counts_and_baseline_shape(self):
         m=self.model().eval(); choices=[dict(A='a',B='b',C='c',D='d')]
         for t in (4,8,16): self.assertEqual(m(torch.rand(1,t,3,224,224),['q'],choices)['answer_logits'].shape,(1,4))
