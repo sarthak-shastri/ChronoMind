@@ -73,7 +73,12 @@ class ReVADataset(Dataset):
         if value is None:
             return None
         value = str(value).strip().casefold()
-        return {"valid":"val", "validation":"val"}.get(value, value)
+        aliases = {"valid": "val", "validation": "val"}
+        if value in aliases:
+            return aliases[value]
+        # Permit descriptive derived annotation filenames such as train_grouped.json.
+        prefix = value.split("_", 1)[0]
+        return aliases.get(prefix, prefix) if prefix in {"train", "val", "valid", "validation", "test"} else value
 
     def __len__(self):
         return len(self.rows)

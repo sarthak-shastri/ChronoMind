@@ -1,0 +1,3002 @@
+{
+  "metadata": {
+    "generated_at": "2026-04-25",
+    "total_videos": 1045,
+    "total_questions": 15773,
+    "subcategory_targets": {
+      "General Understanding": 1032,
+      "Object and Land Cover Recognition": 1719,
+      "Change Detection": 1012,
+      "Temporal Grounding": 1884,
+      "Trend and Pattern": 1688,
+      "Geometric Relation": 2875,
+      "Structural Layout": 2258,
+      "Perspective and Viewpoint": 2047,
+      "Causation Reasoning": 401,
+      "Consequence Reasoning": 461,
+      "Hypothetical Reasoning": 396
+    },
+    "question_taxonomy": {
+      "Factual Perception": [
+        "General Understanding",
+        "Object and Land Cover Recognition",
+        "Change Detection"
+      ],
+      "Temporal Understanding": [
+        "Temporal Grounding",
+        "Trend and Pattern"
+      ],
+      "Spatial Reasoning": [
+        "Geometric Relation",
+        "Structural Layout",
+        "Perspective and Viewpoint"
+      ],
+      "Causal Reasoning": [
+        "Causation Reasoning",
+        "Consequence Reasoning",
+        "Hypothetical Reasoning"
+      ]
+    },
+    "taxonomy_normalization": {
+      "exact temporal grounding": "Temporal Grounding",
+      "trend and pattern analysis": "Trend and Pattern",
+      "geometric relation reasoning": "Geometric Relation",
+      "structural layout reasoning": "Structural Layout",
+      "viewpoint and perspective analysis": "Perspective and Viewpoint"
+    },
+    "derived_split": {
+      "method": "exclude official val/test groups from official train, then deterministic grouped split",
+      "seed": 42,
+      "grouping": "source-sequence ID if present, otherwise normalized video_path",
+      "official_val_source": "val.json",
+      "official_test_source": "test.json",
+      "name": "train_grouped"
+    }
+  },
+  "QA": [
+    {
+      "qa_id": "train_012076",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What pattern of motion is observed in the camera's movement throughout the video?",
+      "options": {
+        "A": "The camera moves in a steady, forward motion along the curved road, following the houses.",
+        "B": "The camera moves in a consistent, uninterrupted panning pattern from right to left across the landscape.",
+        "C": "The camera performs a slow, circular orbit around the center of the residential neighborhood.",
+        "D": "The camera moves in a series of rapid, jerky zooms focused on individual houses."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012077",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How does the camera's motion direction change as it pans across the landscape?",
+      "options": {
+        "A": "The camera moves from top to bottom, starting with the open field and ending on the residential area.",
+        "B": "The camera moves from left to right, focusing first on the vineyard and then the houses.",
+        "C": "The camera moves consistently from right to left across the landscape.",
+        "D": "The camera moves in a circular motion, orbiting around the central cluster of houses."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012078",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What periodic change is observed in the trees surrounding the residential area and open land?",
+      "options": {
+        "A": "The trees are periodically bare, showing no leaves, which is consistent with the seasonal dormancy of deciduous trees in late winter or early spring.",
+        "B": "The trees are completely covered in snow, indicating a winter season with heavy snowfall.",
+        "C": "The trees exhibit a mix of green and brown leaves, suggesting a change in the season from summer to autumn.",
+        "D": "The trees are consistently covered in dense foliage, indicating a tropical climate."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012079",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long does the vineyard remain visible in the video?",
+      "options": {
+        "A": "From 0.0 seconds to 2.0 seconds (duration: 2.0 seconds)",
+        "B": "From 0.0 seconds to 4.0 seconds (duration: 4.0 seconds)",
+        "C": "From 0.0 seconds to 8.0 seconds (duration: 8.0 seconds)",
+        "D": "From 0.0 seconds to 6.0 seconds (duration: 6.0 seconds)"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012080",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "When does the residential neighborhood disappear from view?",
+      "options": {
+        "A": "At 2.0 seconds",
+        "B": "At 1.0 seconds",
+        "C": "At 3.0 seconds",
+        "D": "At 4.0 seconds"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012081",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what point does the vineyard first appear in the video?",
+      "options": {
+        "A": "6.0 seconds",
+        "B": "4.0 seconds",
+        "C": "0.0 seconds",
+        "D": "2.0 seconds"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012082",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "For how long is the residential neighborhood in view during the video?",
+      "options": {
+        "A": "4.5 seconds",
+        "B": "1.5 seconds",
+        "C": "2.5 seconds",
+        "D": "3.5 seconds"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012083",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How close is the vineyard to the residential houses compared to the open land beyond the vineyard?",
+      "options": {
+        "A": "The vineyard is equidistant from both the houses and the open land.",
+        "B": "The open land is closer to the houses than the vineyard.",
+        "C": "The vineyard is closer to the open land than to the houses.",
+        "D": "The vineyard is closer to the houses than the open land."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012084",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the vineyard rows relative to the curved road in the residential area?",
+      "options": {
+        "A": "The vineyard rows are randomly oriented relative to the curved road.",
+        "B": "The vineyard rows are oriented parallel to the curved road.",
+        "C": "The vineyard rows are perpendicular to the curved road.",
+        "D": "The vineyard rows are oriented at a 45-degree angle to the curved road."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012085",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the vineyard positioned relative to the residential houses?",
+      "options": {
+        "A": "The vineyard is located behind the residential houses, visible through a gap in the trees.",
+        "B": "The vineyard is to the right of the residential houses and is separated by a wide road.",
+        "C": "The vineyard is above the residential houses, on a higher elevation.",
+        "D": "The vineyard is to the left of the residential houses and is adjacent to them."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012086",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the orientation of the vineyard rows compare to the orientation of the houses in the residential area?",
+      "options": {
+        "A": "The vineyard rows are parallel to the alignment of the houses.",
+        "B": "The vineyard rows are oriented at a 45-degree angle to the houses.",
+        "C": "The vineyard rows are oriented in a circular pattern around the houses.",
+        "D": "The vineyard rows are oriented perpendicular to the alignment of the houses."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012087",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera viewpoint classification for the video?",
+      "options": {
+        "A": "60° downward view",
+        "B": "90° downward view",
+        "C": "45° downward view",
+        "D": "30° downward view"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012088",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "How does the camera move throughout the video?",
+      "options": {
+        "A": "The camera moves vertically up and down.",
+        "B": "The camera pans across the landscape.",
+        "C": "The camera moves horizontally from left to right.",
+        "D": "The camera moves in a circular motion around the houses."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012089",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What type of camera motion is used to capture the transition from the residential neighborhood to the vineyard and then to the open land?",
+      "options": {
+        "A": "tilting",
+        "B": "panning",
+        "C": "tracking",
+        "D": "zooming"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012090",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How does the road network connect to the vineyard and the open land?",
+      "options": {
+        "A": "parallel",
+        "B": "diverging",
+        "C": "converging",
+        "D": "intersecting"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012091",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the spatial arrangement of the houses in the residential neighborhood organized?",
+      "options": {
+        "A": "random",
+        "B": "clustered",
+        "C": "circular",
+        "D": "linear"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012092",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the grapevines in the vineyard?",
+      "options": {
+        "A": "random scattered",
+        "B": "zigzag pattern",
+        "C": "grid-like",
+        "D": "circular rings"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012093",
+      "video_path": "Hawk_UAV/BE/DJI_0337_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the road network in the residential area?",
+      "options": {
+        "A": "grid",
+        "B": "linear",
+        "C": "radial",
+        "D": "circular"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012625",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long is the moving black car visible in the video?",
+      "options": {
+        "A": "From 0.0 seconds to 3.0 seconds (duration: 3.0 seconds)",
+        "B": "From 0.0 seconds to 2.0 seconds (duration: 2.0 seconds)",
+        "C": "From 0.0 seconds to 5.0 seconds (duration: 5.0 seconds)",
+        "D": "From 0.0 seconds to 4.0 seconds (duration: 4.0 seconds)"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012626",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the motion direction of the cars driving on the street?",
+      "options": {
+        "A": "perpendicular to the camera",
+        "B": "away from the camera",
+        "C": "parallel to the camera",
+        "D": "towards the camera"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012627",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Are there any repeated patterns in pedestrian movement on the sidewalks, and if so, what are they?",
+      "options": {
+        "A": "Pedestrians follow a strict, synchronized pattern, moving in perfect unison in both directions along the sidewalks at regular intervals.",
+        "B": "Pedestrians move consistently along the sidewalks, with some walking in groups and others alone. Their movement is periodic, with a steady flow of people appearing and disappearing from the frame, indicating a continuous and regular pattern of pedestrian activity.",
+        "C": "Pedestrians move in isolated clusters, with large gaps between groups, and their movement is sporadic and infrequent, indicating low foot traffic.",
+        "D": "Pedestrians move in a random and chaotic manner, with no discernible pattern or flow, often stopping abruptly and changing directions unpredictably."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012628",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How do the pedestrians on the sidewalk move relative to the camera?",
+      "options": {
+        "A": "in circles around the camera",
+        "B": "perpendicular to the camera",
+        "C": "away from the camera",
+        "D": "toward the camera"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012629",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How frequently do cars appear and move along the street, and what pattern do they follow in terms of direction?",
+      "options": {
+        "A": "Cars appear consistently but only move away from the camera, indicating a one-way street.",
+        "B": "Cars appear frequently and move in a circular pattern around the intersection, suggesting congestion.",
+        "C": "Cars appear sporadically and only move in one direction, creating a one-way traffic pattern.",
+        "D": "Cars appear intermittently and move consistently along the street, with some traveling away from the camera and others toward the camera, indicating a regular and balanced traffic flow."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012630",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Are the buildings on the right side of the street adjacent to the buildings on the left side of the street?",
+      "options": {
+        "A": "Yes, the buildings on both sides are directly connected by a bridge.",
+        "B": "Yes, the buildings on the right side are extensions of the buildings on the left side.",
+        "C": "No, the buildings on the right side of the street are not adjacent to the buildings on the left side of the street.",
+        "D": "No, the buildings on the right side are separated by a large park from the buildings on the left side."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012631",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the parked cars relative to the street's yellow dividing line?",
+      "options": {
+        "A": "The parked cars are oriented randomly, with no consistent alignment.",
+        "B": "The parked cars are at a 45-degree angle to the yellow dividing line.",
+        "C": "The parked cars are parallel to the yellow dividing line.",
+        "D": "The parked cars are perpendicular to the yellow dividing line."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012632",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "What is the relative position of the white car to the building with the gray roof?",
+      "options": {
+        "A": "The white car is below and to the left of the building with the gray roof.",
+        "B": "The white car is above and to the right of the building with the gray roof.",
+        "C": "The white car is below and to the right of the building with the gray roof.",
+        "D": "The white car is to the right of the building with the gray roof."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012633",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the trees relative to the buildings along the street?",
+      "options": {
+        "A": "The trees are oriented diagonally, leaning towards the street at an angle.",
+        "B": "The trees are oriented vertically but perpendicular to the buildings' facades.",
+        "C": "The trees are oriented vertically and parallel to the buildings' facades.",
+        "D": "The trees are oriented horizontally, lying across the street in front of the buildings."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012634",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the parked cars on the left side of the street compare to the distance between the parked cars on the right side of the street?",
+      "options": {
+        "A": "The parked cars on both sides of the street are equally spaced apart.",
+        "B": "The parked cars on the left side of the street are farther apart than the parked cars on the right side of the street.",
+        "C": "The parked cars on the right side of the street are closer together than the parked cars on the left side of the street.",
+        "D": "The parked cars on the left side of the street are closer together than the parked cars on the right side of the street."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012635",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the parked cars and the building with the red brick facade compare from the camera's perspective?",
+      "options": {
+        "A": "The parked cars are farther from the camera than the building with the red brick facade.",
+        "B": "The parked cars and the building are at the same distance from the camera.",
+        "C": "The parked cars are on the opposite side of the street from the building with the red brick facade.",
+        "D": "The parked cars are closer to the camera than the building with the red brick facade."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012636",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the buildings along the street?",
+      "options": {
+        "A": "clustered",
+        "B": "linear",
+        "C": "random",
+        "D": "circular"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012637",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the road network structured in relation to the buildings?",
+      "options": {
+        "A": "disorganized",
+        "B": "random",
+        "C": "chaotic",
+        "D": "organized"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012638",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the road network in the video?",
+      "options": {
+        "A": "grid",
+        "B": "circular",
+        "C": "linear",
+        "D": "spiral"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012639",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the parked cars arranged along the street?",
+      "options": {
+        "A": "in a zigzag formation",
+        "B": "linear",
+        "C": "in a circular pattern",
+        "D": "randomly scattered"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012640",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint classification in terms of angle relative to the ground?",
+      "options": {
+        "A": "60° downward view",
+        "B": "90° downward view",
+        "C": "Horizontal view",
+        "D": "45° downward view"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012641",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint in the video?",
+      "options": {
+        "A": "45° downward view",
+        "B": "60° downward view",
+        "C": "30° downward view",
+        "D": "Level view"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012642",
+      "video_path": "Hawk_UAV/BE/DJI_0383_10.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What type of camera motion is observed in the video?",
+      "options": {
+        "A": "tilting",
+        "B": "tracking",
+        "C": "panning",
+        "D": "zooming"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013773",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How do the pedestrians' movements pattern across the sidewalks?",
+      "options": {
+        "A": "in a circular pattern around the central intersection",
+        "B": "consistently in one direction (toward the camera)",
+        "C": "intermittently in both directions (toward and away from camera)",
+        "D": "consistently in one direction (away from the camera)"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013774",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Is there a periodic change in pedestrian activity on the sidewalks throughout the video?",
+      "options": {
+        "A": "Yes, pedestrian activity on the sidewalks shows a periodic and consistent pattern throughout the video.",
+        "B": "No, pedestrian activity remains constant and does not change over time.",
+        "C": "No, pedestrian activity is completely random and unpredictable throughout the video.",
+        "D": "Yes, pedestrian activity increases dramatically in the middle of the video and then decreases."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013775",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Do vehicles in the video show a periodic pattern of movement or stopping at the intersection?",
+      "options": {
+        "A": "No, vehicles avoid the intersection entirely, showing no pattern of movement.",
+        "B": "Yes, vehicles periodically stop and proceed at the intersection, showing a consistent pattern of traffic movement.",
+        "C": "Yes, vehicles stop at the intersection but do not resume movement, indicating a traffic jam.",
+        "D": "No, vehicles move continuously without stopping at the intersection."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013776",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long is the black car parked on the side of the street visible in the video?",
+      "options": {
+        "A": "The black car is visible from 0.0 seconds to 5.0 seconds (duration: 5.0 seconds)",
+        "B": "The black car is visible from 0.0 seconds to 6.0 seconds (duration: 6.0 seconds)",
+        "C": "The black car is visible from 0.0 seconds to 4.0 seconds (duration: 4.0 seconds)",
+        "D": "The black car is visible from 0.0 seconds to 7.0 seconds (duration: 7.0 seconds)"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013777",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what time does the white car appear in the frame and when does it disappear?",
+      "options": {
+        "A": "The white car appears at 0.0 seconds and disappears at 5.0 seconds.",
+        "B": "The white car appears at 0.0 seconds and disappears at 7.0 seconds.",
+        "C": "The white car appears at 1.0 seconds and disappears at 5.0 seconds.",
+        "D": "The white car appears at 0.0 seconds and disappears at 3.0 seconds."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013778",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Are the buildings on the left side of the street closer to the camera than the buildings on the right side of the street?",
+      "options": {
+        "A": "The buildings on both sides of the street are at the same distance from the camera.",
+        "B": "No, the buildings on the right side of the street are closer to the camera than the buildings on the left side of the street.",
+        "C": "It is impossible to determine the relative distance of the buildings from the camera.",
+        "D": "Yes, the buildings on the left side of the street are closer to the camera than the buildings on the right side of the street."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013779",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the white car relative to the red crosswalk?",
+      "options": {
+        "A": "The white car is oriented parallel to the red crosswalk, moving in the same direction as the street.",
+        "B": "The white car is perpendicular to the red crosswalk, driving across it.",
+        "C": "The white car is facing the red crosswalk but is parked, not moving.",
+        "D": "The white car is positioned diagonally, crossing the red crosswalk at an angle."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013780",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the red crosswalk relative to the camera's viewpoint?",
+      "options": {
+        "A": "The red crosswalk is oriented horizontally across the street, but appears parallel to the camera's downward view.",
+        "B": "The red crosswalk is oriented diagonally across the street, from the bottom left to the top right.",
+        "C": "The red crosswalk is oriented horizontally across the street, appearing perpendicular to the camera's downward view.",
+        "D": "The red crosswalk is oriented vertically along the street, parallel to the camera's downward view."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013781",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the red crosswalk in front of the buildings on the left side of the street?",
+      "options": {
+        "A": "Yes, it is located directly in front of the buildings on the left.",
+        "B": "No, it is located behind the buildings on the right side of the street.",
+        "C": "No, it is situated in the middle of the street, not in front of any buildings.",
+        "D": "No, it is positioned in front of the buildings on the right side of the street."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013782",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How do the buildings and streets align in the video?",
+      "options": {
+        "A": "perpendicular",
+        "B": "diagonal",
+        "C": "parallel",
+        "D": "random"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013783",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the overall pattern of the road network in the video?",
+      "options": {
+        "A": "Organic",
+        "B": "Circular",
+        "C": "Radial",
+        "D": "Grid-like"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013784",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the buildings along the street?",
+      "options": {
+        "A": "clustered",
+        "B": "linear",
+        "C": "circular",
+        "D": "random"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013785",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the street network structured in the visible area?",
+      "options": {
+        "A": "linear",
+        "B": "grid-like",
+        "C": "spiral",
+        "D": "radial"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013786",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint in the video?",
+      "options": {
+        "A": "45° downward view",
+        "B": "Eye-level view",
+        "C": "90° downward view",
+        "D": "60° downward view"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013787",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "Is the camera moving or stationary during the video?",
+      "options": {
+        "A": "The camera is stationary.",
+        "B": "The camera is moving closer to the street.",
+        "C": "The camera is moving up and down.",
+        "D": "The camera is panning across the scene."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013788",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint classification in terms of angle relative to the ground?",
+      "options": {
+        "A": "45° downward view",
+        "B": "30° upward view",
+        "C": "60° downward view",
+        "D": "90° vertical view"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013789",
+      "video_path": "Hawk_UAV/BE/DJI_0385_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "Is the camera stationary or moving in the video?",
+      "options": {
+        "A": "Panning across the scene",
+        "B": "Moving slowly forward",
+        "C": "Stationary",
+        "D": "Moving rapidly backward"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013640",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what time does the white van first appear in the video, and does it exit the frame?",
+      "options": {
+        "A": "The white van first appears at 1.0 seconds and exits the frame at 10.0 seconds.",
+        "B": "The white van first appears at 0.0 seconds and exits the frame at 11.0 seconds.",
+        "C": "The white van first appears at 0.0 seconds and remains in the frame until the end of the video.",
+        "D": "The white van first appears at 1.0 seconds and remains in the frame until the end of the video."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013641",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Are there any periodic changes in the presence of pedestrians at the crosswalk, and if so, what is the frequency of these changes?",
+      "options": {
+        "A": "Yes, pedestrians appear every 2 minutes, following a regular schedule.",
+        "B": "Yes, there is a periodic change every minute, with pedestrians appearing and disappearing in a cycle.",
+        "C": "No, there are no periodic changes in the presence of pedestrians at the crosswalk; their appearance is intermittent and not observed consistently.",
+        "D": "Yes, pedestrians appear every 30 seconds in a consistent pattern."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013642",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How does the motion direction of the white van change after passing the crosswalk?",
+      "options": {
+        "A": "to the left",
+        "B": "towards the camera",
+        "C": "to the right",
+        "D": "away from camera"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013643",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the motion direction of the white car relative to the camera as it approaches the crosswalk?",
+      "options": {
+        "A": "away from camera",
+        "B": "sideways across the frame",
+        "C": "perpendicular to camera",
+        "D": "toward camera"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013644",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the crosswalk located in front of or behind the white car as it approaches the intersection?",
+      "options": {
+        "A": "behind the white car",
+        "B": "in front of the white car",
+        "C": "to the right of the white car",
+        "D": "to the left of the white car"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013645",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the white car closer to the white van or the building on the left side of the road?",
+      "options": {
+        "A": "closer to the building on the left side of the road",
+        "B": "closer to the white van",
+        "C": "farther from both the white van and the building",
+        "D": "equally distant from both the white van and the building"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013646",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the orientation of the white car relative to the crosswalk change as it approaches and turns right?",
+      "options": {
+        "A": "The white car changes its orientation from being parallel to the road to being perpendicular to the road as it turns right at the crosswalk.",
+        "B": "The white car changes its orientation from being perpendicular to the road to being parallel to the road as it turns right.",
+        "C": "The white car remains parallel to the road and does not change its orientation.",
+        "D": "The white car changes its orientation from being parallel to the crosswalk to being perpendicular to the crosswalk as it turns right."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013647",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the white van and the pedestrian crossing change as the van moves along the road?",
+      "options": {
+        "A": "The distance increases as the van approaches the crossing and continues to increase as it moves away.",
+        "B": "The distance remains constant as the van drives along the road.",
+        "C": "The distance decreases as the van approaches the crossing and then increases as it moves away.",
+        "D": "The distance increases as the van approaches the crossing and then decreases as it moves away."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013648",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the buildings arranged in relation to the road network?",
+      "options": {
+        "A": "intersecting",
+        "B": "diagonal",
+        "C": "perpendicular",
+        "D": "parallel"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013649",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the buildings arranged relative to each other and the road?",
+      "options": {
+        "A": "In a circular formation around the road",
+        "B": "On opposite sides of the road, facing each other",
+        "C": "Randomly scattered with no clear pattern",
+        "D": "On the same side of the road, in a row"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013650",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the road network pattern structured in the video?",
+      "options": {
+        "A": "linear",
+        "B": "grid",
+        "C": "radial",
+        "D": "circular"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013651",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the trees along the road?",
+      "options": {
+        "A": "circular",
+        "B": "random",
+        "C": "clustered",
+        "D": "linear"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013652",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "How does the camera move during the video?",
+      "options": {
+        "A": "rotating in a circle",
+        "B": "moving backward",
+        "C": "panning left and right",
+        "D": "moving forward"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013653",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's motion state during the video?",
+      "options": {
+        "A": "moving forward",
+        "B": "rotating",
+        "C": "moving backward",
+        "D": "stationary"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013654",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint throughout the video?",
+      "options": {
+        "A": "90° downward view",
+        "B": "Horizontal view",
+        "C": "60° downward view",
+        "D": "30° downward view"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013655",
+      "video_path": "UAVDT/S0102.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint classification in the video?",
+      "options": {
+        "A": "45° downward view",
+        "B": "0° horizontal view",
+        "C": "90° downward view",
+        "D": "60° downward view"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012094",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Do the vehicles consistently follow a predictable pattern of movement through the intersection?",
+      "options": {
+        "A": "Yes, the vehicles follow a predictable pattern, but the traffic signals are frequently malfunctioning.",
+        "B": "No, the vehicles move chaotically with no regard for traffic signals or lane markings.",
+        "C": "No, the vehicles move in unpredictable patterns due to the lack of traffic control infrastructure.",
+        "D": "Yes, the vehicles consistently follow a predictable pattern of movement, with traffic flowing in a cyclical manner based on the traffic signals."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012095",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How does the traffic flow pattern change periodically at the intersection?",
+      "options": {
+        "A": "The traffic flow pattern changes as the number of lanes is dynamically increased or decreased based on the time of day.",
+        "B": "The traffic flow pattern changes as the road lanes are physically reconfigured every few minutes.",
+        "C": "The traffic flow pattern changes periodically as the traffic lights alternate between different directions, causing vehicles to move in a repeated sequence of directions.",
+        "D": "The traffic flow pattern changes as the speed limits for different directions are adjusted by a central control system."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012096",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what time does the blue car first appear in the video?",
+      "options": {
+        "A": "0.0 seconds",
+        "B": "8.0 seconds",
+        "C": "5.0 seconds",
+        "D": "2.0 seconds"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012097",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long is the white truck visible in the video?",
+      "options": {
+        "A": "6.0 seconds",
+        "B": "7.0 seconds",
+        "C": "5.0 seconds",
+        "D": "4.0 seconds"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012098",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the position of the pedestrian crossing relate to the traffic lights and the cars waiting at the intersection?",
+      "options": {
+        "A": "The pedestrian crossing is above the traffic lights and is located behind the cars waiting at the intersection.",
+        "B": "The pedestrian crossing is to the side of the traffic lights and is located behind the cars waiting at the intersection.",
+        "C": "The pedestrian crossing is below the traffic lights and is adjacent to the cars waiting at the intersection.",
+        "D": "The pedestrian crossing is above the traffic lights and is separated from the cars by a barrier."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012099",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the blue car relative to the white car in the middle of the intersection?",
+      "options": {
+        "A": "The blue car is to the right of the white car and slightly ahead, both oriented in the same direction.",
+        "B": "The blue car is directly behind the white car, moving in the same direction.",
+        "C": "The blue car is ahead of the white car and positioned to its left, but they are moving in different directions.",
+        "D": "The blue car is to the left of the white car and slightly behind, both oriented in the same direction."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012100",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "What is the relative orientation of the pedestrian crossing in front of the traffic lights compared to the road?",
+      "options": {
+        "A": "The pedestrian crossing is at a 45-degree angle to the road and slightly to the side of the traffic lights.",
+        "B": "The pedestrian crossing is curved and wraps around the traffic lights.",
+        "C": "The pedestrian crossing is parallel to the road and runs alongside the traffic lights.",
+        "D": "The pedestrian crossing is perpendicular to the road and directly in front of the traffic lights."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012101",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Are the buildings in the background adjacent to the road, or are they located at a considerable distance from it?",
+      "options": {
+        "A": "The buildings are located at a considerable distance from the road, not adjacent to it.",
+        "B": "The buildings are partially adjacent and partially distant, with some structures close to the road.",
+        "C": "The buildings are located on the opposite side of the road, separated by a wide green buffer zone.",
+        "D": "The buildings are adjacent to the road, forming a continuous urban wall."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012102",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the roads at the intersection?",
+      "options": {
+        "A": "radial",
+        "B": "grid-like",
+        "C": "circular",
+        "D": "linear"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012103",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What geometric pattern describes the layout of the roads at the intersection?",
+      "options": {
+        "A": "circular",
+        "B": "radial",
+        "C": "grid-like",
+        "D": "spiral"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012104",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the vehicles arranged in the traffic flow at the intersection?",
+      "options": {
+        "A": "random",
+        "B": "clustered",
+        "C": "circular",
+        "D": "linear"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012105",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint relative to the ground?",
+      "options": {
+        "A": "eye level",
+        "B": "high altitude",
+        "C": "ground level",
+        "D": "low altitude"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012106",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "How does the camera move throughout the video?",
+      "options": {
+        "A": "The camera remains stationary, providing a fixed high-angle view.",
+        "B": "The camera moves along the street level, following a car.",
+        "C": "The camera pans horizontally across the scene.",
+        "D": "The camera slowly zooms in on the intersection."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012107",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint classification in terms of angle relative to the ground?",
+      "options": {
+        "A": "45° downward view",
+        "B": "30° downward view",
+        "C": "15° upward view",
+        "D": "90° downward view"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012108",
+      "video_path": "UAVDT/M1303.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's motion state throughout the video?",
+      "options": {
+        "A": "Panning across the scene",
+        "B": "Stationary",
+        "C": "Zooming in and out",
+        "D": "Moving in a circular path"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015711",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what time does the white van first appear in the video?",
+      "options": {
+        "A": "1.5 seconds",
+        "B": "2.0 seconds",
+        "C": "3.0 seconds",
+        "D": "4.0 seconds"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015712",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "When does the orange car appear and disappear in the video?",
+      "options": {
+        "A": "The orange car appears at 4.0 seconds and disappears at 9.0 seconds.",
+        "B": "The orange car appears at 1.0 second and disappears at 6.0 seconds.",
+        "C": "The orange car appears at 3.0 seconds and disappears at 8.0 seconds.",
+        "D": "The orange car appears at 2.0 seconds and disappears at 7.0 seconds."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015713",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long does the white van remain visible in the video?",
+      "options": {
+        "A": "5.0 seconds",
+        "B": "7.0 seconds",
+        "C": "9.0 seconds",
+        "D": "3.0 seconds"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015714",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the motion direction of the majority of the vehicles in the video?",
+      "options": {
+        "A": "towards the camera",
+        "B": "perpendicular to the camera",
+        "C": "away from camera",
+        "D": "parallel to the camera"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015715",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How often do vehicles pass through the intersection in a given direction?",
+      "options": {
+        "A": "Vehicles pass through the intersection in large groups, with all traffic moving simultaneously.",
+        "B": "Vehicles pass through the intersection sporadically, with long gaps between each vehicle.",
+        "C": "Vehicles pass through the intersection only during peak hours, with no traffic at night.",
+        "D": "Vehicles pass through the intersection repeatedly at regular intervals, with a consistent flow of cars and a bus moving through the intersection in both directions."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015716",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the vehicles in the left lane compare to the distance between the vehicles in the right lane?",
+      "options": {
+        "A": "The vehicles in the right lane are closer together than the vehicles in the left lane.",
+        "B": "The distance between vehicles is the same in both lanes.",
+        "C": "The vehicles in the left lane are closer together than the vehicles in the right lane.",
+        "D": "The vehicles in the left lane are much farther apart than the vehicles in the right lane."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015717",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the orientation of the cars in the left lane compare to the cars in the right lane as they travel through the intersection?",
+      "options": {
+        "A": "The cars in the left lane are moving at a slower speed than the cars in the right lane.",
+        "B": "The cars in the left lane are oriented at a sharper angle to the camera than the cars in the right lane.",
+        "C": "The cars in the left lane are positioned farther back and are less visible than the cars in the right lane.",
+        "D": "The cars in the left lane are oriented more directly towards the camera compared to the cars in the right lane, which are slightly angled and farther back."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015718",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the vehicles on the main road compare to the distance between the vehicles and the parking lot on the right side of the frame?",
+      "options": {
+        "A": "The vehicles on the main road are more spread out than those in the parking lot.",
+        "B": "The vehicles on the main road are closer to the camera and to each other than the vehicles in the parking lot, which are farther away and more spread out.",
+        "C": "The vehicles in the parking lot are closer to the camera than the vehicles on the main road.",
+        "D": "The vehicles on the main road are farther apart than those in the parking lot."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015719",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Are the vehicles in the parking lot adjacent to the road, and how does their proximity compare to the vehicles on the road?",
+      "options": {
+        "A": "The vehicles in the parking lot are adjacent to the road, and they are moving at the same speed as the vehicles on the road.",
+        "B": "The vehicles in the parking lot are adjacent to the road, and they are closer to the camera than the vehicles on the road.",
+        "C": "The vehicles in the parking lot are not adjacent to the road but are nearby, with the vehicles on the road being closer to the camera and more actively moving compared to the stationary vehicles in the parking lot.",
+        "D": "The vehicles in the parking lot are not adjacent to the road, and they are farther from the camera than the vehicles on the road."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015720",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the road lanes in the intersection?",
+      "options": {
+        "A": "linear",
+        "B": "circular",
+        "C": "radial",
+        "D": "grid"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015721",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the spatial arrangement of the vehicles in the parking lot on the right side of the frame?",
+      "options": {
+        "A": "randomly scattered",
+        "B": "grid-like",
+        "C": "in a circular pattern",
+        "D": "linearly aligned"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015722",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the road network in the video?",
+      "options": {
+        "A": "grid-like",
+        "B": "spiral",
+        "C": "radial",
+        "D": "circular"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015723",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the traffic lanes arranged on the road?",
+      "options": {
+        "A": "radial patterns",
+        "B": "zigzag lines",
+        "C": "concentric circles",
+        "D": "parallel"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015724",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "How does the camera move throughout the video?",
+      "options": {
+        "A": "Rotating in circles",
+        "B": "Panning side to side",
+        "C": "Moving forward",
+        "D": "Moving backward"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015725",
+      "video_path": "UAVDT/S0306.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera motion state during the video?",
+      "options": {
+        "A": "panning",
+        "B": "rotating",
+        "C": "moving forward",
+        "D": "moving backward"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015451",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what point does the solar panel field first appear in the video?",
+      "options": {
+        "A": "At 3.0 seconds",
+        "B": "At 4.5 seconds",
+        "C": "At 0.0 seconds",
+        "D": "At 1.5 seconds"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015452",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long are the solar panels visible in the video?",
+      "options": {
+        "A": "From 0.5 seconds to 5.0 seconds (duration: 4.5 seconds)",
+        "B": "From 2.5 seconds to 7.8 seconds (duration: 5.3 seconds)",
+        "C": "From 1.0 seconds to 6.5 seconds (duration: 5.5 seconds)",
+        "D": "From 3.0 seconds to 8.0 seconds (duration: 5.0 seconds)"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015453",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long does the sports complex remain in view?",
+      "options": {
+        "A": "For the first 1.5 seconds",
+        "B": "For the first 2.5 seconds",
+        "C": "For the first 3.0 seconds",
+        "D": "For the first 4.0 seconds"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015454",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Do the houses in the residential neighborhood show any periodic change in their appearance or status during the video?",
+      "options": {
+        "A": "The houses experience periodic changes in lighting, appearing brighter at certain times.",
+        "B": "The houses show a gradual transformation from old to new as the video continues.",
+        "C": "The houses in the residential neighborhood do not show any periodic change in their appearance or status during the video; they remain consistently static and unchanged.",
+        "D": "The houses periodically change color to match the seasons as the video progresses."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015455",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Is there a repeating pattern in the arrangement of objects in the video?",
+      "options": {
+        "A": "Yes, there is a repeating pattern of vertical arrangements, such as the alignment of utility poles and the rows of houses.",
+        "B": "Yes, there is a repeating pattern of circular arrangements, such as the running track and the layout of the solar panels.",
+        "C": "No, the objects are arranged randomly without any discernible pattern.",
+        "D": "Yes, there is a repeating pattern of linear arrangements, such as the rows of solar panels and the alignment of sports facilities."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015456",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the residential neighborhood closer to the solar panel field than to the sports complex?",
+      "options": {
+        "A": "Yes, it is closer to the solar panel field.",
+        "B": "No, it is equidistant from both areas.",
+        "C": "Yes, it is much closer to the sports complex.",
+        "D": "No, it is closer to the sports complex."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015457",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Are the tennis courts and the solar panels adjacent to each other?",
+      "options": {
+        "A": "Yes, they are directly next to each other.",
+        "B": "No, the solar panels are located on the opposite side of the residential area.",
+        "C": "No, they are separated by a large grassy field and a building.",
+        "D": "Yes, they are separated by a small road."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015458",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How far is the solar panel field from the residential neighborhood compared to the sports complex?",
+      "options": {
+        "A": "The solar panel field is farther from the residential neighborhood than from the sports complex.",
+        "B": "The solar panel field is closer to the sports complex than to the residential neighborhood.",
+        "C": "The solar panel field is equidistant from both the residential neighborhood and the sports complex.",
+        "D": "The solar panel field is closer to the residential neighborhood than to the sports complex."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015459",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the solar panel field located to the right of the sports complex?",
+      "options": {
+        "A": "No, it is located behind the sports complex.",
+        "B": "Yes, it is located to the right of the sports complex.",
+        "C": "No, it is located directly in front of the sports complex.",
+        "D": "No, it is located to the left of the sports complex."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015460",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the solar panels relative to the camera's view as it pans across the landscape?",
+      "options": {
+        "A": "The solar panels are oriented perpendicular to the camera's direction of movement, facing towards the camera.",
+        "B": "The solar panels are oriented at a 45-degree angle to the camera's direction of movement, creating a diagonal pattern.",
+        "C": "The solar panels are oriented parallel to the camera's direction of movement, forming a line that recedes into the distance.",
+        "D": "The solar panels are oriented perpendicular to the camera's direction of movement, facing away from the camera."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015461",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the solar panels arranged in relation to the road network?",
+      "options": {
+        "A": "random",
+        "B": "parallel",
+        "C": "diagonal",
+        "D": "perpendicular"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015462",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the solar panels in the field?",
+      "options": {
+        "A": "grid-like",
+        "B": "circular",
+        "C": "linear",
+        "D": "random"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015463",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the residential houses distributed in the neighborhood?",
+      "options": {
+        "A": "scattered",
+        "B": "aligned along a single street",
+        "C": "densely packed together",
+        "D": "clustered in the center"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015464",
+      "video_path": "Hawk_UAV/BE/DJI_0337_01.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint classification during the initial segment of the video?",
+      "options": {
+        "A": "ground level",
+        "B": "low altitude",
+        "C": "high altitude",
+        "D": "medium altitude"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_011011",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Is there a periodic change in the visibility of vehicles in the scene?",
+      "options": {
+        "A": "Yes, multiple cars appear and disappear at regular intervals.",
+        "B": "No, there is no periodic change in the visibility of vehicles as only one car appears briefly in the video.",
+        "C": "Yes, vehicles are visible only during the first half of the video.",
+        "D": "Yes, the visibility of vehicles increases as the video progresses."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_011012",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Is the movement of the car a repeated or intermittent pattern in the video?",
+      "options": {
+        "A": "Repeated",
+        "B": "Continuous",
+        "C": "Intermittent",
+        "D": "Random"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_011013",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the direction of motion for the car as it travels along the main road?",
+      "options": {
+        "A": "left to right",
+        "B": "right to left",
+        "C": "top to bottom",
+        "D": "bottom to top"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_011014",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Does the car's movement across the frame exhibit a periodic pattern?",
+      "options": {
+        "A": "Yes, the car follows a predictable path that repeats every few seconds.",
+        "B": "No, the car moves only once across the frame and does not return.",
+        "C": "No, the car's movement is random and unpredictable.",
+        "D": "Yes, the car moves back and forth in a regular, repeating cycle."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_011015",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the dark-colored car closer to the camera than the house with the brown roof?",
+      "options": {
+        "A": "Yes, the car is closer to the camera.",
+        "B": "It is impossible to tell from the video.",
+        "C": "No, the house is closer to the camera.",
+        "D": "The car and the house are at the same distance from the camera."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_011016",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "What is the relative position of the dark-colored car to the house with the brown roof as the car moves along the road?",
+      "options": {
+        "A": "The car is initially to the left of the house and then moves behind it.",
+        "B": "The car is initially to the right of the house and then moves behind it.",
+        "C": "The car is initially to the left of the house and then moves in front of it.",
+        "D": "The car is initially in front of the house and then moves to the left of it."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_011017",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the large evergreen tree and the house compare to the distance between the house and the intersection?",
+      "options": {
+        "A": "The large evergreen tree is closer to the house than the intersection is.",
+        "B": "The large evergreen tree is farther from the house than the intersection is.",
+        "C": "The distances are approximately equal.",
+        "D": "The intersection is closer to the house than the large evergreen tree is."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_011018",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the orientation of the main road compare to the orientation of the smaller road branching off from it?",
+      "options": {
+        "A": "The main road is diagonal, and the smaller road branches off at a sharp angle, forming an acute V-shape.",
+        "B": "The main road is horizontal, and the smaller road branches off at an acute angle, forming a Y-shape with the main road.",
+        "C": "The main road is vertical, and the smaller road branches off at a right angle, forming a T-junction.",
+        "D": "The main road is horizontal, and the smaller road branches off at an obtuse angle, creating a wide V-shape."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_011019",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the road network in the scene?",
+      "options": {
+        "A": "Circular",
+        "B": "Radial",
+        "C": "Branching",
+        "D": "Grid-like"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_011020",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the houses and trees distributed in the neighborhood?",
+      "options": {
+        "A": "arranged in a strict grid pattern",
+        "B": "lined up along the main road",
+        "C": "clustered together in dense groups",
+        "D": "scattered throughout the area"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_011021",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the houses arranged in relation to each other in the neighborhood?",
+      "options": {
+        "A": "randomly scattered",
+        "B": "organized",
+        "C": "clustered together",
+        "D": "in a circular pattern"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_011022",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the roads in the neighborhood?",
+      "options": {
+        "A": "grid",
+        "B": "circular",
+        "C": "converging",
+        "D": "parallel"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_011023",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "Is the camera panning left or right during the video?",
+      "options": {
+        "A": "Panning right",
+        "B": "Panning up",
+        "C": "Panning left",
+        "D": "Stationary"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_011024",
+      "video_path": "Hawk_UAV/BE/DJI_0368_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint classification in terms of angle and perspective?",
+      "options": {
+        "A": "60° downward view",
+        "B": "45° downward view",
+        "C": "0° horizontal view",
+        "D": "90° downward view"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012702",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How frequently do vehicles appear on the road, and what is their movement pattern?",
+      "options": {
+        "A": "Vehicles appear frequently, with a moderate-frequency, one-way traffic pattern moving towards the camera.",
+        "B": "Vehicles appear intermittently, with a high-frequency, two-way traffic pattern involving multiple cars in both directions.",
+        "C": "Vehicles appear constantly, with a high-frequency, one-way traffic pattern moving away from the camera.",
+        "D": "Vehicles appear intermittently, with one car moving away from the camera and another approaching, indicating a low-frequency, two-way traffic pattern."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012703",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How do the vehicles on the road move in relation to the camera's position?",
+      "options": {
+        "A": "Vehicles move only in a circular pattern around the bridge.",
+        "B": "Vehicles move both toward and away from the camera.",
+        "C": "All vehicles move toward the camera.",
+        "D": "All vehicles move away from the camera."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012704",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the cemetery relative to the road?",
+      "options": {
+        "A": "The cemetery is oriented parallel to the road.",
+        "B": "The cemetery is oriented at a 45-degree angle to the road.",
+        "C": "The cemetery is on the opposite side of the road, forming a diagonal layout.",
+        "D": "The cemetery is perpendicular to the road."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012705",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the residential houses on the left side of the road compare to the distance between the gravestones in the cemetery on the right side?",
+      "options": {
+        "A": "The houses are closer to each other than the gravestones are to each other.",
+        "B": "The gravestones are closer to each other than the houses are to each other.",
+        "C": "The distance between the houses and the gravestones is roughly the same.",
+        "D": "The houses are farther apart than the gravestones are from each other."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012706",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the bridge closer to the residential houses or to the cemetery?",
+      "options": {
+        "A": "The bridge is closer to the cemetery than to the residential houses.",
+        "B": "The bridge is closer to the residential houses than to the cemetery.",
+        "C": "The bridge is closer to the cemetery, but only by a very small margin.",
+        "D": "The bridge is equidistant from both the residential houses and the cemetery."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012707",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "Is the cemetery located to the left of or to the right of the road?",
+      "options": {
+        "A": "to the left of the road",
+        "B": "behind the houses on the left",
+        "C": "in the middle of the road",
+        "D": "to the right of the road"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012708",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the road network arranged in the central part of the frame?",
+      "options": {
+        "A": "Circular with a central roundabout",
+        "B": "Radial layout with roads branching out from a central point",
+        "C": "Linear with a converging intersection",
+        "D": "Grid pattern with multiple intersecting streets"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012709",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the road network in the upper portion of the frame?",
+      "options": {
+        "A": "diverging",
+        "B": "grid",
+        "C": "converging",
+        "D": "circular"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_012710",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the road network structured around the bridge and the central intersection?",
+      "options": {
+        "A": "grid-like",
+        "B": "linear",
+        "C": "circular",
+        "D": "radial"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_012711",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What spatial pattern describes the arrangement of the gravestones in the grassy area to the right of the road?",
+      "options": {
+        "A": "random scattering",
+        "B": "circular clusters",
+        "C": "linear along the edges",
+        "D": "grid-like"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_012712",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "How does the camera move throughout the video to capture the scene?",
+      "options": {
+        "A": "Panning side to side",
+        "B": "Moving backward",
+        "C": "Moving forward",
+        "D": "Rotating in a circle"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_012713",
+      "video_path": "Hawk_UAV/BE/DJI_0368_03.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "Is the camera moving forward or backward during the video?",
+      "options": {
+        "A": "Moving forward",
+        "B": "Moving backward",
+        "C": "Stationary",
+        "D": "Moving sideways"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_000158",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "Which of the following objects is visible in the upper-left corner of the screen throughout the video?",
+      "options": {
+        "A": "A public park with greenery and benches",
+        "B": "A large commercial building with illuminated signage",
+        "C": "A tall residential apartment complex",
+        "D": "A construction site with cranes and barriers"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_000159",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "How many cars are visible in the intersection at the beginning of the video?",
+      "options": {
+        "A": "10-15",
+        "B": "20-25",
+        "C": "25-30",
+        "D": "15-20"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_000160",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "Which of the following is the most prominent type of object visible in the upper-left portion of the video frame?",
+      "options": {
+        "A": "Commercial buildings with illuminated signage",
+        "B": "Residential apartments with balconies",
+        "C": "Public parks with greenery",
+        "D": "Industrial warehouses with large cranes"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_000161",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "Where is the main concentration of pedestrians located in the video?",
+      "options": {
+        "A": "At the bottom right corner of the frame",
+        "B": "On the right side of the screen near the traffic lights",
+        "C": "On the left side of the screen near the illuminated building",
+        "D": "In the center of the intersection on the crosswalk"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_000162",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the consistent motion pattern of the majority of vehicles in the intersection?",
+      "options": {
+        "A": "Vehicles move consistently from the top of the frame toward the bottom",
+        "B": "Vehicles move consistently from left to right across the frame",
+        "C": "Vehicles move consistently from right to left across the frame",
+        "D": "Vehicles move consistently from the bottom of the frame toward the top"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_000163",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What periodic change is observed in the traffic flow at the intersection?",
+      "options": {
+        "A": "Motorcycles move in a repetitive loop around the intersection",
+        "B": "Traffic lights change from green to red periodically, altering vehicle flow",
+        "C": "Pedestrians cross the street in a fixed pattern every minute",
+        "D": "Cars repeatedly turn left in a predictable sequence"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_000164",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera viewpoint classification for this video?",
+      "options": {
+        "A": "ground-level (0 degrees)",
+        "B": "high angle (<45 degrees)",
+        "C": "top-down (90 degrees)",
+        "D": "high angle (>45 degrees)"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_000165",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's motion state throughout the video?",
+      "options": {
+        "A": "Moving forward toward the intersection",
+        "B": "Stationary with a high angle perspective",
+        "C": "Zooming in on the intersection",
+        "D": "Panning left and right"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_000166",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Causal Reasoning",
+      "task": "Causation Reasoning",
+      "question": "What is the primary cause of the bright light streaks visible on the road surface in the video?",
+      "options": {
+        "A": "The movement of pedestrians creating light trails",
+        "B": "The flashing of the traffic signal lights",
+        "C": "The reflection of vehicle headlights and taillights on the wet pavement",
+        "D": "The reflection of streetlights on the road surface"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_000167",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Causal Reasoning",
+      "task": "Consequence Reasoning",
+      "question": "Given the high volume of vehicles and pedestrians at the intersection, what is likely to happen if the traffic lights fail to coordinate properly?",
+      "options": {
+        "A": "Traffic congestion and potential accidents may increase due to conflicting vehicle and pedestrian movements.",
+        "B": "The intersection will become quieter as drivers and pedestrians avoid the area.",
+        "C": "The city will implement a temporary traffic ban on all vehicles.",
+        "D": "The traffic lights will automatically reset and function normally without intervention."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_000168",
+      "video_path": "VisDrone/uav0000120_04775_v_04.mp4",
+      "subdir": "VisDrone",
+      "dataset_name": "VisDrone",
+      "category": "Causal Reasoning",
+      "task": "Hypothetical Reasoning",
+      "question": "What would likely happen to the flow of traffic at the intersection if the traffic lights were removed and replaced with a stop sign at each approach?",
+      "options": {
+        "A": "Traffic would flow more smoothly because drivers would have more freedom to proceed without waiting.",
+        "B": "The intersection would become more efficient because stop signs require less maintenance than traffic lights.",
+        "C": "Pedestrian crossings would become unsafe as drivers would not be required to yield.",
+        "D": "Traffic would become more chaotic and congestion would increase due to lack of coordinated signal timing."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_014825",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what point in the video does the red car first appear in the frame?",
+      "options": {
+        "A": "At 1.5 seconds",
+        "B": "At 0.0 seconds",
+        "C": "At 4.5 seconds",
+        "D": "At 3.0 seconds"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_014826",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Is there a periodic pattern in the visibility of the trees' foliage throughout the video?",
+      "options": {
+        "A": "No, there is no periodic pattern in the visibility of the trees' foliage as the scene remains consistent with early spring or late winter conditions.",
+        "B": "Yes, the trees show a cyclical pattern of losing and regaining leaves, indicating a rapid seasonal change.",
+        "C": "Yes, the trees exhibit a consistent pattern of shedding and regrowing leaves every few seconds.",
+        "D": "Yes, the foliage changes periodically due to the camera's movement, creating an illusion of seasonal shifts."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_014827",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "Are there any periodic changes in the number of vehicles visible on the roads throughout the video?",
+      "options": {
+        "A": "Yes, the number of vehicles increases and decreases every 10 seconds.",
+        "B": "Yes, the number of vehicles fluctuates with the time of day.",
+        "C": "No, there are no periodic changes in the number of vehicles visible on the roads.",
+        "D": "Yes, the number of vehicles changes as the camera moves over different parts of the neighborhood."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_014828",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What pattern of motion is observed in the camera's movement throughout the video?",
+      "options": {
+        "A": "The camera moves in a straight line from the foreground to the background, focusing on a single house.",
+        "B": "The camera moves in a series of rapid, jerky cuts between different houses and angles.",
+        "C": "The camera moves in a circular orbit around the central house, maintaining a constant distance.",
+        "D": "The camera moves consistently in a panning motion from left to right, repeatedly revealing new sections of the neighborhood."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_014829",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the road network pattern organized in the suburban neighborhood?",
+      "options": {
+        "A": "The road network is organized in a winding, interconnected pattern.",
+        "B": "The roads form a series of isolated cul-de-sacs with no connections.",
+        "C": "The roads are arranged in a strict grid pattern.",
+        "D": "The roads are organized in a radial pattern, converging on a central point."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_014830",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How are the roads arranged in the neighborhood?",
+      "options": {
+        "A": "straight and grid-like",
+        "B": "winding and curving",
+        "C": "linear and parallel",
+        "D": "radial and circular"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_014831",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the houses in the neighborhood?",
+      "options": {
+        "A": "aligned along straight streets",
+        "B": "organized in a grid pattern",
+        "C": "scattered across the landscape",
+        "D": "clustered in dense groups"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_014832",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "How does the camera move throughout the video to capture the neighborhood?",
+      "options": {
+        "A": "Moving vertically up and down",
+        "B": "Zooming in and out rapidly",
+        "C": "Rotating in a circular motion",
+        "D": "Panning across the scene"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_014833",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera motion state during the video?",
+      "options": {
+        "A": "panning",
+        "B": "tilting up",
+        "C": "zooming in",
+        "D": "static"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_014834",
+      "video_path": "Hawk_UAV/BE/DJI_0367_05.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's viewpoint in the video?",
+      "options": {
+        "A": "30° downward view",
+        "B": "90° downward view",
+        "C": "45° downward view",
+        "D": "60° downward view"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015488",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How do the vehicles' motion directions change periodically at the intersection?",
+      "options": {
+        "A": "Vehicles move in a circular pattern around the intersection, with all cars turning in the same direction, and their motion directions do not change.",
+        "B": "Vehicles move in various directions including straight, left, and right, but their motion directions change randomly without any traffic light coordination.",
+        "C": "Vehicles move in various directions including straight, left, and right, with their motion directions changing periodically as the traffic lights cycle through red, yellow, and green phases, allowing for orderly and repeated traffic flow.",
+        "D": "Vehicles only move straight through the intersection, with no turns allowed, and their motion directions remain constant throughout the video."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015489",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the pattern of vehicle movement through the intersection, and how does it change over time?",
+      "options": {
+        "A": "Vehicles stop at the intersection and wait for a long time before proceeding, indicating a malfunction in the traffic signal system.",
+        "B": "Cars move continuously through the intersection without stopping, as there are no traffic lights or stop signs, resulting in a constant flow of traffic.",
+        "C": "Vehicles move through the intersection in a repeated pattern, with cars stopping at the lights and then proceeding when the signal changes.",
+        "D": "Vehicles move randomly through the intersection without any traffic signals, leading to frequent congestion and unpredictable delays."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015490",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what time does the red car in the parking lot at the bottom right of the frame first appear?",
+      "options": {
+        "A": "1.0 seconds",
+        "B": "0.0 seconds",
+        "C": "2.0 seconds",
+        "D": "0.5 seconds"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015491",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "Are the roads in the vicinity of the intersection interconnected or parallel?",
+      "options": {
+        "A": "The roads are parallel and run alongside each other without connecting.",
+        "B": "The roads are interconnected, but only one direction of traffic is allowed.",
+        "C": "The roads are interconnected, forming a complex network of pathways.",
+        "D": "The roads are parallel, with no visible intersection points."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015492",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the road network pattern organized around the central intersection?",
+      "options": {
+        "A": "The road network pattern around the central intersection is organized in a radial layout.",
+        "B": "The roads form a grid pattern with perpendicular intersections.",
+        "C": "The roads follow a linear pattern extending straight from the intersection.",
+        "D": "The roads are arranged in a circular loop around the intersection."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015493",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the roads at the intersection?",
+      "options": {
+        "A": "Grid",
+        "B": "Linear",
+        "C": "Radial",
+        "D": "Circular"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015494",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How is the orientation of the red car in the parking lot relative to the intersection?",
+      "options": {
+        "A": "The red car is oriented perpendicular to the road, facing away from the intersection, and is located above and to the left of the intersection.",
+        "B": "The red car is oriented parallel to the road, facing towards the intersection, and is located below and to the right of the intersection.",
+        "C": "The red car is oriented parallel to the road, facing away from the intersection, and is located above and to the right of the intersection.",
+        "D": "The red car is oriented perpendicular to the road, facing towards the intersection, and is located below and to the left of the intersection."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_015495",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "What is the orientation of the multi-story building relative to the traffic lights at the intersection?",
+      "options": {
+        "A": "The building is oriented perpendicular to the traffic flow, with its main facade facing the intersection, and it is located above and to the left of the traffic lights.",
+        "B": "The building is oriented parallel to the traffic flow, with its main facade facing the intersection, and it is located above and to the right of the traffic lights.",
+        "C": "The building is oriented parallel to the traffic flow, with its main facade facing away from the intersection, and it is located below and to the right of the traffic lights.",
+        "D": "The building is oriented perpendicular to the traffic flow, with its main facade facing away from the intersection, and it is located below and to the left of the traffic lights."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_015496",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "Is the camera stationary or moving during the video?",
+      "options": {
+        "A": "The camera is slowly panning from left to right across the scene.",
+        "B": "The camera is zooming in and out on the traffic lights.",
+        "C": "The camera is moving in a circular motion around the intersection.",
+        "D": "The camera is stationary, providing a fixed aerial view."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015497",
+      "video_path": "Hawk_UAV/BE/DJI_0371_02.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "Is the camera moving or stationary in this video?",
+      "options": {
+        "A": "Moving slowly forward",
+        "B": "Panning from left to right",
+        "C": "Stationary",
+        "D": "Rotating around the intersection"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013238",
+      "video_path": "Hawk_UAV/BE/DJI_0353.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the motion direction of the vehicle moving along the road in the park?",
+      "options": {
+        "A": "The vehicle moves from the top right to the bottom left of the frame.",
+        "B": "The vehicle moves from the top left to the bottom right of the frame.",
+        "C": "The vehicle moves from the bottom right to the top left of the frame.",
+        "D": "The vehicle moves from the bottom left to the top right of the frame."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013239",
+      "video_path": "Hawk_UAV/BE/DJI_0353.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How does the appearance of the grassy fields change throughout the video as the camera moves?",
+      "options": {
+        "A": "The grassy fields are initially brown and dormant, then turn green as the camera moves to the final section.",
+        "B": "The grassy fields transition from green to yellowish as the camera moves across different sections of the park.",
+        "C": "The grassy fields remain consistently green and lush throughout the entire video.",
+        "D": "The grassy fields change from yellowish to a vibrant green in the later part of the video."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013240",
+      "video_path": "Hawk_UAV/BE/DJI_0353.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the distance between the baseball field and the tennis court compare to the distance between the tennis court and the pond?",
+      "options": {
+        "A": "The baseball field is farther from the tennis court and pond than the tennis court is from the pond.",
+        "B": "The tennis court is farther from the baseball field than it is from the pond.",
+        "C": "The distances are approximately equal.",
+        "D": "The baseball field is closer to the tennis court than the tennis court is to the pond."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_013241",
+      "video_path": "Hawk_UAV/BE/DJI_0353.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "From the drone's perspective, what is the orientation of the baseball field relative to the tennis court?",
+      "options": {
+        "A": "The baseball field is behind the tennis court.",
+        "B": "The baseball field is to the right of the tennis court.",
+        "C": "The baseball field is directly above the tennis court.",
+        "D": "The baseball field is to the left of the tennis court."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_013242",
+      "video_path": "Hawk_UAV/BE/DJI_0353.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the paved roads and pathways in the park?",
+      "options": {
+        "A": "interconnected, linear, diverging, converging",
+        "B": "circular, concentric, radial, spiral",
+        "C": "grid, orthogonal, parallel, intersecting",
+        "D": "random, scattered, isolated, overlapping"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_013243",
+      "video_path": "Hawk_UAV/BE/DJI_0353.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the road network in the park?",
+      "options": {
+        "A": "The roads are arranged in a radial pattern, emanating from a central parking lot.",
+        "B": "The road network in the park is organized in a linear pattern with interconnected roads forming a grid-like structure. The roads are parallel and diverge at certain points, creating a branching pattern that connects different areas of the park.",
+        "C": "The roads form a circular pattern around the central fields.",
+        "D": "The roads are scattered randomly without any clear pattern."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_013244",
+      "video_path": "Hawk_UAV/BE/DJI_0353.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera viewpoint classification during the initial segment of the video?",
+      "options": {
+        "A": "45° downward view",
+        "B": "0° horizontal view",
+        "C": "90° downward view",
+        "D": "30° downward view"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_014796",
+      "video_path": "UAVDT/S1702.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the circular structure in the foreground spatially related to the parking lot?",
+      "options": {
+        "A": "The circular structure is directly adjacent to the parking lot, with cars parked around its perimeter.",
+        "B": "The circular structure is located in the middle of the parking lot, serving as a central landmark.",
+        "C": "The circular structure is positioned in the foreground, separate from the parking lot, and is surrounded by a landscaped area with greenery.",
+        "D": "The circular structure is situated within the parking lot, with parking spaces arranged around it."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_014797",
+      "video_path": "UAVDT/S1702.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the parking spaces in the lot?",
+      "options": {
+        "A": "spiral",
+        "B": "random",
+        "C": "grid-like",
+        "D": "circular"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_014798",
+      "video_path": "UAVDT/S1702.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the spatial arrangement pattern of the parked cars in the parking lot?",
+      "options": {
+        "A": "circular formation",
+        "B": "linear rows along the edges",
+        "C": "randomly scattered",
+        "D": "grid-like"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015765",
+      "video_path": "UAVDT/S0310.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what point in the video does the first bus appear, and when does it disappear from view?",
+      "options": {
+        "A": "The bus appears at 1.0 seconds and disappears at 4.0 seconds.",
+        "B": "The bus appears at 2.0 seconds and disappears at 4.0 seconds.",
+        "C": "The bus appears at 0.0 seconds and does not disappear.",
+        "D": "The bus appears at 1.0 seconds and disappears at 3.0 seconds."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_015766",
+      "video_path": "UAVDT/S0310.mp4",
+      "subdir": "UAVDT",
+      "dataset_name": "UAVDT",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long does the bus remain visible in the video frame?",
+      "options": {
+        "A": "Approximately 4.2 seconds",
+        "B": "Approximately 1.5 seconds",
+        "C": "Approximately 5.0 seconds",
+        "D": "Approximately 3.0 seconds"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015773",
+      "video_path": "Hawk_UAV/BE/DJI_0338_06.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "Describe the spatial organization of the buildings and structures around the road and river.",
+      "options": {
+        "A": "Buildings are scattered randomly across the landscape, with no clear pattern, and the river and road run independently without influencing the layout.",
+        "B": "The structures are arranged in a circular pattern around the river, with the road forming a loop that connects them all.",
+        "C": "The buildings are clustered in a dense central area, forming a town center, with the river flowing through the middle and the road bypassing it on the outskirts.",
+        "D": "The buildings are organized in a scattered yet linear pattern along the road, with clusters on both sides, while the river runs parallel, creating a linear boundary that influences the spatial layout."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_015767",
+      "video_path": "Hawk_UAV/BE/DJI_0376.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "What is the predominant motion direction pattern for vehicles in the circular traffic flow around the central plaza?",
+      "options": {
+        "A": "Vehicles move in a straight line, passing through the plaza without turning.",
+        "B": "Vehicles move in a counterclockwise direction around the central plaza, following the one-way traffic flow.",
+        "C": "Vehicles move in a clockwise direction around the central plaza, following the one-way traffic flow.",
+        "D": "Vehicles move in a random, uncoordinated manner, with no discernible pattern."
+      },
+      "correct_answer": "B"
+    }
+  ]
+}

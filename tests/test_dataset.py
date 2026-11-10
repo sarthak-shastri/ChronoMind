@@ -70,3 +70,10 @@ def test_split_filter_uses_split_named_annotation_file(tmp_path):
     import pytest
     with pytest.raises(ValueError,match="not 'val'"):
         ReVADataset(f,video_root=tmp_path,split='val')
+
+
+def test_split_filter_accepts_grouped_annotation_filename(tmp_path):
+    f=tmp_path/'train_grouped.json'
+    f.write_text(json.dumps({'QA':[{'qa_id':'train_1'}]}),encoding='utf-8')
+    ds=ReVADataset(f,video_root=tmp_path,split='train',missing_video='zeros')
+    assert len(ds)==1

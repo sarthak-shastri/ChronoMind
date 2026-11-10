@@ -120,3 +120,13 @@ Open the ready-to-run notebook from the `sarthak` branch: [ChronoMind Colab Driv
 ## Optional ReVA evaluation framework
 
 Shubham’s standalone evaluator is included under `Evaluation_Framework/` without duplicate annotation files. Install it separately with `python -m pip install -e ".[dev]"` from that folder; see its README and `reva-eval --help`. It handles prediction normalization, ID alignment, metrics, and reports. It does not make the official split leakage-safe; use a grouped internal validation split for model selection.
+
+## Leakage-safe ReVA training files
+
+The official annotation files remain unchanged. To build an internal train/validation pair that is disjoint from both official evaluation splits, run:
+
+```powershell
+python scripts/create_reva_leakage_safe_splits.py --train path/to/train.json --official-val path/to/val.json --official-test path/to/test.json --output-dir derived_splits/reva_leakage_safe --seed 42
+```
+
+The generated `train_grouped.json` and `val_grouped.json` contain only official training rows whose normalized video paths do not occur in official validation or test; groups are then split deterministically. Use them with `scripts/train_reva_qa.py` through `--train-annotations` and `--val-annotations`. See `derived_splits/reva_leakage_safe/split_statistics.md` for the current result and data reduction. These local files are path-disjoint; the annotations do not expose original source-sequence IDs, so they cannot establish isolation for differently named clips from one source.

@@ -1,0 +1,17 @@
+{
+  "seed": 42,
+  "val_fraction_requested": 0.2,
+  "grouping": "source-sequence ID if present, otherwise normalized video_path",
+  "official_train_qa": 15773,
+  "excluded_train_qa_overlapping_official_val_or_test": 15540,
+  "eligible_train_qa": 233,
+  "official_val_unique_groups": 379,
+  "official_test_unique_groups": 1014,
+  "train_qa": 184,
+  "train_groups": 17,
+  "val_qa": 49,
+  "val_groups": 3,
+  "train_val_group_overlap": 0,
+  "train_paths_overlapping_official_val_test": 0,
+  "val_paths_overlapping_official_test": 0
+}
