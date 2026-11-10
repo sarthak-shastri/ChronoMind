@@ -1,0 +1,76 @@
+"""Dependency-light QA smoke tests runnable with python -m unittest."""
+import json, tempfile, unittest
+from pathlib import Path
+import torch
+from torch import nn
+from advanced_models.qa.multimodal_qa_model import MultimodalVideoQAModel
+from advanced_models.qa.text_encoder import CLIPTextFeatureExtractor
+from advanced_models.qa.clip_similarity import clip_similarity_logits
+from advanced_models.qa.data import collate_qa
+from advanced_models.temporal.temporal_encoder import TransformerTemporalEncoder
+from advanced_models.vision.feature_extractor import CLIPVisionFeatureExtractor
+from scripts.evaluate_reva_qa import calculate_metrics, make_prediction_records, LETTERS
+
+class Vision(nn.Module):
+    def __init__(self): super().__init__(); self.scale=nn.Parameter(torch.ones(()))
+    def forward(self,pixel_values): return type('O',(),{'image_embeds':torch.ones(len(pixel_values),512)*self.scale})()
+class Tokenizer:
+    def __call__(self,texts,**kw): return {'input_ids':torch.ones(len(texts),3,dtype=torch.long)}
+class Text(nn.Module):
+    def __init__(self): super().__init__(); self.scale=nn.Parameter(torch.ones(()))
+    def forward(self,input_ids): return type('O',(),{'text_embeds':torch.ones(len(input_ids),512)*self.scale})()
+
+class QASmoke(unittest.TestCase):
+    def model(self):
+        return MultimodalVideoQAModel(CLIPVisionFeatureExtractor(Vision(),input_normalization='zero_one'),CLIPTextFeatureExtractor(Text(),Tokenizer()),TransformerTemporalEncoder(512,num_heads=8,max_seq_len=16,dropout=0))
+    def test_train_checkpoint_prediction_metrics(self):
+        torch.manual_seed(3); m=self.model().train(); opt=torch.optim.AdamW([p for p in m.parameters() if p.requires_grad],lr=1e-3)
+        before=m.scorer[-1].weight.detach().clone()
+        x=torch.rand(2,4,3,224,224); choices=[dict(zip(LETTERS,['a','b','c','d']))]*2
+        out=m(x,['q1','q2'],choices); logits=out['answer_logits']; y=torch.tensor([0,3]); loss=nn.functional.cross_entropy(logits,y)
+        self.assertTrue(torch.isfinite(loss)); opt.zero_grad(); loss.backward(); opt.step()
+        self.assertFalse(torch.equal(before,m.scorer[-1].weight.detach()))
+        self.assertTrue(any(p.grad is not None for p in m.temporal.parameters()))
+        self.assertTrue(any(p.grad is not None for p in m.fusion.parameters()))
+        self.assertTrue(all(p.grad is None for p in m.vision.parameters()))
+        self.assertTrue(all(p.grad is None for p in m.text.parameters()))
+        with tempfile.TemporaryDirectory() as d:
+            path=Path(d)/'ckpt.pt'; torch.save({'model_state_dict':m.state_dict()},path)
+            m2=self.model(); m2.load_state_dict(torch.load(path,weights_only=True)['model_state_dict'])
+            pred=m2.eval()(x,['q1','q2'],choices)['prediction']; self.assertEqual(len(pred),2)
+            rows=[{'prediction':'A','ground_truth':'A','category':'Temporal','inference_time_seconds':.1},{'prediction':'C','ground_truth':'B','category':'Temporal','inference_time_seconds':.3}]
+            metrics=calculate_metrics(rows); self.assertEqual(metrics['accuracy'],.5); self.assertEqual(metrics['confusion_matrix'][1][2],1)
+            payload={'schema_version':'1.0','dataset':'ReVA','split':'validation','model':{'name':'mock'},'predictions':[{'sample_id':'v_1','prediction':'A','scores':dict(zip(LETTERS,[.7,.1,.1,.1])),'inference_time_seconds':.1}]}
+            fp=Path(d)/'predictions.json'; fp.write_text(json.dumps(payload)); loaded=json.loads(fp.read_text())
+            self.assertEqual(set(loaded['predictions'][0]['scores']),set(LETTERS))
+    def test_metrics_recognize_canonical_labels_and_unlabeled_samples(self):
+        base={'category':'Factual Perception','inference_time_seconds':0.02}
+        labeled=[{**base,'prediction':'B','ground_truth':'B'},{**base,'prediction':'A','ground_truth':'C'}]
+        metrics=calculate_metrics(labeled)
+        self.assertEqual(metrics['labeled_count'],2); self.assertEqual(metrics['accuracy'],0.5)
+        self.assertEqual(metrics['confusion_matrix'][1][1],1)
+        self.assertEqual(metrics['confusion_matrix'][2][0],1)
+        unlabeled=[{**base,'prediction':'D','ground_truth':None}]
+        metrics=calculate_metrics(unlabeled)
+        self.assertEqual(metrics['labeled_count'],0); self.assertIsNone(metrics['accuracy'])
+        self.assertEqual(metrics['category_accuracy'],{})
+    def test_collator_preserves_canonical_answer_and_index_mapping(self):
+        sample={'video_frames':torch.zeros(4,3,224,224),'question':'q','choices':dict(A='a',B='b',C='c',D='d'),
+                'answer':'C','label':2,'sample_id':'val_000001','category':'Temporal Understanding','task':'Temporal Grounding','video_path':'x/y.mp4'}
+        batch=collate_qa([sample])
+        self.assertEqual(batch['answers'],['C']); self.assertEqual(batch['labels'].tolist(),[2])
+        self.assertEqual(list(batch['choices'][0]),['A','B','C','D']); self.assertEqual(batch['video_paths'],['x/y.mp4'])
+    def test_batchwise_predictions_cover_every_row_and_match_fp32_metrics(self):
+        logits=torch.tensor([[0.,3.,1.,-1.],[4.,0.,1.,0.]],dtype=torch.float32)
+        pred,rows=make_prediction_records(logits,['v1','v2'],['B','C'],['Temporal Understanding','Factual Perception'],.02)
+        self.assertEqual([x['prediction'] for x in pred],['B','A'])
+        self.assertEqual([x['ground_truth'] for x in rows],['B','C'])
+        m=calculate_metrics(rows); self.assertEqual(m['labeled_count'],2); self.assertEqual(m['confusion_matrix'][2][0],1)
+        m2=calculate_metrics([{'prediction':'A','ground_truth':None,'category':None,'inference_time_seconds':.01}])
+        self.assertIsNone(m2['accuracy']); self.assertEqual(m2['labeled_count'],0)
+    def test_frame_counts_and_baseline_shape(self):
+        m=self.model().eval(); choices=[dict(A='a',B='b',C='c',D='d')]
+        for t in (4,8,16): self.assertEqual(m(torch.rand(1,t,3,224,224),['q'],choices)['answer_logits'].shape,(1,4))
+        self.assertEqual(clip_similarity_logits(torch.rand(2,512),torch.rand(2,512),torch.rand(2,4,512)).shape,(2,4))
+
+if __name__=='__main__': unittest.main()
