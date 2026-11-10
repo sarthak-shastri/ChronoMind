@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReVA Canonical Predictions",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset",
+    "split",
+    "model",
+    "predictions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "dataset": {
+      "type": "string",
+      "minLength": 1
+    },
+    "split": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "run_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "metadata": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "score_semantics": {
+      "enum": [
+        "probabilities",
+        "logits",
+        "ranking_scores",
+        "unknown",
+        null
+      ]
+    },
+    "option_order": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true
+    },
+    "predictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "sample_id",
+          "prediction"
+        ],
+        "properties": {
+          "sample_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "prediction": {
+            "enum": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+          },
+          "scores": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "A": {
+                "type": "number"
+              },
+              "B": {
+                "type": "number"
+              },
+              "C": {
+                "type": "number"
+              },
+              "D": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "additionalProperties": false
+          },
+          "inference_time_seconds": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

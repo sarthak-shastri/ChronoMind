@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "dataset": "ReVA",
+  "split": "validation",
+  "model": {
+    "name": "ExampleModel",
+    "version": null,
+    "run_id": "SYNTHETIC_001"
+  },
+  "score_semantics": "probabilities",
+  "option_order": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "predictions": [
+    {
+      "sample_id": "valid_000001",
+      "prediction": "A",
+      "scores": {
+        "A": 0.8,
+        "B": 0.1,
+        "C": 0.05,
+        "D": 0.05
+      },
+      "inference_time_seconds": 1.2
+    },
+    {
+      "sample_id": "valid_000002",
+      "prediction": "C",
+      "scores": {
+        "A": 0.1,
+        "B": 0.6,
+        "C": 0.2,
+        "D": 0.1
+      },
+      "inference_time_seconds": 1.5
+    },
+    {
+      "sample_id": "valid_000003",
+      "prediction": "D",
+      "scores": {
+        "A": 0.1,
+        "B": 0.1,
+        "C": 0.1,
+        "D": 0.7
+      },
+      "inference_time_seconds": 1.1
+    },
+    {
+      "sample_id": "valid_000004",
+      "prediction": "C",
+      "scores": {
+        "A": 0.1,
+        "B": 0.1,
+        "C": 0.7,
+        "D": 0.1
+      },
+      "inference_time_seconds": 1.0
+    }
+  ]
+}

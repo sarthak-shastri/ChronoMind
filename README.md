@@ -116,3 +116,7 @@ The `preprocessing.collate` module provides the DataLoader collator/factory. `pr
 ## One-click Colab/Drive setup
 
 Open the ready-to-run notebook from the `sarthak` branch: [ChronoMind Colab Drive setup](https://colab.research.google.com/github/sarthak-shastri/ChronoMind/blob/sarthak/notebooks/colab_drive_setup.ipynb). Run its cells in order. It fetches one train annotation file and one referenced MP4 to verify access; it does not download the full dataset. Drive is optional: if mounting fails, the notebook continues with temporary Colab storage, which is cleared when the runtime ends.
+
+## Optional ReVA evaluation framework
+
+Shubham’s standalone evaluator is included under `Evaluation_Framework/` without duplicate annotation files. Install it separately with `python -m pip install -e ".[dev]"` from that folder; see its README and `reva-eval --help`. It handles prediction normalization, ID alignment, metrics, and reports. It does not make the official split leakage-safe; use a grouped internal validation split for model selection.
