@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+offload/
+*.mp4
+*.npz
+*.pt
+*.pth
+*.bin
+!non_lora_trainables.bin
