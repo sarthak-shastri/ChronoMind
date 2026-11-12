@@ -130,3 +130,7 @@ python scripts/create_reva_leakage_safe_splits.py --train path/to/train.json --o
 ```
 
 The generated `train_grouped.json` and `val_grouped.json` contain only official training rows whose normalized video paths do not occur in official validation or test; groups are then split deterministically. Use them with `scripts/train_reva_qa.py` through `--train-annotations` and `--val-annotations`. See `derived_splits/reva_leakage_safe/split_statistics.md` for the current result and data reduction. These local files are path-disjoint; the annotations do not expose original source-sequence IDs, so they cannot establish isolation for differently named clips from one source.
+
+## ReVA split audit and integrity checks
+
+Audit the pinned annotations with `python scripts/audit_reva_source_sequence.py --annotation-dir <revision-snapshot> --video-root <revision-snapshot> --report reports/reva_source_sequence_audit.md`. Use `--corrected-dir` only when you intentionally want path-disjoint derived copies. Run `python scripts/check_reva_split_integrity.py --train <train.json> --val <val.json> --test <test.json> [--video-root <dataset-root>]` before training/evaluation; it exits nonzero on detected overlap, duplicate QA IDs, missing referenced local videos, or invalid train/validation labels/options. Source-sequence checks apply when annotation rows include a sequence ID. Current public annotations lack that ID, so exact normalized video paths are the available grouping key.
