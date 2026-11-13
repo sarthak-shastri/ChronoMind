@@ -120,3 +120,36 @@ Do not expand into advanced temporal reasoning, spatial reasoning, or question-a
 ## 10. Handover statement
 
 The previous session demonstrated that the BIMBA model could be loaded and that the multimodal modules could be placed on the T4 GPU. However, generation did not complete because of a Qwen2 attention dtype mismatch. This handover preserves the verified work and the exact unresolved blocker without presenting an unverified prediction as a result.
+
+
+## Progress update — 2026-11-13
+
+### Verified BIMBA baseline
+- Validation subset: first 50 QA records.
+- Valid predictions: 50/50; failed predictions: 0.
+- Correct predictions: 31/50 (62.00%).
+- This is a preliminary subset result, NOT the full 2,000-question validation score.
+- The first 50 questions cover only 8 unique videos.
+
+### Temporal frame-count diagnostic
+Seven previously incorrect temporal questions were evaluated with the same loaded BIMBA checkpoint:
+- 16 frames: 0/7 correct.
+- 32 frames: 0/7 correct.
+- All 14 predictions were valid.
+- Increasing the frame count did not improve this targeted sample.
+
+### Annotation audit — pending
+Dense temporal contact sheets were generated for:
+val_000001, val_000004, val_000013, val_000021,
+val_000027, val_000046, val_000047.
+
+The seven videos are approximately 6 seconds long. Some labels appear plausible, but val_000021 and val_000027 still need closer inspection. No ground-truth corrections have been made.
+
+### Next actions
+1. Finish the two-sample annotation audit.
+2. Decide whether a temporal prompt/sampling change is justified.
+3. Continue validation evaluation with verified video availability.
+4. Report subset and full-validation results separately.
+
+### Reproducibility note
+The 16-vs-32 experiment output and contact sheets were stored under /tmp and /content in the Colab runtime. They have not been committed as benchmark artifacts.
