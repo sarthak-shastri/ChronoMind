@@ -431,10 +431,12 @@ def load_bimba_for_inference(
             load_4bit=load_in_4bit,
             torch_dtype=torch.float16,
             device_map="auto" if device == "cuda" else None,
-            customized_config=bnb_config,
+            merge_lora=False,
         )
     except Exception as exc:
-        print(f"[bimba_inference] Official builder loading not available ({exc}); executing verified manual loader...", file=sys.stderr)
+        raise RuntimeError(
+            f"Official BIMBA loader failed; refusing generic fallback: {exc}"
+        ) from exc
         from peft import PeftModel
         from transformers import AutoModelForCausalLM
 
@@ -561,9 +563,11 @@ def extract_choice_probabilities(
     choice_logits = []
     for label in VALID_LABELS:
         # Check both raw letter and space-prefixed letter token IDs
-        token_id = tokenizer.convert_tokens_to_ids(label)
-        space_token_id = tokenizer.convert_tokens_to_ids(f" {label}")
-        ids = [i for i in (token_id, space_token_id) if i is not None and i < len(first_step_logits)]
+        ids = []
+        for candidate in (label, f" {label}"):
+            encoded = tokenizer.encode(candidate, add_special_tokens=False)
+            if len(encoded) == 1 and encoded[0] < len(first_step_logits):
+                ids.append(encoded[0])
         if ids:
             max_logit = max(float(first_step_logits[i]) for i in ids)
         else:
@@ -619,10 +623,220 @@ def predict_single_sample(
         # Direct tokenizer encode fallback
         input_ids = tokenizer(prompt_text, return_tensors="pt").input_ids.to(device)
 
-    # 5. Execute generation under precision-safe scope
+    # 5. Diagnose multimodal embeddings and raw language-model logits
+    with torch.inference_mode(), torch.cuda.amp.autocast(dtype=torch.float16):
+        base_model = model.get_base_model()
+
+        prepared = base_model.prepare_inputs_labels_for_multimodal(
+            input_ids,
+            None,
+            None,
+            None,
+            None,
+            images_input,
+            ["video"],
+        )
+
+        prepared_embeds = prepared[4]
+        prepared_mask = prepared[2]
+        prepared_positions = prepared[1]
+
+        print("\n========== TARGETED MODEL DIAGNOSTICS ==========")
+
+        def tensor_stats(name, tensor):
+            t = tensor.detach().float()
+            print(
+                name,
+                "| shape:", tuple(t.shape),
+                "| min:", t.min().item(),
+                "| max:", t.max().item(),
+                "| mean:", t.mean().item(),
+                "| std:", t.std().item(),
+                "| NaN:", torch.isnan(t).sum().item(),
+                "| Inf:", torch.isinf(t).sum().item(),
+            )
+
+        tensor_stats("Prepared multimodal embeddings", prepared_embeds)
+
+        # Inspect selected LM-head rows, not the entire weight matrix.
+        output_head = base_model.get_output_embeddings()
+        weight = output_head.weight
+
+        print("\n========== LM HEAD STRUCTURE ==========")
+        print("Output head class:", type(output_head))
+        print("Weight class:", type(weight))
+        print("Weight dtype:", weight.dtype)
+        print("Weight device:", weight.device)
+        print("Weight shape:", tuple(weight.shape))
+        print("Weight is meta:", weight.is_meta)
+        print("Weight requires_grad:", weight.requires_grad)
+
+        print("Has quant_state:", hasattr(weight, "quant_state"))
+        if hasattr(weight, "quant_state"):
+            qs = weight.quant_state
+            print("Quant state:", type(qs))
+            print("Quant state is None:", qs is None)
+            if qs is not None:
+                print("Quantization type:", getattr(qs, "quant_type", None))
+                print("Quantization blocksize:", getattr(qs, "blocksize", None))
+                print("Quantization dtype:", getattr(qs, "dtype", None))
+
+        embedding = base_model.get_input_embeddings()
+        embedding_weight = embedding.weight
+
+        print("Input embedding class:", type(embedding))
+        print("Input embedding dtype:", embedding_weight.dtype)
+        print("Input embedding shape:", tuple(embedding_weight.shape))
+        print(
+            "LM head tied to input embedding:",
+            weight.data_ptr() == embedding_weight.data_ptr()
+            if not weight.is_meta and not embedding_weight.is_meta
+            else "not comparable (meta)",
+        )
+
+        row_ids_check = torch.tensor(
+            [32, 33, 34, 100, 1000, 50000, 100000, 151646],
+            device=weight.device,
+        )
+        col_ids_check = torch.tensor(
+            [0, 256, 512, 1024, 1536, 2048, 2560, 3072, 3583],
+            device=weight.device,
+        )
+        sampled_weights = weight.index_select(
+            0, row_ids_check
+        ).index_select(1, col_ids_check)
+
+        print("Distributed LM-head weight samples:")
+        print(sampled_weights.detach().float().cpu().tolist())
+        print(
+            "Sample absolute maximum:",
+            sampled_weights.detach().float().abs().max().item(),
+        )
+
+        print("\\n========== FULL WEIGHT CHECK ==========")
+
+        def scan_weight_matrix(name, matrix, chunk_rows=4096):
+            total = matrix.numel()
+            nonzero = 0
+            abs_sum = 0.0
+            abs_max = 0.0
+
+            for start in range(0, matrix.shape[0], chunk_rows):
+                chunk = matrix[start:start + chunk_rows]
+                nonzero += torch.count_nonzero(chunk).item()
+                abs_sum += chunk.abs().float().sum().item()
+                abs_max = max(abs_max, chunk.abs().max().item())
+
+            print(name)
+            print("  Total elements:", total)
+            print("  Nonzero elements:", nonzero)
+            print("  Zero fraction:", 1.0 - nonzero / total)
+            print("  Mean absolute weight:", abs_sum / total)
+            print("  Maximum absolute weight:", abs_max)
+
+        scan_weight_matrix("LM output head", weight)
+        scan_weight_matrix("Input embedding", embedding_weight)
+
+        print(
+            "tie_word_embeddings:",
+            getattr(base_model.config, "tie_word_embeddings", "not set"),
+        )
+
+        print(
+            "LM head bias:",
+            output_head.bias is not None,
+        )
+        if output_head.bias is not None:
+            print(
+                "LM head bias abs max:",
+                output_head.bias.detach().float().abs().max().item(),
+            )
+
+        print("======================================\\n")
+        print("======================================\n")
+
+        row_ids = torch.tensor(
+            [32, 33, 34, 35, 100, 1000, 50000, 100000, 151646],
+            device=weight.device,
+        )
+
+        weight_sample = weight.index_select(0, row_ids)[:, :16].detach().float()
+
+        print("LM head weight shape:", tuple(weight.shape))
+        print("LM head sample rows:", row_ids.tolist())
+        print("LM head sample values:", weight_sample.cpu().tolist())
+        print("LM head sample nonzero count:", (weight_sample != 0).sum().item())
+
+        # Run the transformer backbone only, then project the LAST token.
+        # This avoids creating logits for all 3,550 positions.
+        print("\nRunning targeted last-token forward pass...")
+
+        with torch.inference_mode(), torch.cuda.amp.autocast(dtype=torch.float16):
+            backbone_outputs = base_model.model(
+                inputs_embeds=prepared_embeds,
+                attention_mask=prepared_mask,
+                position_ids=prepared_positions,
+                use_cache=False,
+                return_dict=True,
+            )
+
+            last_hidden = backbone_outputs.last_hidden_state[:, -1:, :]
+
+            tensor_stats("Last hidden state", last_hidden)
+
+            last_logits = output_head(last_hidden)
+
+            tensor_stats("Last-token LM logits", last_logits)
+
+            last_logits_1d = last_logits[0, 0].float()
+            top_values, top_ids = torch.topk(last_logits_1d, k=10)
+
+            print("Last-token top IDs:", top_ids.cpu().tolist())
+            print("Last-token top logits:", top_values.cpu().tolist())
+            print(
+                "Last-token top decoded:",
+                [
+                    tokenizer.decode([int(i)], skip_special_tokens=False)
+                    for i in top_ids.cpu().tolist()
+                ],
+            )
+
+            for label in ("A", "B", "C", "D"):
+                token_ids = tokenizer.encode(
+                    label,
+                    add_special_tokens=False,
+                )
+                print(
+                    f"Choice {label}:",
+                    [
+                        (token_id, float(last_logits_1d[token_id].item()))
+                        for token_id in token_ids
+                    ],
+                )
+
+        del backbone_outputs
+        del last_hidden
+        del last_logits
+        del last_logits_1d
+        del prepared_embeds
+        del prepared
+        del prepared_mask
+        del prepared_positions
+        del base_model
+        del output_head
+        del weight_sample
+
+        import gc
+        gc.collect()
+        torch.cuda.empty_cache()
+
+        print("Targeted diagnostics completed.")
+        print("Proceeding to actual BIMBA generation...")
+
+    # 6. Execute generation under precision-safe scope
     with torch.inference_mode(), torch.cuda.amp.autocast(dtype=torch.float16):
         generation_outputs = model.generate(
-            input_ids=input_ids,
+            inputs=input_ids,
             images=images_input,
             modalities=["video"],
             do_sample=False,
@@ -632,11 +846,60 @@ def predict_single_sample(
             output_scores=True,
         )
 
+    # Temporary diagnostics: inspect actual generation behavior.
+    print("\n========== GENERATION DIAGNOSTICS ==========")
+
+    sequences = generation_outputs.sequences
+    print("Generated token IDs:", sequences[0].detach().cpu().tolist())
+    print("Generated sequence shape:", tuple(sequences.shape))
+    print("Generation score steps:", len(generation_outputs.scores))
+
+    if generation_outputs.scores:
+        first_logits = generation_outputs.scores[0][0].float()
+        print("First-step logits shape:", tuple(first_logits.shape))
+        print("Logits min:", first_logits.min().item())
+        print("Logits max:", first_logits.max().item())
+        print("Logits mean:", first_logits.mean().item())
+        print("NaN count:", torch.isnan(first_logits).sum().item())
+        print("Inf count:", torch.isinf(first_logits).sum().item())
+
+        top_values, top_ids = torch.topk(first_logits, k=10)
+        print("Top 10 token IDs:", top_ids.detach().cpu().tolist())
+        print("Top 10 logits:", top_values.detach().cpu().tolist())
+        print(
+            "Top 10 decoded tokens:",
+            [repr(tokenizer.decode([int(t)])) for t in top_ids]
+        )
+
+        for label in VALID_LABELS:
+            ids = tokenizer.encode(label, add_special_tokens=False)
+            print(
+                f"Choice {label}: token IDs={ids}, "
+                f"logits={[first_logits[i].item() for i in ids]}"
+            )
+
+    print("============================================\n")
+
     latency = time.perf_counter() - start_time
 
     # 6. Decode generated text
-    gen_tokens = generation_outputs.sequences[0][input_ids.shape[1]:]
+    # With inputs_embeds, generation may return a one-token placeholder
+    # instead of the complete original prompt. Use generation score count
+    # to isolate exactly the newly generated tokens.
+    generated_steps = len(generation_outputs.scores)
+    if generated_steps > 0:
+        gen_tokens = generation_outputs.sequences[0, -generated_steps:]
+    else:
+        gen_tokens = generation_outputs.sequences[0, 0:0]
+
     raw_output = tokenizer.decode(gen_tokens, skip_special_tokens=True).strip()
+
+    print(
+        f"[bimba_inference] Sequence shape: {tuple(generation_outputs.sequences.shape)}"
+        f" | Prompt length: {input_ids.shape[1]}"
+        f" | Generated steps: {generated_steps}"
+        f" | Decoded output: {raw_output!r}"
+    )
 
     # 7. Parse choice and extract scores
     parsed_pred = parse_choice_from_text(raw_output)
