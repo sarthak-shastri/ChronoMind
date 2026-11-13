@@ -734,8 +734,8 @@ def predict_single_sample(
             print("  Mean absolute weight:", abs_sum / total)
             print("  Maximum absolute weight:", abs_max)
 
-        scan_weight_matrix("LM output head", weight)
-        scan_weight_matrix("Input embedding", embedding_weight)
+        # Full matrix scans disabled to reduce T4 overhead.
+        # Enable manually only if targeted diagnostics are inconclusive.
 
         print(
             "tie_word_embeddings:",
