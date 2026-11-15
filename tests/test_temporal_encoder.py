@@ -4,6 +4,8 @@ import torch
 from advanced_models.temporal import (
     MeanPoolingTemporalEncoder,
     TransformerTemporalEncoder,
+    build_temporal_encoder,
+    build_temporal_encoder_from_config,
 )
 
 
@@ -84,3 +86,16 @@ def test_transformer_validates_configuration():
         TransformerTemporalEncoder(embedding_dim=15, num_heads=4)
     with pytest.raises(ValueError, match="max_seq_len"):
         TransformerTemporalEncoder(embedding_dim=16, max_seq_len=0)
+
+
+def test_temporal_encoder_factory_reconstructs_both_modes():
+    mean = build_temporal_encoder("mean_pooling", embedding_dim=16)
+    transformer = build_temporal_encoder("transformer", embedding_dim=16, num_heads=4, max_seq_len=8)
+    assert isinstance(mean, MeanPoolingTemporalEncoder)
+    assert isinstance(transformer, TransformerTemporalEncoder)
+    assert mean.embedding_dim == transformer.embedding_dim == 16
+    with pytest.raises(ValueError, match="encoder_type"):
+        build_temporal_encoder("unknown")
+    assert isinstance(build_temporal_encoder_from_config({}), TransformerTemporalEncoder)
+    restored_mean = build_temporal_encoder_from_config({"temporal_encoder_type": "mean_pooling", "embedding_dim": 16})
+    assert isinstance(restored_mean, MeanPoolingTemporalEncoder)

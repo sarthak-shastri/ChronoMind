@@ -1,6 +1,83 @@
-# ChronoMind — ReVA data workstream
+# ChronoMind — ReVA video QA and preprocessing
 
-This repository contains the Member 1 data engineering and video preprocessing pipeline for the ReVA drone video QA challenge. Dataset media is not stored in Git.
+ChronoMind contains the ReVA data and video-preprocessing pipeline plus a Role 3 multimodal video-question-answering system. The Role 3 model combines frozen CLIP vision and text encoders, a trainable temporal encoder, multimodal fusion, and an A/B/C/D scoring head. Dataset media, model weights, caches, and run outputs are not stored in Git.
+
+## Role 3: grouped data, training, and evaluation
+
+The training/validation split generator reads only the official training annotation file. It groups questions by normalized video path and, when local videos are available, joins byte-identical files by SHA-256 before assigning whole groups. It preserves the annotation records and writes separate derived files; it never edits official annotations.
+
+```powershell
+python -m scripts.create_reva_internal_grouped_split `
+  --train path/to/pinned/train.json `
+  --output-dir path/to/derived_splits/internal `
+  --video-root path/to/ReVA `
+  --seed 42
+```
+
+Run the strict path/hash preflight before training. It reports source-sequence independence as unverified when original sequence IDs are absent:
+
+```powershell
+python -m scripts.check_reva_split_integrity `
+  --train path/to/derived_splits/internal/train_internal.json `
+  --val path/to/derived_splits/internal/val_internal.json `
+  --video-root path/to/ReVA
+```
+
+The full trainer supports local pinned CLIP loading and offline operation. Point the CLI at your local ReVA video root, local model directory, and a cache outside the repository:
+
+```powershell
+python -m scripts.train_reva_qa `
+  --train-annotations path/to/train_internal.json `
+  --val-annotations path/to/val_internal.json `
+  --video-root path/to/ReVA `
+  --dataset-repo-id ReVA-Benchmark/ReVA `
+  --revision 06224fa1b42e5e35677a8b7f2145e06307a9a4ee `
+  --preprocessing-root . --frames 4 --batch-size 1 --val-batch-size 1 `
+  --num-workers 0 --temporal-encoder transformer --split-integrity-mode path_only_strict `
+  --epochs 5 --lr 1e-4 --seed 17 --mixed-precision `
+  --clip-model-name path/to/clip-vit-base-patch32 `
+  --clip-revision 3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268 `
+  --local-files-only --frame-cache-dir path/to/cache/reva_frames `
+  --output path/to/runs/role3_transformer
+```
+
+After training, evaluate the entire validation split with the saved checkpoint. The evaluator uses canonical answers for metrics and never supplies labels to the model:
+
+```powershell
+python -m scripts.evaluate_reva_qa `
+  --annotations path/to/val_internal.json `
+  --train-annotations path/to/train_internal.json `
+  --checkpoint path/to/runs/role3_transformer/best.pt `
+  --video-root path/to/ReVA --preprocessing-root . `
+  --dataset-repo-id ReVA-Benchmark/ReVA `
+  --revision 06224fa1b42e5e35677a8b7f2145e06307a9a4ee `
+  --split-integrity-mode path_only_strict --batch-size 1 `
+  --clip-model-name path/to/clip-vit-base-patch32 --local-files-only `
+  --frame-cache-dir path/to/cache/reva_frames `
+  --output-dir path/to/runs/role3_transformer
+```
+
+The CLIP extractors accept explicit Hugging Face `revision`, `cache_dir`, and `local_files_only` arguments. They freeze the vision/text weights and keep them in evaluation mode. The text embedding cache separates entries by device and autocast precision, so a training-time reduced-precision embedding is not reused as an FP32 validation embedding.
+
+`preprocessing.video_loader.read_frames()` keeps the fast random-seek path. If any requested seek or decode fails, it reopens the video and decodes sequentially through the highest requested index, returning only the exact requested frames in request order. It raises `VideoLoadError` if sequential decoding cannot supply them.
+
+### Recorded local experiment
+
+The five-epoch local RTX 3050 run used 12,618 internal training and 3,155 validation QA rows, four uniformly sampled 224×224 frames, batch size 1, seed 17, AdamW at 1e-4, and frozen pinned CLIP towers. Its final trainer validation accuracy was 59.21%; the canonical standalone pass scored 1,867/3,155 (59.18%). The one-answer difference remains unresolved at the QA-ID level because the trainer did not save per-row validation predictions. The implementation now keeps text-cache precision modes separate; the existing checkpoint was not retrained. This internal result is not an official hidden-test score. Video paths are disjoint, but source-sequence independence is unverified.
+
+See [the final Role 3 experiment report](reports/role3_full_training_20261114.md), which includes epoch history, checkpoint hashes, full validation metrics, and the remaining qualification.
+
+### Role 3 notebook and tests
+
+The cleaned Colab workflow is [notebooks/role3_train_temporal_qa_baseline.ipynb](notebooks/role3_train_temporal_qa_baseline.ipynb). It pins the dataset, preprocessing, QA base, and CLIP revisions and verifies its uploaded source overlay against the manifest in `colab_package/`. The small source overlay contains code only; generated data, weights, and experiment artifacts stay outside Git.
+
+Run the CPU-friendly suite with:
+
+```powershell
+python -m pytest -q
+```
+
+Local videos and CLIP weights are required for a real-media/GPU run, but tests use mocks and do not download them.
 
 ## Environment
 

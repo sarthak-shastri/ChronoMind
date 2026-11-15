@@ -190,7 +190,11 @@ def test_pretrained_loader_is_explicit_and_uses_injected_huggingface_api(
     )
 
     assert calls == [
-        ("openai/clip-vit-base-patch32", {"revision": "pinned-revision"})
+        ("openai/clip-vit-base-patch32", {
+            "local_files_only": False,
+            "output_loading_info": False,
+            "revision": "pinned-revision",
+        })
     ]
     assert extractor.vision_model is backbone
 

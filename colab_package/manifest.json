@@ -1,0 +1,73 @@
+{
+  "package_name": "ChronoMind Role 3 full-training source overlay",
+  "package_version": 2,
+  "base_qa_commit": "74c417fb52fc21f923d788714875cbdb025d28aa",
+  "preprocessing_commit": "1a63b5009267a348b5fdd550b063869332d4ce0a",
+  "dataset": {
+    "repo_id": "ReVA-Benchmark/ReVA",
+    "revision": "06224fa1b42e5e35677a8b7f2145e06307a9a4ee"
+  },
+  "clip": {
+    "model": "openai/clip-vit-base-patch32",
+    "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268"
+  },
+  "integrity_mode": "path_only_strict",
+  "manifest_self_hash": "not included; file entries are SHA-256 verified after extraction",
+  "files": [
+    {
+      "path": "advanced_models/qa/data.py",
+      "sha256": "191776ada65b5d367f31e539c8eb6576bbc1deef3eb1c5a93b2341503c6a0f79",
+      "size_bytes": 2637
+    },
+    {
+      "path": "advanced_models/qa/text_encoder.py",
+      "sha256": "d48776979a321089b43cd2ec226c8a9a664585bbdca3d7f08222e1bdcf8bc284",
+      "size_bytes": 6387
+    },
+    {
+      "path": "advanced_models/qa/multimodal_qa_model.py",
+      "sha256": "979b49f111a1dfcba21676d67ff271d4edd24a21877f0bc2c7d95b25a8cada44",
+      "size_bytes": 3295
+    },
+    {
+      "path": "advanced_models/temporal/__init__.py",
+      "sha256": "3b582502ed5d3457014ba4398c70f86dd603e8c314427c99eb05b0e4a8ffa8ec",
+      "size_bytes": 350
+    },
+    {
+      "path": "advanced_models/temporal/temporal_encoder.py",
+      "sha256": "fe4d967cc1d10894a3959be4af9adc01d39909efcbf2da43850ed6ba6e6a3bbb",
+      "size_bytes": 5612
+    },
+    {
+      "path": "advanced_models/vision/feature_extractor.py",
+      "sha256": "18e5c773e716d46e8bf7d0199025eef1bbf56fbf0610678267850099bea37815",
+      "size_bytes": 14692
+    },
+    {
+      "path": "scripts/check_reva_split_integrity.py",
+      "sha256": "55603170ced1703b9b434a8905067041204d6962ec2a91df9fae5d3c7553fc4d",
+      "size_bytes": 5287
+    },
+    {
+      "path": "scripts/reva_split_preflight.py",
+      "sha256": "e1f5e2a5ac8df358d789949bf41a602c23d07f8ead661cc66aa609d76bfa2366",
+      "size_bytes": 2152
+    },
+    {
+      "path": "scripts/create_reva_internal_grouped_split.py",
+      "sha256": "eae555f860c5f36c8c81b94d80f08fa2a941449aaeea4986150d192a45975e28",
+      "size_bytes": 14455
+    },
+    {
+      "path": "scripts/train_reva_qa.py",
+      "sha256": "9a5caef26343a429b68da6bb9e585bad77bbf706ef2fc3da102f5a3de6bc1ce3",
+      "size_bytes": 15303
+    },
+    {
+      "path": "scripts/evaluate_reva_qa.py",
+      "sha256": "00b89dc97b0ba8307b85355f13e2ec657f4129ae20b80fa417b1d1dca0583778",
+      "size_bytes": 12923
+    }
+  ]
+}

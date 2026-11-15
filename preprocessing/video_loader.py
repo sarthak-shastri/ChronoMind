@@ -37,12 +37,50 @@ def motion_scores(path, size=(64, 36)):
     return np.asarray(scores,dtype=np.float32)
 
 def read_frames(path,indices):
-    cv2=_cv2(); cap=cv2.VideoCapture(str(path)); frames=[]
+    cv2=_cv2(); requested=[int(i) for i in indices]
+    if any(i < 0 for i in requested):
+        raise VideoLoadError(f'Frame indices must be non-negative: {requested}')
+    if not requested:
+        return []
+    cap=cv2.VideoCapture(str(path)); frames=[]; fast_error=None
     try:
         if not cap.isOpened(): raise VideoLoadError(f'Cannot open video: {path}')
-        for idx in indices:
-            cap.set(cv2.CAP_PROP_POS_FRAMES,int(idx)); ok,frame=cap.read()
-            if not ok or frame is None: raise VideoLoadError(f'Failed decoding frame {idx} from {path}')
-            frames.append(cv2.cvtColor(frame,cv2.COLOR_BGR2RGB))
-    finally: cap.release()
-    return frames
+        try:
+            for idx in requested:
+                if not cap.set(cv2.CAP_PROP_POS_FRAMES,idx):
+                    raise VideoLoadError(f'Failed seeking to frame {idx} from {path}')
+                ok,frame=cap.read()
+                if not ok or frame is None:
+                    raise VideoLoadError(f'Failed decoding frame {idx} from {path}')
+                frames.append(cv2.cvtColor(frame,cv2.COLOR_BGR2RGB))
+            return frames
+        except Exception as exc:
+            fast_error=exc
+    finally:
+        cap.release()
+
+    # Some OpenCV/FFmpeg backends report successful seeks but fail decoding
+    # distant frames. Reopen independently and decode sequentially to the
+    # largest requested index; never substitute a neighboring frame.
+    fallback=cv2.VideoCapture(str(path))
+    wanted=set(requested); decoded={}; sequential_index=0
+    try:
+        if not fallback.isOpened():
+            raise VideoLoadError(f'Cannot reopen video for sequential decode: {path}') from fast_error
+        last=max(requested)
+        while sequential_index <= last:
+            ok,frame=fallback.read()
+            if not ok or frame is None:
+                raise VideoLoadError(
+                    f'Sequential fallback failed decoding requested frame '
+                    f'{sequential_index} from {path} (fast seek failure: {fast_error})'
+                ) from fast_error
+            if sequential_index in wanted:
+                decoded[sequential_index]=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+            sequential_index+=1
+        absent=wanted.difference(decoded)
+        if absent:
+            raise VideoLoadError(f'Sequential fallback did not retrieve requested frames {sorted(absent)} from {path}') from fast_error
+        return [decoded[idx] for idx in requested]
+    finally:
+        fallback.release()

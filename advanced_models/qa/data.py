@@ -18,6 +18,7 @@ class ReVAQADatasetAdapter(Dataset):
                 raise ValueError("dataset choices must map exactly A/B/C/D")
             choices = {key: choices[key] for key in ("A", "B", "C", "D")}
         sample = dict(row)
+        sample["qa_id"] = row.get("qa_id", row.get("sample_id"))
         source_row = getattr(self.dataset, "rows", [])[index]
         # Sarthak's __getitem__ omits video_path; copy it only from its source annotation.
         sample["video_path"] = source_row.get("video_path", source_row.get("file_path"))
@@ -37,5 +38,7 @@ def collate_qa(samples):
             "labels": torch.tensor([s["label"] for s in samples], dtype=torch.long) if all("label" in s for s in samples) else None,
             "answers": [s.get("answer") for s in samples],
             "sample_ids": [str(s["sample_id"]) for s in samples],
+            "qa_ids": [str(s.get("qa_id", s["sample_id"])) for s in samples],
             "categories": [s.get("category") for s in samples],
+            "tasks": [s.get("task") for s in samples],
             "video_paths": [s.get("video_path") for s in samples]}

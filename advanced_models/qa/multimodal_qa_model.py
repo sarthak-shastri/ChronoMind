@@ -4,7 +4,6 @@ from __future__ import annotations
 import torch
 from torch import Tensor, nn
 from .text_encoder import CLIPTextFeatureExtractor
-from ..temporal.temporal_encoder import TransformerTemporalEncoder
 from ..vision.feature_extractor import CLIPVisionFeatureExtractor
 
 LETTERS = ("A", "B", "C", "D")
@@ -21,7 +20,7 @@ def answer_letter(index: int) -> str:
 
 class MultimodalVideoQAModel(nn.Module):
     def __init__(self, vision: CLIPVisionFeatureExtractor, text: CLIPTextFeatureExtractor,
-                 temporal: TransformerTemporalEncoder, dropout: float = 0.1):
+                 temporal: nn.Module, dropout: float = 0.1):
         super().__init__()
         if temporal.embedding_dim != 512:
             raise ValueError("temporal embedding_dim must be 512")
@@ -34,7 +33,8 @@ class MultimodalVideoQAModel(nn.Module):
         self.vision.eval(); self.text.eval()
         return self
 
-    def forward(self, video_frames: Tensor, questions: list[str], choices: list[dict[str, str]]):
+    def forward(self, video_frames: Tensor, questions: list[str], choices: list[dict[str, str]],
+                *, video_cache_keys: list[str | None] | None = None):
         if not torch.is_tensor(video_frames) or video_frames.ndim != 5:
             raise ValueError("video_frames must be [B,T,3,224,224]")
         b, t = video_frames.shape[:2]
@@ -46,7 +46,8 @@ class MultimodalVideoQAModel(nn.Module):
             raise ValueError("each choices row must contain non-empty A/B/C/D strings")
         # The frozen extractor uses inference_mode; clone outside it so trainable
         # temporal layers may safely save these features for backward.
-        frames = self.vision(video_frames).clone()
+        frames = (self.vision(video_frames, cache_keys=video_cache_keys)
+                  if video_cache_keys is not None else self.vision(video_frames)).clone()
         video = self.temporal(frames)
         flat = [text for row in choices for text in (row[k] for k in LETTERS)]
         question = self.text(questions, device=video.device).clone()

@@ -13,7 +13,8 @@ checkpoint is available, or inject a compatible vision model for testing.
 
 from __future__ import annotations
 
-from typing import Literal
+from pathlib import Path
+from typing import Literal, Sequence
 
 import torch
 from torch import Tensor, nn
@@ -60,6 +61,7 @@ class CLIPVisionFeatureExtractor(nn.Module):
         amp_dtype: torch.dtype = torch.float16,
         output_dtype: torch.dtype = torch.float32,
         l2_normalize: bool = False,
+        feature_cache_namespace: str = "",
     ) -> None:
         super().__init__()
         if input_normalization not in ("imagenet", "zero_one", "clip"):
@@ -82,6 +84,12 @@ class CLIPVisionFeatureExtractor(nn.Module):
         self.amp_dtype = amp_dtype
         self.output_dtype = output_dtype
         self.l2_normalize = l2_normalize
+        # Process-local cache: normalized video key -> CPU FP32 [T,512].
+        # The caller supplies keys only when its dataset preprocessing is deterministic.
+        self.feature_cache_namespace = str(feature_cache_namespace)
+        self._feature_cache: dict[str, Tensor] = {}
+        self._feature_cache_hits = 0
+        self._feature_cache_misses = 0
 
         self.vision_model.requires_grad_(False)
         self.vision_model.eval()
@@ -94,6 +102,9 @@ class CLIPVisionFeatureExtractor(nn.Module):
         input_normalization: NormalizationMode,
         model_name: str = CLIP_MODEL_ID,
         revision: str | None = None,
+        local_files_only: bool = False,
+        cache_dir: str | None = None,
+        output_loading_info: bool = False,
         **kwargs,
     ) -> "CLIPVisionFeatureExtractor":
         """Explicitly load the projected CLIP vision tower from Hugging Face.
@@ -110,20 +121,34 @@ class CLIPVisionFeatureExtractor(nn.Module):
                 "from_pretrained() explicitly."
             ) from exc
 
-        load_kwargs = {} if revision is None else {"revision": revision}
-        vision_model = CLIPVisionModelWithProjection.from_pretrained(
-            model_name, **load_kwargs
-        )
+        load_kwargs = {"local_files_only": local_files_only,
+                       "output_loading_info": output_loading_info}
+        is_local_dir = Path(model_name).expanduser().is_dir()
+        if revision is not None and not is_local_dir:
+            load_kwargs["revision"] = revision
+        if cache_dir is not None:
+            load_kwargs["cache_dir"] = cache_dir
+        try:
+            loaded = CLIPVisionModelWithProjection.from_pretrained(model_name, **load_kwargs)
+        except OSError as exc:
+            if local_files_only:
+                raise OSError(f"Could not load local CLIP vision checkpoint from {model_name!r}; local_files_only=True prevents network fallback: {exc}") from exc
+            raise
+        vision_model = loaded[0] if output_loading_info else loaded
         if vision_model.config.projection_dim != EMBEDDING_DIM:
             raise ValueError(
                 f"Expected a {EMBEDDING_DIM}D CLIP projection, got "
                 f"{vision_model.config.projection_dim}"
             )
-        return cls(
+        extractor = cls(
             vision_model,
             input_normalization=input_normalization,
             **kwargs,
         )
+        extractor.source_revision = revision
+        extractor.source_model = model_name
+        extractor.loading_info = loaded[1] if output_loading_info else None
+        return extractor
 
     def train(self, mode: bool = True) -> "CLIPVisionFeatureExtractor":
         """Keep both wrapper and frozen backbone in evaluation mode."""
@@ -168,7 +193,20 @@ class CLIPVisionFeatureExtractor(nn.Module):
             )
         return embeddings
 
-    def forward(self, video_frames: Tensor) -> Tensor:
+    def clear_feature_cache(self) -> None:
+        """Drop process-local frame embeddings after changing data/model settings."""
+        self._feature_cache.clear()
+        self._feature_cache_hits = 0
+        self._feature_cache_misses = 0
+
+    def feature_cache_stats(self) -> dict[str, int]:
+        return {
+            "entries": len(self._feature_cache),
+            "hits": self._feature_cache_hits,
+            "misses": self._feature_cache_misses,
+        }
+
+    def forward(self, video_frames: Tensor, *, cache_keys: Sequence[str | None] | None = None) -> Tensor:
         """Map preprocessed frames ``[B,T,3,224,224]`` to features ``[B,T,512]``."""
         if not isinstance(video_frames, Tensor):
             raise TypeError("video_frames must be a torch.Tensor")
@@ -182,6 +220,11 @@ class CLIPVisionFeatureExtractor(nn.Module):
             raise TypeError("video_frames must be a floating-point tensor")
         if not torch.isfinite(video_frames).all():
             raise ValueError("video_frames must contain only finite values")
+        if cache_keys is not None:
+            if len(cache_keys) != video_frames.shape[0]:
+                raise ValueError("cache_keys must contain one key per video")
+            if any(key is not None and (not isinstance(key, str) or not key) for key in cache_keys):
+                raise ValueError("cache keys must be non-empty strings or None")
 
         try:
             model_device = next(self.vision_model.parameters()).device
@@ -193,6 +236,53 @@ class CLIPVisionFeatureExtractor(nn.Module):
                 f"model is on {model_device}; move both to the same device"
             )
 
+        batch_size, sequence_length = video_frames.shape[:2]
+        if cache_keys is not None:
+            output: list[Tensor | None] = [None] * batch_size
+            missing_indices: list[int] = []
+            key_to_indices: dict[str, list[int]] = {}
+            for index, key in enumerate(cache_keys):
+                if key is None:
+                    missing_indices.append(index)
+                    continue
+                full_key = f"{self.feature_cache_namespace}\0{key}"
+                cached = self._feature_cache.get(full_key)
+                if cached is not None and cached.shape == (sequence_length, EMBEDDING_DIM):
+                    self._feature_cache_hits += 1
+                    output[index] = cached.to(device=video_frames.device, dtype=self.output_dtype)
+                else:
+                    if cached is not None:
+                        del self._feature_cache[full_key]
+                    indices = key_to_indices.get(full_key)
+                    if indices is None:
+                        key_to_indices[full_key] = [index]
+                        missing_indices.append(index)
+                    else:
+                        # Duplicate video in the same batch: encode it once.
+                        indices.append(index)
+            if missing_indices:
+                selected = video_frames[missing_indices]
+                computed = self._encode_frames(selected)
+                for local_index, batch_index in enumerate(missing_indices):
+                    feature = computed[local_index].to(dtype=self.output_dtype)
+                    key = cache_keys[batch_index]
+                    if key is not None:
+                        full_key = f"{self.feature_cache_namespace}\0{key}"
+                        cpu_feature = feature.detach().to(device="cpu", dtype=torch.float32).clone()
+                        self._feature_cache[full_key] = cpu_feature
+                        self._feature_cache_misses += 1
+                        output[batch_index] = feature
+                        for duplicate_index in key_to_indices.get(full_key, [])[1:]:
+                            output[duplicate_index] = feature
+                    else:
+                        output[batch_index] = feature
+            if any(feature is None for feature in output):
+                raise RuntimeError("internal visual feature cache error: output was not filled")
+            return torch.stack([feature for feature in output if feature is not None])
+
+        return self._encode_frames(video_frames)
+
+    def _encode_frames(self, video_frames: Tensor) -> Tensor:
         batch_size, sequence_length = video_frames.shape[:2]
         flat_frames = video_frames.reshape(-1, 3, IMAGE_SIZE, IMAGE_SIZE)
         chunk_size = self.frame_chunk_size or flat_frames.shape[0]
