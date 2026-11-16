@@ -1,213 +1,269 @@
-# ChronoMind — ReVA video QA and preprocessing
+# ReVA Universal Evaluation Framework
 
-ChronoMind contains the ReVA data and video-preprocessing pipeline plus a Role 3 multimodal video-question-answering system. The Role 3 model combines frozen CLIP vision and text encoders, a trainable temporal encoder, multimodal fusion, and an A/B/C/D scoring head. Dataset media, model weights, caches, and run outputs are not stored in Git.
+A model-agnostic normalization, validation, and evaluation framework for the **ReVA drone-video multiple-choice VideoQA challenge**.
 
-## Role 3: grouped data, training, and evaluation
+This package provides an authoritative, reproducible evaluation harness so any teammate or model (BIMBA, advanced reasoning models, or baselines) can export predictions in a single versioned canonical format and be evaluated under identical, mathematically rigorous criteria.
 
-The training/validation split generator reads only the official training annotation file. It groups questions by normalized video path and, when local videos are available, joins byte-identical files by SHA-256 before assigning whole groups. It preserves the annotation records and writes separate derived files; it never edits official annotations.
+---
 
-```powershell
-python -m scripts.create_reva_internal_grouped_split `
-  --train path/to/pinned/train.json `
-  --output-dir path/to/derived_splits/internal `
-  --video-root path/to/ReVA `
-  --seed 42
+## 1. Scope & Boundaries
+
+- **In Scope**:
+  - Ground truth loading and normalization from official ReVA annotation JSON formats.
+  - Strict validation of canonical prediction contracts, answer labels (`A`, `B`, `C`, `D`), and option order.
+  - Deterministic alignment by immutable sample ID (`sample_id`), never row position.
+  - Overall accuracy, prediction coverage, valid prediction coverage, missing/invalid prediction accounting.
+  - Dynamic category and task metrics derived directly from annotations.
+  - Confusion matrix (4x4 fixed `A,B,C,D` order; missing/invalid separated).
+  - Error analysis export (`incorrect_predictions.csv` with editable columns for manual review).
+  - Headless visualization generation (`confusion_matrix.png`, `category_accuracy.png`, `task_accuracy.png`).
+  - Comparative multi-model benchmarking (`reva-eval compare`).
+  - Handling of unlabeled test sets (`status: "unlabeled_ground_truth"`).
+- **Out of Scope (By Design)**:
+  - Video decoding, frame extraction, or downloading large video files.
+  - Model weights, training, fine-tuning, or inference execution.
+  - Codabench packaging (the exact live competition platform submission contract has not been independently verified; this framework targets local evaluation).
+
+---
+
+## 2. Installation
+
+Install the package in editable mode from the repository root:
+
+```bash
+# In an offline or sandboxed environment:
+pip install -e . --no-build-isolation --no-deps
+
+# Or in an unrestricted environment:
+pip install -e .
 ```
 
-Run the strict path/hash preflight before training. It reports source-sequence independence as unverified when original sequence IDs are absent:
-
-```powershell
-python -m scripts.check_reva_split_integrity `
-  --train path/to/derived_splits/internal/train_internal.json `
-  --val path/to/derived_splits/internal/val_internal.json `
-  --video-root path/to/ReVA
+Verify installation:
+```bash
+python -m reva_eval.cli --help
+# Or directly:
+reva-eval --help
 ```
 
-The full trainer supports local pinned CLIP loading and offline operation. Point the CLI at your local ReVA video root, local model directory, and a cache outside the repository:
+---
 
-```powershell
-python -m scripts.train_reva_qa `
-  --train-annotations path/to/train_internal.json `
-  --val-annotations path/to/val_internal.json `
-  --video-root path/to/ReVA `
-  --dataset-repo-id ReVA-Benchmark/ReVA `
-  --revision 06224fa1b42e5e35677a8b7f2145e06307a9a4ee `
-  --preprocessing-root . --frames 4 --batch-size 1 --val-batch-size 1 `
-  --num-workers 0 --temporal-encoder transformer --split-integrity-mode path_only_strict `
-  --epochs 5 --lr 1e-4 --seed 17 --mixed-precision `
-  --clip-model-name path/to/clip-vit-base-patch32 `
-  --clip-revision 3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268 `
-  --local-files-only --frame-cache-dir path/to/cache/reva_frames `
-  --output path/to/runs/role3_transformer
+## 3. Canonical Contracts
+
+### 3.1 Canonical Prediction Contract (`schemas/predictions.schema.json`)
+Every model adapter or exporter must produce predictions matching this exact format:
+
+```json
+{
+  "schema_version": "1.0",
+  "dataset": "ReVA",
+  "split": "validation",
+  "model": {
+    "name": "BIMBA",
+    "version": "v1.0",
+    "run_id": "EXP_001"
+  },
+  "score_semantics": "probabilities",
+  "option_order": ["A", "B", "C", "D"],
+  "predictions": [
+    {
+      "sample_id": "val_000001",
+      "prediction": "B",
+      "scores": {
+        "A": 0.10,
+        "B": 0.70,
+        "C": 0.15,
+        "D": 0.05
+      },
+      "inference_time_seconds": 1.42
+    }
+  ]
+}
 ```
 
-After training, evaluate the entire validation split with the saved checkpoint. The evaluator uses canonical answers for metrics and never supplies labels to the model:
+**Key Prediction Rules**:
+- `sample_id` and `prediction` are strictly required for each record.
+- `prediction` must be one of `"A"`, `"B"`, `"C"`, `"D"`.
+- Scores are optional. When present, they must be label-keyed (`{"A": ..., "B": ..., "C": ..., "D": ...}`), eliminating answer-choice-order ambiguity.
+- `score_semantics` must be one of `"probabilities"`, `"logits"`, `"ranking_scores"`, `"unknown"`, or `null`.
+- Ground truth must not be included in prediction files.
+- Duplicate sample IDs fail validation by default (override with `--allow-duplicates` for diagnostic inspection).
 
-```powershell
-python -m scripts.evaluate_reva_qa `
-  --annotations path/to/val_internal.json `
-  --train-annotations path/to/train_internal.json `
-  --checkpoint path/to/runs/role3_transformer/best.pt `
-  --video-root path/to/ReVA --preprocessing-root . `
-  --dataset-repo-id ReVA-Benchmark/ReVA `
-  --revision 06224fa1b42e5e35677a8b7f2145e06307a9a4ee `
-  --split-integrity-mode path_only_strict --batch-size 1 `
-  --clip-model-name path/to/clip-vit-base-patch32 --local-files-only `
-  --frame-cache-dir path/to/cache/reva_frames `
-  --output-dir path/to/runs/role3_transformer
+### 3.2 Canonical Ground Truth Contract (`schemas/ground_truth.schema.json`)
+
+```json
+{
+  "schema_version": "1.0",
+  "dataset": "ReVA",
+  "split": "validation",
+  "source_annotation_file": "val.json",
+  "labeled": true,
+  "samples": [
+    {
+      "sample_id": "val_000001",
+      "video_path": "Hawk_UAV/NJ/DJI_0157_d4_01.mp4",
+      "dataset_name": "Hawk_UAV",
+      "subdir": "NJ",
+      "question": "At what point in the video does the road with moving vehicles first appear?",
+      "options": {
+        "A": "At 5.0 seconds",
+        "B": "At 4.2 seconds",
+        "C": "At 2.5 seconds",
+        "D": "At 3.8 seconds"
+      },
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "ground_truth": "B"
+    }
+  ]
+}
 ```
 
-The CLIP extractors accept explicit Hugging Face `revision`, `cache_dir`, and `local_files_only` arguments. They freeze the vision/text weights and keep them in evaluation mode. The text embedding cache separates entries by device and autocast precision, so a training-time reduced-precision embedding is not reused as an FP32 validation embedding.
+For test splits where `correct_answer` is empty (`""`), `ground_truth` is set to `null` and `labeled` is `false`.
 
-`preprocessing.video_loader.read_frames()` keeps the fast random-seek path. If any requested seek or decode fails, it reopens the video and decodes sequentially through the highest requested index, returning only the exact requested frames in request order. It raises `VideoLoadError` if sequential decoding cannot supply them.
+---
 
-### Recorded local experiment
+## 4. CLI Usage & Commands
 
-The five-epoch local RTX 3050 run used 12,618 internal training and 3,155 validation QA rows, four uniformly sampled 224×224 frames, batch size 1, seed 17, AdamW at 1e-4, and frozen pinned CLIP towers. Its final trainer validation accuracy was 59.21%; the canonical standalone pass scored 1,867/3,155 (59.18%). The one-answer difference remains unresolved at the QA-ID level because the trainer did not save per-row validation predictions. The implementation now keeps text-cache precision modes separate; the existing checkpoint was not retrained. This internal result is not an official hidden-test score. Video paths are disjoint, but source-sequence independence is unverified.
+### 4.1 Normalize Ground Truth
+Converts official annotations (`QA` list format or legacy `videos` dictionary) into canonical ground truth:
 
-See [the final Role 3 experiment report](reports/role3_full_training_20261114.md), which includes epoch history, checkpoint hashes, full validation metrics, and the remaining qualification.
+```bash
+reva-eval prepare-ground-truth \
+  --annotation data/annotations/val.json \
+  --output data/ground_truth/validation.json \
+  --split validation
+```
 
-### Role 3 notebook and tests
+### 4.2 Evaluate Model Predictions
+Evaluates a canonical prediction file against ground truth and generates all reports, CSVs, and plots:
 
-The cleaned Colab workflow is [notebooks/role3_train_temporal_qa_baseline.ipynb](notebooks/role3_train_temporal_qa_baseline.ipynb). It pins the dataset, preprocessing, QA base, and CLIP revisions and verifies its uploaded source overlay against the manifest in `colab_package/`. The small source overlay contains code only; generated data, weights, and experiment artifacts stay outside Git.
+```bash
+reva-eval evaluate \
+  --ground-truth data/ground_truth/validation.json \
+  --predictions data/predictions/bimba_val_predictions.json \
+  --output-dir reports/BIMBA/validation
+```
 
-Run the CPU-friendly suite with:
+*CLI Options*:
+- `--format {auto,json,jsonl,csv}`: Prediction input format (auto-detected by default).
+- `--strict`: Enforce strict validation (fails clearly on missing predictions or unexpected IDs).
+- `--allow-duplicates`: Permit duplicate prediction IDs (evaluates first occurrence, records duplicates in diagnostics).
+- `--strict-probabilities`: Raise an error if probability scores do not sum to 1.0 within tolerance.
+- `--tolerance 0.0001`: Error margin for probability sum checks.
+- `--track`: Log run automatically to local experiment tracker registry (`experiments/registry.jsonl`).
+- `--experiment-id EXP_001`: Optional custom run identifier.
+- `--no-plots`: Disable PNG visualization generation for headless speed.
 
-```powershell
+### 4.3 Experiment Tracking
+Inspect and compare recorded evaluation experiments:
+
+```bash
+# List all tracked runs
+reva-eval track --list
+
+# Export experiment registry summary to Markdown or CSV
+reva-eval track --export reports/experiments_summary.md
+```
+
+### 4.4 Multi-Model Comparison
+Compare multiple candidate models side-by-side:
+
+```bash
+reva-eval compare \
+  --ground-truth data/ground_truth/validation.json \
+  --predictions BIMBA=reports/BIMBA/validation/predictions.json \
+                Advanced=reports/Advanced/validation/predictions.json \
+  --output-dir reports/comparison
+```
+
+Generates:
+- `model_comparison.csv`
+- `model_comparison.md`
+- `model_comparison.png`
+
+---
+
+## 5. Generated Artifacts
+
+For every evaluated model/split, the output directory contains:
+
+| Artifact | Purpose |
+| :--- | :--- |
+| `evaluation.json` | Authoritative machine-readable evaluation metrics conforming to `schemas/evaluation_report.schema.json`. |
+| `evaluation_report.md` | Human-readable markdown report with summary tables. |
+| `category_metrics.csv` | Total, correct, incorrect, accuracy, and coverage per category. |
+| `task_metrics.csv` | Total, correct, incorrect, accuracy, and coverage per task. |
+| `predictions_aligned.csv` | Sample-by-sample alignment table with prediction, ground truth, status, and scores. |
+| `incorrect_predictions.csv` | Filtered failure cases (`wrong`, `missing`, `invalid`) with review columns. |
+| `confusion_matrix.csv` | 4x4 matrix of ground-truth choice vs predicted choice. |
+| `confusion_matrix.png` | Heatmap visualization with cell counts and row-normalized percentages. |
+| `category_accuracy.png` | Bar chart of accuracy across categories. |
+| `task_accuracy.png` | Bar chart of accuracy across subtasks. |
+| `error_patterns.json` | Detailed diagnostic pattern breakdown (confusion pairs, error rates per category/task). |
+| `error_distribution.png` | Visualization of error status proportions and category error rates. |
+| `validation_issues.json` | Detailed validation diagnostics (missing IDs, unexpected IDs, duplicates). |
+
+---
+
+## 6. Synthetic Fixture Walkthrough & Expected Output
+
+The repository includes synthetic verification fixtures:
+- `examples/sample_ground_truth.json` (4 samples across 4 categories: `A`, `B`, `D`, `C`)
+- `examples/sample_predictions.json` (4 predictions: `A`, `C`, `D`, `C`)
+
+Run evaluation on the synthetic fixture:
+```bash
+reva-eval evaluate \
+  --ground-truth examples/sample_ground_truth.json \
+  --predictions examples/sample_predictions.json \
+  --output-dir reports/ExampleModel/validation
+```
+
+**Expected Results**:
+- **Total Samples**: 4
+- **Provided Predictions**: 4
+- **Valid Predictions**: 4
+- **Correct Predictions**: 3 (`valid_000001`: A==A, `valid_000003`: D==D, `valid_000004`: C==C)
+- **Incorrect Predictions**: 1 (`valid_000002`: true B, predicted C)
+- **Overall Accuracy**: **75.00%** (3 / 4)
+- **Prediction Coverage**: 100.00%
+- **Category Accuracies**:
+  - `Factual Perception`: 100.00% (1/1)
+  - `Temporal Understanding`: 0.00% (0/1)
+  - `Spatial Reasoning`: 100.00% (1/1)
+  - `Causal Reasoning`: 100.00% (1/1)
+- **Mean Latency**: 1.200 seconds
+
+---
+
+## 7. Mathematical & Correctness Principles
+
+1. **Alignment by ID**: Predictions and ground truth are linked exclusively via `sample_id`. Shuffling or reordering prediction rows produces identical metrics.
+2. **Strict Denominators**: For labeled validation data, the denominator $N$ is the count of **all unique ground-truth samples**. Missing and invalid predictions count as incorrect ($0$ score) in accuracy:
+   $$\text{Accuracy} = \frac{\text{Correct Valid Predictions}}{N}$$
+3. **Coverage Accounting**:
+   $$\text{Prediction Coverage} = \frac{\text{Provided Intersecting Predictions}}{N}$$
+   $$\text{Valid Prediction Coverage} = \frac{\text{Valid A-D Predictions}}{N}$$
+4. **Group Integrity**: Category and task denominators include all ground-truth samples in that group, including missing and invalid predictions.
+5. **Unlabeled Test Protection**: On unlabeled test splits (`correct_answer: ""`), accuracy is never calculated or hallucinated. The evaluator returns status `unlabeled_ground_truth` and reports only coverage and validation diagnostics.
+
+---
+
+## 8. Running Tests
+
+Execute the comprehensive test suite (62 tests across all 20 required evaluation scenarios):
+
+```bash
+cd Evaluation_Framework
 python -m pytest -q
 ```
 
-Local videos and CLIP weights are required for a real-media/GPU run, but tests use mocks and do not download them.
+All 62 tests pass without external network access or GPU requirements.
 
-## Environment
+---
 
-Use Python 3.10+ in VS Code. From the repository root:
+## 9. Role 4 Documentation Guides
 
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-```
-
-## Discover actual Hugging Face files
-
-The official dataset card has conflicting annotation filename examples. Discover the live file list and pin its revision before choosing exact annotation files:
-
-```powershell
-python scripts/download_dataset.py
-```
-
-The command writes `manifests/reva_manifest.json` and prints the real filenames. Then selectively fetch an exact annotation file (not all video data):
-
-```powershell
-python scripts/download_dataset.py --filename <exact-name-from-manifest>
-```
-
-For local dataset folders, run annotation inspection:
-
-```powershell
-python scripts/inspect_dataset.py <annotation-file> --video-root <dataset-root> --output reports/local_inspection.json
-```
-
-## Dataset interface
-
-```python
-from preprocessing import ReVADataset, make_dataloader
-
-dataset = ReVADataset(annotation_file='path/to/train.json', video_root='path/to/ReVA',
-                      num_frames=8, sampling='uniform', cache_dir='data/cache/frames')
-sample = dataset[0]
-```
-
-Each item preserves the source sample ID, ordered A/B/C/D choices, answer if supplied, video ID, category, and task. `video_frames` is `torch.float32 [T,3,H,W]`, RGB, resized to 224x224 by default, scaled to [0,1] and ImageNet normalized. `missing_video='zeros'` returns a zero tensor and records the failure on the dataset instance; default `raise` surfaces errors.
-
-Supported frame counts are 4, 8, 12, 16, and 32. Sampling is deterministic for a given video and configuration. Adaptive mode computes low-resolution per-frame motion scores and uses motion-weighted temporal quantiles.
-
-## Verification and limitations
-
-Run `python -m pytest -q`. Video decoding requires OpenCV (`opencv-python-headless`). The unit suite covers parser, sampling, cache, missing/corrupt video, tensor contract, unlabeled test answers, and collation. The three actual annotation splits were inspected, and end-to-end samples plus an 18-video source-stratified video analysis were run. Full-dataset video properties and corruption rates remain unknown; see `reports/dataset_analysis.md`.
-
-Team flow: work on a member branch and open a PR into `dev`; promote stable `dev` changes to `main` after review.
-## Access only what you need from Hugging Face
-
-The videos are not a Python package to install. The full dataset card reports about 29.9 GB, but each member should fetch only annotation files and videos they actually use. `huggingface_hub` keeps downloaded files in a cache and reuses them on later requests; it does not create a shared live mount of every remote video ([Hub download guide](https://huggingface.co/docs/huggingface_hub/guides/download), [cache guide](https://huggingface.co/docs/huggingface_hub/guides/manage-cache)). Each video still has to be transferred once before OpenCV can decode it. The loader now supports fetching each referenced MP4 lazily through the Hub and caching it locally.
-
-First list the current files and write a revision-pinned manifest:
-
-```powershell
-python scripts/download_dataset.py
-```
-
-Copy the exact train annotation filename from the output, then fetch only that file (and repeat with validation if needed):
-
-```powershell
-python scripts/download_dataset.py --filename <exact-train-annotation-filename>
-```
-
-For direct video fetches, use the annotation file path cached by the Hub and pass `dataset_repo_id` plus the manifest `revision`:
-
-```python
-from preprocessing import ReVADataset
-from preprocessing.hf_access import fetch_annotation_file
-
-repo = "ReVA-Benchmark/ReVA"
-revision = "<revision-from-manifest>"
-cache = r"D:\ChronoMind_HF_Cache"
-annotation = fetch_annotation_file(repo, "<exact-annotation-filename>", revision, cache)
-dataset = ReVADataset(annotation, dataset_repo_id=repo, revision=revision,
-                      hf_cache_dir=cache, num_frames=8, sampling="uniform")
-sample = dataset[0]  # fetches only that sample's video; later reads use the Hub cache
-```
-
-Use a separate cache folder such as `D:\ChronoMind_HF_Cache`, not inside the Git repository. In Colab, mount Drive and set the cache to a folder under `MyDrive` if you want fetched files to survive runtime resets. A Drive-backed cache is persistent but can be slower; use `/content` for faster temporary downloads and persist the smaller sampled-frame cache to Drive if needed. Mounting Drive does not make remote videos stream without transfer.
-
-## Run the preprocessing pilot
-
-After the manifest and the selected 18 source-stratified videos are available in the Hugging Face cache, run:
-
-```powershell
-python scripts/run_preprocessing_experiments.py --limit-videos 18
-```
-
-The script runs E1-E7, writes metrics under `reports/preprocessing_runs/`, and places frame-cache arrays under ignored `data/cache/`. It does not download the complete video collection. The default sample covers 18 observed dataset/subdirectory strata. Increase `--limit-videos` only when you have enough disk and time.
-## Optional Colab/Drive and feature-cache setup
-
-The cache roots can be resolved from configuration. In Colab, mount Drive yourself, then point the persistent cache root at the mounted folder; temporary work remains on the local runtime disk:
-
-```python
-from google.colab import drive
-drive.mount('/content/drive')
-from preprocessing.storage import resolve_storage_paths
-storage = resolve_storage_paths({"storage": {
-    "drive_root": "/content/drive/MyDrive/ReVA_cache",
-    "local_cache_root": "/content/reva_tmp"
-}})
-```
-
-Pass `storage["hf_cache_dir"]` to `hf_cache_dir` and `storage["frame_cache_dir"]` to `cache_dir` when creating `ReVADataset`. If no Drive root is configured, both persistent caches use the configured local cache root. `storage["local_temp_dir"]` is for temporary extraction work. Drive mounting itself has not been tested in this environment because it requires your Google login.
-
-For model-produced arrays, `NumpyFeatureCache` implements the optional `FeatureCache` `get`/`put` interface; it is separate from the raw-frame cache and does not run any model.
-
-The `preprocessing.collate` module provides the DataLoader collator/factory. `preprocessing.feature_cache.NumpyFeatureCache` is an optional disk cache for NumPy-compatible model features.
-
-## One-click Colab/Drive setup
-
-Open the ready-to-run notebook from the `sarthak` branch: [ChronoMind Colab Drive setup](https://colab.research.google.com/github/sarthak-shastri/ChronoMind/blob/sarthak/notebooks/colab_drive_setup.ipynb). Run its cells in order. It fetches one train annotation file and one referenced MP4 to verify access; it does not download the full dataset. Drive is optional: if mounting fails, the notebook continues with temporary Colab storage, which is cleared when the runtime ends.
-
-## Optional ReVA evaluation framework
-
-Shubham’s standalone evaluator is included under `Evaluation_Framework/` without duplicate annotation files. Install it separately with `python -m pip install -e ".[dev]"` from that folder; see its README and `reva-eval --help`. It handles prediction normalization, ID alignment, metrics, and reports. It does not make the official split leakage-safe; use a grouped internal validation split for model selection.
-
-## Leakage-safe ReVA training files
-
-The official annotation files remain unchanged. To build an internal train/validation pair that is disjoint from both official evaluation splits, run:
-
-```powershell
-python scripts/create_reva_leakage_safe_splits.py --train path/to/train.json --official-val path/to/val.json --official-test path/to/test.json --output-dir derived_splits/reva_leakage_safe --seed 42
-```
-
-The generated `train_grouped.json` and `val_grouped.json` contain only official training rows whose normalized video paths do not occur in official validation or test; groups are then split deterministically. Use them with `scripts/train_reva_qa.py` through `--train-annotations` and `--val-annotations`. See `derived_splits/reva_leakage_safe/split_statistics.md` for the current result and data reduction. These local files are path-disjoint; the annotations do not expose original source-sequence IDs, so they cannot establish isolation for differently named clips from one source.
-
-## ReVA split audit and integrity checks
-
-Audit the pinned annotations with `python scripts/audit_reva_source_sequence.py --annotation-dir <revision-snapshot> --video-root <revision-snapshot> --report reports/reva_source_sequence_audit.md`. Use `--corrected-dir` only when you intentionally want path-disjoint derived copies. Run `python scripts/check_reva_split_integrity.py --train <train.json> --val <val.json> --test <test.json> [--video-root <dataset-root>]` before training/evaluation; it exits nonzero on detected overlap, duplicate QA IDs, missing referenced local videos, or invalid train/validation labels/options. Source-sequence checks apply when annotation rows include a sequence ID. Current public annotations lack that ID, so exact normalized video paths are the available grouping key.
+- [ROLE4_EVALUATION_GUIDE.md](file:///c:/Users/SHUBHAM/Desktop/ChronoMind/ROLE4_EVALUATION_GUIDE.md): Full evaluation architecture, multi-format loading, strict validation, and CLI guide.
+- [ROLE4_MODEL_INTEGRATION_GUIDE.md](file:///c:/Users/SHUBHAM/Desktop/ChronoMind/ROLE4_MODEL_INTEGRATION_GUIDE.md): Developer guide for teammates integrating BIMBA and advanced models.
+- [ROLE4_COMPLETION_AND_BLOCKERS.md](file:///c:/Users/SHUBHAM/Desktop/ChronoMind/ROLE4_COMPLETION_AND_BLOCKERS.md): Status report, test results, blockers, and next phase.

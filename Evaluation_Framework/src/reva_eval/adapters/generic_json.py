@@ -12,6 +12,7 @@ from reva_eval.models import (
     SCORE_SEMANTICS_VALUES,
     VALID_LABELS,
 )
+import unicodedata
 
 
 class GenericJSONAdapter(BaseAdapter):
@@ -28,6 +29,9 @@ class GenericJSONAdapter(BaseAdapter):
         score_semantics: Optional[str] = None,
         option_order: Optional[Sequence[str]] = None,
         allow_duplicates: bool = False,
+        strip_whitespace: bool = True,
+        normalize_unicode: bool = True,
+        case_fold: bool = True,
         **kwargs: Any,
     ) -> CanonicalPredictions:
         """Convert raw prediction JSON into CanonicalPredictions.
@@ -110,12 +114,20 @@ class GenericJSONAdapter(BaseAdapter):
             seen_ids.add(sample_id)
 
             # Extract prediction
-            prediction = rec.get("prediction")
-            if prediction is None:
-                prediction = rec.get("answer") or rec.get("pred")
+            raw_prediction = rec.get("prediction")
+            if raw_prediction is None:
+                raw_prediction = rec.get("answer") or rec.get("pred")
 
+            prediction = str(raw_prediction) if raw_prediction is not None else None
             if prediction is not None:
-                prediction = str(prediction).strip()
+                if normalize_unicode:
+                    prediction = unicodedata.normalize("NFKC", prediction)
+                if strip_whitespace:
+                    prediction = prediction.strip().strip("\u200b\ufeff\u00a0\r\n\t")
+                if not prediction:
+                    prediction = None
+                elif case_fold:
+                    prediction = prediction.upper()
 
             # Extract scores
             raw_scores = rec.get("scores") or rec.get("probabilities") or rec.get("logits")
@@ -172,6 +184,7 @@ class GenericJSONAdapter(BaseAdapter):
                 prediction=prediction,
                 scores=scores_dict,
                 inference_time_seconds=timing_val,
+                raw_prediction=str(raw_prediction) if raw_prediction is not None else None,
             )
             predictions.append(pred_record)
 

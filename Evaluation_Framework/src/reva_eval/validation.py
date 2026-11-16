@@ -27,6 +27,7 @@ class ValidationResult:
         unexpected_sample_ids: Optional[List[str]] = None,
         duplicate_sample_ids: Optional[List[str]] = None,
         probability_sum_violations: Optional[List[Dict[str, Any]]] = None,
+        validation_mode: str = "non-strict",
     ) -> None:
         self.errors = errors or []
         self.warnings = warnings or []
@@ -35,6 +36,7 @@ class ValidationResult:
         self.unexpected_sample_ids = unexpected_sample_ids or []
         self.duplicate_sample_ids = duplicate_sample_ids or []
         self.probability_sum_violations = probability_sum_violations or []
+        self.validation_mode = validation_mode
 
     @property
     def is_valid(self) -> bool:
@@ -45,6 +47,7 @@ class ValidationResult:
         """Convert validation issues to a serializable dictionary for validation_issues.json."""
         return {
             "is_valid": self.is_valid,
+            "validation_mode": self.validation_mode,
             "error_count": len(self.errors),
             "warning_count": len(self.warnings),
             "errors": self.errors,
@@ -108,10 +111,24 @@ def validate_predictions_against_ground_truth(
     allow_duplicates: bool = False,
     strict_probabilities: bool = False,
     probability_sum_tolerance: float = 1e-4,
+    strict_mode: bool = False,
 ) -> ValidationResult:
-    """Perform rigorous validation and alignment diagnostics between predictions and ground truth."""
+    """Perform rigorous validation and alignment diagnostics between predictions and ground truth.
+
+    In strict mode (strict_mode=True):
+    - Missing predictions, unexpected prediction IDs, and invalid labels trigger hard errors.
+    - Probability sum violations trigger hard errors.
+
+    In non-strict mode (strict_mode=False, default):
+    - Missing predictions, unexpected IDs, and invalid labels are logged as warnings and tracked
+      in validation issues. They are properly accounted for in the evaluation denominator.
+    - Duplicate prediction IDs fail validation by default unless allow_duplicates=True.
+    """
     errors: List[str] = []
     warnings: List[str] = []
+
+    if strict_mode:
+        strict_probabilities = True
 
     # 1. Dataset & Split compatibility
     if predictions.dataset.lower() != ground_truth.dataset.lower():
@@ -157,14 +174,18 @@ def validate_predictions_against_ground_truth(
     unexpected_sample_ids = sorted(list(pred_ids - gt_ids))
 
     if missing_sample_ids:
-        warnings.append(
-            f"Missing predictions for {len(missing_sample_ids)} / {len(gt_ids)} ground truth samples."
-        )
+        msg = f"Missing predictions for {len(missing_sample_ids)} / {len(gt_ids)} ground truth samples."
+        if strict_mode:
+            errors.append(f"Strict validation failure: {msg} (e.g. {missing_sample_ids[:5]})")
+        else:
+            warnings.append(msg)
 
     if unexpected_sample_ids:
-        warnings.append(
-            f"Found {len(unexpected_sample_ids)} unexpected prediction IDs not present in ground truth."
-        )
+        msg = f"Found {len(unexpected_sample_ids)} unexpected prediction IDs not present in ground truth."
+        if strict_mode:
+            errors.append(f"Strict validation failure: {msg} (e.g. {unexpected_sample_ids[:5]})")
+        else:
+            warnings.append(msg)
 
     # 4. Prediction label and score validity
     invalid_sample_ids: List[str] = []
@@ -205,9 +226,11 @@ def validate_predictions_against_ground_truth(
                         prob_violations.append(violation)
 
     if invalid_sample_ids:
-        warnings.append(
-            f"Found {len(invalid_sample_ids)} predictions with invalid choice labels (not in A, B, C, D)."
-        )
+        msg = f"Found {len(invalid_sample_ids)} predictions with invalid choice labels (not in A, B, C, D)."
+        if strict_mode:
+            errors.append(f"Strict validation failure: {msg} (e.g. {invalid_sample_ids[:5]})")
+        else:
+            warnings.append(msg)
 
     if prob_violations:
         prob_msg = (
@@ -227,5 +250,6 @@ def validate_predictions_against_ground_truth(
         unexpected_sample_ids=unexpected_sample_ids,
         duplicate_sample_ids=duplicate_ids,
         probability_sum_violations=prob_violations,
+        validation_mode="strict" if strict_mode else "non-strict",
     )
 

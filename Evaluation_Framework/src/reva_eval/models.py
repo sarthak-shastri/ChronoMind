@@ -46,6 +46,10 @@ class PredictionRecord(BaseModel):
         None,
         description="Optional inference latency in seconds for this sample",
     )
+    raw_prediction: Optional[str] = Field(
+        None,
+        description="Original unnormalized raw prediction string prior to normalization",
+    )
 
     @field_validator("inference_time_seconds")
     @classmethod
@@ -194,4 +198,14 @@ class EvaluationReport(BaseModel):
     validation: ValidationSummary
     generated_at_utc: str
     notes: List[str] = Field(default_factory=list)
+    experiment_id: Optional[str] = Field(None, description="Unique experiment or evaluation run ID")
+    validation_mode: str = Field("permissive", description="Validation mode applied (strict or permissive)")
+    supplementary_metrics: Optional[Dict[str, Any]] = Field(
+        default_factory=dict,
+        description="Supplementary research metrics clearly distinguished from official challenge metrics",
+    )
+    alignment_statistics: Optional[Dict[str, Any]] = Field(
+        default_factory=dict,
+        description="Detailed prediction and ground truth ID alignment statistics",
+    )
 

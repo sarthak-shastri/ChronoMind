@@ -93,9 +93,22 @@ def align_predictions_with_ground_truth(
     else:
         df_aligned = pd.DataFrame(rows)
 
+    matched_count = int(df_aligned["is_provided"].sum()) if not df_aligned.empty else 0
+    missing_count = int((~df_aligned["is_provided"]).sum()) if not df_aligned.empty else 0
+    invalid_count = int((df_aligned["is_provided"] & ~df_aligned["is_valid_prediction"]).sum()) if not df_aligned.empty else 0
+    total_preds_len = len(predictions.predictions)
+    duplicate_count = total_preds_len - len(pred_map)
+
     meta = {
+        "total_ground_truth_samples": len(ground_truth.samples),
+        "total_predictions_provided": total_preds_len,
+        "unique_prediction_ids": len(pred_map),
+        "matched_samples": matched_count,
+        "missing_predictions": missing_count,
+        "invalid_predictions": invalid_count,
         "unexpected_prediction_ids": unexpected_pred_ids,
         "unexpected_prediction_count": len(unexpected_pred_ids),
+        "duplicate_prediction_occurrences": max(0, duplicate_count),
     }
     return df_aligned, meta
 
@@ -230,3 +243,66 @@ def compute_score_metadata(df_aligned: pd.DataFrame, score_semantics: Optional[s
         score_semantics=score_semantics,
         samples_with_scores=samples_with_scores,
     )
+
+
+def compute_supplementary_metrics(
+    df_aligned: pd.DataFrame,
+    category_metrics: List[Dict[str, Any]],
+    task_metrics: List[Dict[str, Any]],
+    is_labeled: bool,
+    overall_accuracy: Optional[float] = None,
+) -> Dict[str, Any]:
+    """Compute supplementary diagnostic metrics clearly separated from the official competition score.
+
+    Includes:
+    - macro_category_accuracy: Unweighted mean of category accuracies
+    - macro_task_accuracy: Unweighted mean of task accuracies
+    - choice_distribution: Count and proportion of predictions per label (A, B, C, D)
+    - chance_adjusted_accuracy: Cohen's Kappa against uniform chance (0.25 for 4 options)
+    """
+    supp: Dict[str, Any] = {
+        "is_supplementary": True,
+        "note": "Supplementary metrics are provided for ablation analysis only and do not replace official accuracy.",
+    }
+
+    # Choice distribution across valid predictions
+    choice_counts: Dict[str, int] = {lbl: 0 for lbl in VALID_LABELS}
+    if not df_aligned.empty and "prediction" in df_aligned.columns:
+        valid_preds = df_aligned[df_aligned["is_valid_prediction"]]["prediction"]
+        vc = valid_preds.value_counts()
+        for lbl in VALID_LABELS:
+            choice_counts[lbl] = int(vc.get(lbl, 0))
+
+    total_valid = sum(choice_counts.values())
+    choice_props = {
+        lbl: round(cnt / total_valid, 4) if total_valid > 0 else 0.0
+        for lbl, cnt in choice_counts.items()
+    }
+    supp["choice_distribution_counts"] = choice_counts
+    supp["choice_distribution_proportions"] = choice_props
+
+    if is_labeled and not df_aligned.empty:
+        # Macro category accuracy
+        cat_accs = [c["accuracy"] for c in category_metrics if c.get("accuracy") is not None]
+        supp["macro_category_accuracy"] = round(float(np.mean(cat_accs)), 6) if cat_accs else None
+
+        # Macro task accuracy
+        task_accs = [t["accuracy"] for t in task_metrics if t.get("accuracy") is not None]
+        supp["macro_task_accuracy"] = round(float(np.mean(task_accs)), 6) if task_accs else None
+
+        # Chance-adjusted accuracy (Cohen's Kappa with uniform chance pe = 0.25)
+        if overall_accuracy is not None:
+            pe = 0.25
+            if overall_accuracy >= pe:
+                kappa = (overall_accuracy - pe) / (1.0 - pe)
+            else:
+                kappa = (overall_accuracy - pe) / pe
+            supp["chance_adjusted_accuracy"] = round(float(kappa), 6)
+        else:
+            supp["chance_adjusted_accuracy"] = None
+    else:
+        supp["macro_category_accuracy"] = None
+        supp["macro_task_accuracy"] = None
+        supp["chance_adjusted_accuracy"] = None
+
+    return supp
