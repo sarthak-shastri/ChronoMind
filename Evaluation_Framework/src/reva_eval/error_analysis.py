@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 import pandas as pd
 
@@ -91,4 +92,106 @@ def export_aligned_predictions_dataframe(
         out_df["scores"] = out_df["scores"].apply(lambda s: json.dumps(s) if s is not None else None)
     out_df["score_semantics"] = score_semantics
     return out_df
+
+
+def analyze_error_patterns(
+    df_aligned: pd.DataFrame,
+    is_labeled: bool = True,
+) -> Dict[str, Any]:
+    """Perform diagnostic error pattern analysis on aligned evaluation results.
+
+    Identifies:
+    - Overall error counts and status breakdown (incorrect, missing, invalid)
+    - Frequent confusion pairs (e.g. True 'B' -> Predicted 'C')
+    - Error rates across categories and tasks
+    - Most frequent incorrect answers
+    """
+    if df_aligned.empty or not is_labeled:
+        return {
+            "total_errors": 0,
+            "error_breakdown": {"incorrect": 0, "missing": 0, "invalid": 0},
+            "category_error_rates": {},
+            "task_error_rates": {},
+            "frequent_confusion_pairs": [],
+            "most_frequent_incorrect_answers": {},
+        }
+
+    error_mask = df_aligned["status"].isin(["wrong", "missing", "invalid"])
+    err_df = df_aligned[error_mask]
+    total_errors = len(err_df)
+
+    status_counts = {
+        "incorrect": int((df_aligned["status"] == "wrong").sum()),
+        "missing": int((df_aligned["status"] == "missing").sum()),
+        "invalid": int((df_aligned["status"] == "invalid").sum()),
+    }
+
+    # Category error rates
+    cat_errors: Dict[str, Any] = {}
+    for cat in df_aligned["category"].dropna().unique():
+        sub = df_aligned[df_aligned["category"] == cat]
+        total = len(sub)
+        errs = int((sub["status"].isin(["wrong", "missing", "invalid"])).sum())
+        cat_errors[str(cat)] = {
+            "total": total,
+            "errors": errs,
+            "error_rate": round(errs / total, 4) if total > 0 else 0.0,
+        }
+
+    # Task error rates
+    task_errors: Dict[str, Any] = {}
+    for t in df_aligned["task"].dropna().unique():
+        sub = df_aligned[df_aligned["task"] == t]
+        total = len(sub)
+        errs = int((sub["status"].isin(["wrong", "missing", "invalid"])).sum())
+        task_errors[str(t)] = {
+            "total": total,
+            "errors": errs,
+            "error_rate": round(errs / total, 4) if total > 0 else 0.0,
+        }
+
+    # Confusion pairs among wrong predictions with valid labels
+    wrong_valid = df_aligned[(df_aligned["status"] == "wrong") & df_aligned["is_valid_prediction"]]
+    confusion_pairs = []
+    if not wrong_valid.empty:
+        pair_counts = (
+            wrong_valid.groupby(["ground_truth", "prediction"])
+            .size()
+            .reset_index(name="count")
+            .sort_values(by="count", ascending=False)
+        )
+        for _, row in pair_counts.iterrows():
+            confusion_pairs.append({
+                "true": str(row["ground_truth"]),
+                "predicted": str(row["prediction"]),
+                "count": int(row["count"]),
+            })
+
+    # Most frequent incorrect answers
+    incorrect_pred_counts = {}
+    if not wrong_valid.empty:
+        vc = wrong_valid["prediction"].value_counts()
+        for k, v in vc.items():
+            incorrect_pred_counts[str(k)] = int(v)
+
+    return {
+        "total_errors": total_errors,
+        "error_breakdown": status_counts,
+        "category_error_rates": cat_errors,
+        "task_error_rates": task_errors,
+        "frequent_confusion_pairs": confusion_pairs,
+        "most_frequent_incorrect_answers": incorrect_pred_counts,
+    }
+
+
+def save_error_analysis_summary(
+    summary: Dict[str, Any],
+    output_path: Union[str, Path],
+) -> Path:
+    """Save error patterns summary to a JSON file."""
+    path = Path(output_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2, ensure_ascii=False)
+    return path
 

@@ -145,12 +145,27 @@ reva-eval evaluate \
 ```
 
 *CLI Options*:
+- `--format {auto,json,jsonl,csv}`: Prediction input format (auto-detected by default).
+- `--strict`: Enforce strict validation (fails clearly on missing predictions or unexpected IDs).
 - `--allow-duplicates`: Permit duplicate prediction IDs (evaluates first occurrence, records duplicates in diagnostics).
 - `--strict-probabilities`: Raise an error if probability scores do not sum to 1.0 within tolerance.
 - `--tolerance 0.0001`: Error margin for probability sum checks.
+- `--track`: Log run automatically to local experiment tracker registry (`experiments/registry.jsonl`).
+- `--experiment-id EXP_001`: Optional custom run identifier.
 - `--no-plots`: Disable PNG visualization generation for headless speed.
 
-### 4.3 Multi-Model Comparison
+### 4.3 Experiment Tracking
+Inspect and compare recorded evaluation experiments:
+
+```bash
+# List all tracked runs
+reva-eval track --list
+
+# Export experiment registry summary to Markdown or CSV
+reva-eval track --export reports/experiments_summary.md
+```
+
+### 4.4 Multi-Model Comparison
 Compare multiple candidate models side-by-side:
 
 ```bash
@@ -164,6 +179,7 @@ reva-eval compare \
 Generates:
 - `model_comparison.csv`
 - `model_comparison.md`
+- `model_comparison.png`
 
 ---
 
@@ -183,6 +199,8 @@ For every evaluated model/split, the output directory contains:
 | `confusion_matrix.png` | Heatmap visualization with cell counts and row-normalized percentages. |
 | `category_accuracy.png` | Bar chart of accuracy across categories. |
 | `task_accuracy.png` | Bar chart of accuracy across subtasks. |
+| `error_patterns.json` | Detailed diagnostic pattern breakdown (confusion pairs, error rates per category/task). |
+| `error_distribution.png` | Visualization of error status proportions and category error rates. |
 | `validation_issues.json` | Detailed validation diagnostics (missing IDs, unexpected IDs, duplicates). |
 
 ---
@@ -233,10 +251,19 @@ reva-eval evaluate \
 
 ## 8. Running Tests
 
-Execute the comprehensive test suite (41 tests):
+Execute the comprehensive test suite (62 tests across all 20 required evaluation scenarios):
 
 ```bash
+cd Evaluation_Framework
 python -m pytest -q
 ```
 
-All tests pass without external network access or GPU requirements.
+All 62 tests pass without external network access or GPU requirements.
+
+---
+
+## 9. Role 4 Documentation Guides
+
+- [ROLE4_EVALUATION_GUIDE.md](file:///c:/Users/SHUBHAM/Desktop/ChronoMind/ROLE4_EVALUATION_GUIDE.md): Full evaluation architecture, multi-format loading, strict validation, and CLI guide.
+- [ROLE4_MODEL_INTEGRATION_GUIDE.md](file:///c:/Users/SHUBHAM/Desktop/ChronoMind/ROLE4_MODEL_INTEGRATION_GUIDE.md): Developer guide for teammates integrating BIMBA and advanced models.
+- [ROLE4_COMPLETION_AND_BLOCKERS.md](file:///c:/Users/SHUBHAM/Desktop/ChronoMind/ROLE4_COMPLETION_AND_BLOCKERS.md): Status report, test results, blockers, and next phase.

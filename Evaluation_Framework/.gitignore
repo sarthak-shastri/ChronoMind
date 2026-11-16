@@ -45,8 +45,9 @@ data/raw/
 *.bin
 *.onnx
 
-# Evaluation Reports
+# Evaluation Reports & Experiments
 reports/
+experiments/
 
 # IDE & OS
 .vscode/

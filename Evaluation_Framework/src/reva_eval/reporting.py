@@ -30,6 +30,10 @@ def create_evaluation_report(
     validation_summary: ValidationSummary,
     is_labeled: bool,
     notes: Optional[List[str]] = None,
+    experiment_id: Optional[str] = None,
+    validation_mode: str = "non-strict",
+    supplementary_metrics: Optional[Dict[str, Any]] = None,
+    alignment_statistics: Optional[Dict[str, Any]] = None,
 ) -> EvaluationReport:
     """Instantiate a validated EvaluationReport structure."""
     status = "completed" if is_labeled else "unlabeled_ground_truth"
@@ -57,6 +61,10 @@ def create_evaluation_report(
         validation=validation_summary,
         generated_at_utc=now_utc,
         notes=all_notes,
+        experiment_id=experiment_id,
+        validation_mode=validation_mode,
+        supplementary_metrics=supplementary_metrics or {},
+        alignment_statistics=alignment_statistics or {},
     )
 
 
@@ -82,6 +90,8 @@ def generate_markdown_report(report: EvaluationReport, output_path: Union[str, P
         f"- **Split**: {report.split}",
         f"- **Model**: `{report.model.name}`" + (f" (Version: {report.model.version})" if report.model.version else ""),
         f"- **Run ID**: `{report.model.run_id or 'N/A'}`",
+        f"- **Experiment ID**: `{report.experiment_id or 'N/A'}`",
+        f"- **Validation Mode**: `{report.validation_mode}`",
         f"- **Status**: `{report.status}`",
         f"- **Ground Truth Labeled**: `{report.ground_truth_labeled}`",
         f"- **Generated At (UTC)**: `{report.generated_at_utc}`",
@@ -165,7 +175,54 @@ def generate_markdown_report(report: EvaluationReport, output_path: Union[str, P
         f"- **Score Semantics**: `{report.score_metadata.score_semantics or 'None'}`",
         f"- **Samples with Scores**: {report.score_metadata.samples_with_scores:,}",
         "",
-        "## 5. Validation & Notes",
+    ])
+
+    # Supplementary Metrics (if available)
+    if report.supplementary_metrics:
+        supp = report.supplementary_metrics
+        lines.extend([
+            "## 5. Supplementary Research Metrics",
+            "",
+            "> [!NOTE]",
+            "> Supplementary metrics are computed for ablation and diagnostic purposes only. "
+            "They are mathematically distinguished from official challenge metrics and must not be cited as official leaderboard scores.",
+            "",
+            "| Metric | Value |",
+            "| :--- | :--- |",
+        ])
+        if supp.get("macro_category_accuracy") is not None:
+            lines.append(f"| **Macro Category Accuracy** | {supp['macro_category_accuracy']:.2%} |")
+        if supp.get("macro_task_accuracy") is not None:
+            lines.append(f"| **Macro Task Accuracy** | {supp['macro_task_accuracy']:.2%} |")
+        if supp.get("chance_adjusted_accuracy") is not None:
+            lines.append(f"| **Chance-Adjusted Accuracy (Cohen's Kappa)** | {supp['chance_adjusted_accuracy']:.4f} |")
+
+        if supp.get("choice_distribution_proportions"):
+            props = supp["choice_distribution_proportions"]
+            counts = supp.get("choice_distribution_counts", {})
+            dist_str = ", ".join(f"{lbl}: {counts.get(lbl, 0)} ({props.get(lbl, 0.0):.1%})" for lbl in sorted(props.keys()))
+            lines.append(f"| **Choice Distribution (A, B, C, D)** | {dist_str} |")
+        lines.append("")
+
+    # Alignment Statistics (if available)
+    if report.alignment_statistics:
+        align = report.alignment_statistics
+        lines.extend([
+            "## 6. ID Alignment Statistics",
+            "",
+            "| Alignment Metric | Count |",
+            "| :--- | :--- |",
+            f"| **Ground Truth Samples** | {align.get('total_ground_truth_samples', m.total_samples):,} |",
+            f"| **Total Predictions Supplied** | {align.get('total_predictions_provided', m.provided_predictions):,} |",
+            f"| **Matched Samples** | {align.get('matched_samples', m.provided_predictions):,} |",
+            f"| **Missing Predictions** | {align.get('missing_predictions', m.missing_predictions):,} |",
+            f"| **Unexpected Prediction IDs** | {align.get('unexpected_prediction_count', m.unexpected_predictions):,} |",
+            f"| **Duplicate Prediction Records** | {align.get('duplicate_prediction_occurrences', m.duplicate_prediction_occurrences):,} |",
+            "",
+        ])
+
+    lines.extend([
+        "## 7. Validation & Notes",
         "",
         f"- **Validation Errors**: {report.validation.errors}",
         f"- **Validation Warnings**: {report.validation.warnings}",
@@ -183,6 +240,7 @@ def generate_markdown_report(report: EvaluationReport, output_path: Union[str, P
 def generate_model_comparison_report(
     reports: Dict[str, EvaluationReport],
     output_dir: Union[str, Path],
+    save_plots: bool = True,
 ) -> Tuple[Path, Path]:
     """Generate comparative CSV and Markdown reports for multiple evaluated models."""
     out_dir = Path(output_dir)
@@ -274,6 +332,13 @@ def generate_model_comparison_report(
     md_lines.append("")
     with open(md_path, "w", encoding="utf-8") as f:
         f.write("\n".join(md_lines))
+
+    if save_plots:
+        try:
+            from reva_eval.visualization import plot_model_comparison
+            plot_model_comparison(df_comp, out_dir / "model_comparison.png")
+        except Exception:
+            pass
 
     return csv_path, md_path
 
