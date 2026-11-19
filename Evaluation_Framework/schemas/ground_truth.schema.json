@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReVA Canonical Ground Truth",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset",
+    "split",
+    "samples"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "dataset": {
+      "type": "string",
+      "minLength": 1
+    },
+    "split": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_annotation_file": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "sample_id",
+          "video_path",
+          "dataset_name",
+          "subdir",
+          "question",
+          "options",
+          "category",
+          "task",
+          "ground_truth"
+        ],
+        "properties": {
+          "sample_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "video_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dataset_name": {
+            "type": "string"
+          },
+          "subdir": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "options": {
+            "type": "object",
+            "required": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "properties": {
+              "A": {
+                "type": "string"
+              },
+              "B": {
+                "type": "string"
+              },
+              "C": {
+                "type": "string"
+              },
+              "D": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "category": {
+            "type": "string"
+          },
+          "task": {
+            "type": "string"
+          },
+          "ground_truth": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "A",
+              "B",
+              "C",
+              "D",
+              null
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

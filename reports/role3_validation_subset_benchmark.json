@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "status": "not_run",
+  "reason": "Notebook created but not executed in Colab; no actual subset, inference, latency, or GPU-memory measurements are available.",
+  "repository": {
+    "role3_branch": "suraj-role3-foundation",
+    "role3_commit_at_creation": "62f383676b63717702ae27eb52e023a74c2e1d38",
+    "preprocessing_branch": "sarthak",
+    "preprocessing_commit": "1a63b5009267a348b5fdd550b063869332d4ce0a"
+  },
+  "dataset": {
+    "name": "ReVA",
+    "repo_id": "ReVA-Benchmark/ReVA",
+    "revision": "06224fa1b42e5e35677a8b7f2145e06307a9a4ee",
+    "validation_annotation_file": "val.json",
+    "validation_records_expected_from_pinned_inspection": 2000,
+    "samples_attempted": null,
+    "samples_successful": null,
+    "distinct_videos": null,
+    "category_distribution": null
+  },
+  "environment": {
+    "python_version": null,
+    "pytorch_version": null,
+    "transformers_version": null,
+    "gpu_name": null,
+    "gpu_total_memory_mb": null
+  },
+  "model": {
+    "checkpoint_id": "openai/clip-vit-base-patch32",
+    "checkpoint_revision": null,
+    "class": "CLIPVisionModelWithProjection",
+    "projected_dimension": 512
+  },
+  "frame_counts": [
+    4,
+    8,
+    16
+  ],
+  "batch_size": 1,
+  "benchmark_method": {
+    "warmup_runs": 3,
+    "measured_runs": 10,
+    "statistics": [
+      "mean",
+      "median",
+      "sample_standard_deviation"
+    ],
+    "cuda_synchronize_before_after_timing": true
+  },
+  "benchmarks": [
+    {
+      "frame_count": 4,
+      "status": "not_executed",
+      "sample_id": null,
+      "mean_seconds": null,
+      "median_seconds": null,
+      "standard_deviation_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "error": null
+    },
+    {
+      "frame_count": 8,
+      "status": "not_executed",
+      "sample_id": null,
+      "mean_seconds": null,
+      "median_seconds": null,
+      "standard_deviation_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "error": null
+    },
+    {
+      "frame_count": 16,
+      "status": "not_executed",
+      "sample_id": null,
+      "mean_seconds": null,
+      "median_seconds": null,
+      "standard_deviation_seconds": null,
+      "peak_gpu_memory_mb": null,
+      "error": null
+    }
+  ],
+  "per_sample_results": [],
+  "errors_and_skipped_samples": [],
+  "scope": "Visual-temporal feature extraction only; no QA accuracy or temporal reasoning improvement measured."
+}

@@ -1,0 +1,842 @@
+{
+  "metadata": {
+    "generated_at": "2026-04-25",
+    "total_videos": 1045,
+    "total_questions": 15773,
+    "subcategory_targets": {
+      "General Understanding": 1032,
+      "Object and Land Cover Recognition": 1719,
+      "Change Detection": 1012,
+      "Temporal Grounding": 1884,
+      "Trend and Pattern": 1688,
+      "Geometric Relation": 2875,
+      "Structural Layout": 2258,
+      "Perspective and Viewpoint": 2047,
+      "Causation Reasoning": 401,
+      "Consequence Reasoning": 461,
+      "Hypothetical Reasoning": 396
+    },
+    "question_taxonomy": {
+      "Factual Perception": [
+        "General Understanding",
+        "Object and Land Cover Recognition",
+        "Change Detection"
+      ],
+      "Temporal Understanding": [
+        "Temporal Grounding",
+        "Trend and Pattern"
+      ],
+      "Spatial Reasoning": [
+        "Geometric Relation",
+        "Structural Layout",
+        "Perspective and Viewpoint"
+      ],
+      "Causal Reasoning": [
+        "Causation Reasoning",
+        "Consequence Reasoning",
+        "Hypothetical Reasoning"
+      ]
+    },
+    "taxonomy_normalization": {
+      "exact temporal grounding": "Temporal Grounding",
+      "trend and pattern analysis": "Trend and Pattern",
+      "geometric relation reasoning": "Geometric Relation",
+      "structural layout reasoning": "Structural Layout",
+      "viewpoint and perspective analysis": "Perspective and Viewpoint"
+    },
+    "derived_split": {
+      "method": "exclude official val/test groups from official train, then deterministic grouped split",
+      "seed": 42,
+      "grouping": "source-sequence ID if present, otherwise normalized video_path",
+      "official_val_source": "val.json",
+      "official_test_source": "test.json",
+      "name": "val_grouped"
+    }
+  },
+  "QA": [
+    {
+      "qa_id": "train_003919",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "General Understanding",
+      "question": "Which of the following activities could be the best description of this video?",
+      "options": {
+        "A": "Off-road rally race",
+        "B": "Motorcycle stunt show",
+        "C": "Classic car parade",
+        "D": "Indoor drift competition"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_003920",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "General Understanding",
+      "question": "Which of the following objects exist in this video?",
+      "options": {
+        "A": "Safety barriers",
+        "B": "Stop signs",
+        "C": "Fuel nozzles",
+        "D": "Checkered flags"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_003921",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "How many race cars are visible in the video?",
+      "options": {
+        "A": "One",
+        "B": "Four",
+        "C": "Three",
+        "D": "Two"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_003922",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "What type of object is primarily responsible for generating the thick white smoke seen throughout the video?",
+      "options": {
+        "A": "The track's surface material",
+        "B": "The crowd's pyrotechnics",
+        "C": "The race cars' tires during drifting",
+        "D": "The stadium's lighting system"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_003923",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "Where is the main white and blue race car located in the frame during the drift sequence?",
+      "options": {
+        "A": "In the center of the frame, with the track curving around it",
+        "B": "At the top of the frame, approaching the turn",
+        "C": "In the bottom right corner, partially obscured by smoke",
+        "D": "On the left side of the frame, near the safety barrier"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_003924",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Change Detection",
+      "question": "How does the appearance of the black car with 'ARIV' on its side change throughout the video?",
+      "options": {
+        "A": "It is visible in the first frame but disappears by the third frame.",
+        "B": "It is visible throughout the video without any change.",
+        "C": "It appears in the first frame and disappears by the second frame.",
+        "D": "It is not visible in the first frame but appears in the second frame."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_003925",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Change Detection",
+      "question": "How does the shape of the smoke cloud change throughout the video?",
+      "options": {
+        "A": "It changes from a compact shape to a long, thin trail.",
+        "B": "It remains a consistent size and shape throughout the clip.",
+        "C": "It starts small and expands to fill a large portion of the frame.",
+        "D": "It starts large and gradually shrinks as the car moves away."
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_003926",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Change Detection",
+      "question": "How does the white and blue race car move through the racetrack during the video?",
+      "options": {
+        "A": "In a circular motion around the center of the track",
+        "B": "In a straight line towards the camera",
+        "C": "From right to left across the frame",
+        "D": "From left to right across the frame"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_003927",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "When does the black car with 'ARIV' on its side first become visible in the video?",
+      "options": {
+        "A": "Around the middle of the video",
+        "B": "In the first half of the video",
+        "C": "At the beginning of the video",
+        "D": "Near the end of the video"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_003928",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long does the white and blue race car with 'TURBO SYSTEMS' branding remain visible in the video?",
+      "options": {
+        "A": "For most of the video",
+        "B": "Briefly at the beginning",
+        "C": "Intermittently throughout",
+        "D": "Near the end"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_003929",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How does the motion direction of the white and blue 'TURBO SYSTEMS' car change throughout the video sequence?",
+      "options": {
+        "A": "It moves toward the camera, then away from the camera in a circular pattern.",
+        "B": "It moves from the top of the frame to the bottom, then stops.",
+        "C": "It moves from right to left, then reverses direction to move left to right.",
+        "D": "It consistently moves from left to right across the frame while drifting."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_003930",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How does the white and blue race car's smoke emission pattern change over time during the drift?",
+      "options": {
+        "A": "It produces a steady stream of smoke that gradually decreases in volume",
+        "B": "It emits smoke consistently throughout the drift, creating a continuous cloud",
+        "C": "It intermittently releases smoke in bursts as the car rotates through the turn",
+        "D": "It emits smoke only at the beginning of the drift and then stops"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_003931",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "In the video, how does the relative position of the white and blue car change in relation to the black car during their drifts?",
+      "options": {
+        "A": "The white and blue car starts in front of the black car and ends up to its right",
+        "B": "The white and blue car starts to the left of the black car and ends up behind it",
+        "C": "The white and blue car starts behind the black car and ends up to its left",
+        "D": "The white and blue car starts to the right of the black car and ends up in front of it"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_003932",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "In the video, how does the distance between the white and blue car and the black car change as they drift around the corner?",
+      "options": {
+        "A": "The two cars maintain a consistent distance from each other throughout the maneuver.",
+        "B": "The black car starts farther from the camera and moves closer to the white and blue car as they drift.",
+        "C": "The white and blue car is initially far ahead, but the black car closes the gap significantly during the drift.",
+        "D": "The white and blue car starts closer to the camera than the black car and remains closer throughout the turn."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_003933",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the position of the white and blue 'TURBO SYSTEMS' car compare to the black 'ARIV' car during their drifts?",
+      "options": {
+        "A": "The white and blue car is positioned to the right of the black car and slightly ahead of it",
+        "B": "The white and blue car is directly in front of the black car, both aligned on the same path",
+        "C": "The white and blue car is positioned to the left of the black car and slightly behind it",
+        "D": "The white and blue car is directly behind the black car, following the same trajectory"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_003934",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the spatial arrangement of the spectator seating in the stadium best described?",
+      "options": {
+        "A": "Grid-like",
+        "B": "Linear",
+        "C": "Clustered",
+        "D": "Radial"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_003935",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the racetrack's layout pattern structured in the video?",
+      "options": {
+        "A": "Radial pattern with multiple lanes branching out",
+        "B": "Interconnected loops with converging and diverging paths",
+        "C": "Clustered series of tight corners forming a circuit",
+        "D": "Grid-like network of parallel and perpendicular sections"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_003936",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera viewpoint classification in the video?",
+      "options": {
+        "A": "high angle (>45 degrees)",
+        "B": "high angle (<45 degrees)",
+        "C": "ground-level",
+        "D": "top-down"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_003937",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera's motion state during the video?",
+      "options": {
+        "A": "Rotating and panning to follow the drifting car",
+        "B": "Stationary with a high-angle view",
+        "C": "Panning right while following the car",
+        "D": "Moving forward along the track"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_003938",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Causal Reasoning",
+      "task": "Causation Reasoning",
+      "question": "What is the direct cause of the thick white smoke seen billowing from the race cars during the drifts?",
+      "options": {
+        "A": "A chemical reaction between the car's paint and the track surface",
+        "B": "The tires losing traction and sliding against the track surface",
+        "C": "The deliberate release of smoke from a smoke machine for visual effect",
+        "D": "The car's exhaust system malfunctioning under high speed"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_003939",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Causal Reasoning",
+      "task": "Consequence Reasoning",
+      "question": "Given the intense drifting and the thick smoke produced by the cars, what is likely to happen to the visibility on the track?",
+      "options": {
+        "A": "The visibility will remain unchanged due to the bright stadium lights.",
+        "B": "The visibility will increase because the smoke reflects the stadium lights.",
+        "C": "The visibility will be unaffected as the smoke is only a visual effect.",
+        "D": "The visibility will decrease significantly, potentially affecting the drivers' control."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_003940",
+      "video_path": "ERA_Select/CarRacing/CarRacing_010.mp4",
+      "subdir": "CarRacing",
+      "dataset_name": "ERA_Tra",
+      "category": "Causal Reasoning",
+      "task": "Hypothetical Reasoning",
+      "question": "What would happen if the white and blue car had not drifted and instead maintained a straight path through the turn?",
+      "options": {
+        "A": "It would have lost significant speed and been overtaken by the black car",
+        "B": "It would have exited the track and caused a race stoppage",
+        "C": "It would have collided with the safety barrier due to insufficient turning radius",
+        "D": "It would have maintained its speed and won the race"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_005373",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "General Understanding",
+      "question": "Which of the following activities could be the best description of this video?",
+      "options": {
+        "A": "Racing cars",
+        "B": "Panning parking lot",
+        "C": "Washing an RV",
+        "D": "Constructing a lot"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_005374",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "General Understanding",
+      "question": "Which of the following objects exist in this video?",
+      "options": {
+        "A": "Scattered puddles",
+        "B": "Solar panels",
+        "C": "Traffic cones",
+        "D": "Gas station"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_005375",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "What type of vehicle is visible in the upper right portion of the parking lot in the initial frames?",
+      "options": {
+        "A": "A black pickup truck",
+        "B": "A red sedan",
+        "C": "A white SUV",
+        "D": "A white recreational vehicle (RV)"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_005376",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "How many cars are visible in the parking lot in the center of the frame?",
+      "options": {
+        "A": "20-30",
+        "B": "10-20",
+        "C": "40-50",
+        "D": "30-40"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_005377",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "What types of land cover are visible in the parking lot area?",
+      "options": {
+        "A": "Asphalt, bare earth, and greenery",
+        "B": "Sand, trees, and pavement",
+        "C": "Gravel, shrubs, and asphalt",
+        "D": "Water bodies, concrete, and grass"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_005378",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Object and Land Cover Recognition",
+      "question": "Where are the majority of the parked vehicles located in the parking lot?",
+      "options": {
+        "A": "At the bottom right corner of the screen",
+        "B": "On the right side of the screen",
+        "C": "On the left side of the screen",
+        "D": "In the center of the screen"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_005379",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Change Detection",
+      "question": "How does the number of visible vehicles change as the camera pans across the parking lot?",
+      "options": {
+        "A": "The number of vehicles decreases as the camera pans from left to right.",
+        "B": "The number of vehicles remains constant throughout the video.",
+        "C": "The number of vehicles increases as the camera pans from left to right.",
+        "D": "The number of vehicles increases as the camera pans from right to left."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_005380",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Change Detection",
+      "question": "How does the visible area of the parking lot change throughout the video?",
+      "options": {
+        "A": "It shrinks as the camera moves closer to the ground.",
+        "B": "It expands from a small section to a much larger area as the camera pans left.",
+        "C": "It expands and contracts as the camera zooms in and out.",
+        "D": "It remains the same size but the focus shifts to different vehicles."
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_005381",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Factual Perception",
+      "task": "Change Detection",
+      "question": "How does the camera movement change throughout the video?",
+      "options": {
+        "A": "The camera moves from bottom to top, focusing on the surrounding buildings.",
+        "B": "The camera moves from top to bottom, showing a closer view of the ground.",
+        "C": "The camera moves from left to right, focusing on the central area.",
+        "D": "The camera moves from right to left, capturing the entire parking lot."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_005382",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "When does the white recreational vehicle (RV) first appear in the video?",
+      "options": {
+        "A": "At the beginning of the video",
+        "B": "Near the end of the video",
+        "C": "Around the middle of the video",
+        "D": "In the first half of the video"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_005383",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long is the white recreational vehicle (RV) visible in the video?",
+      "options": {
+        "A": "For most of the video",
+        "B": "Briefly at the beginning",
+        "C": "Near the end",
+        "D": "Intermittently throughout"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_005384",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How does the number of visible vehicles in the parking lot change as the camera pans across the scene?",
+      "options": {
+        "A": "Remains constant throughout the video",
+        "B": "Increases consistently as the camera moves left",
+        "C": "Increases periodically as the camera moves left, revealing more parked cars",
+        "D": "Decreases consistently as the camera moves left"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_005385",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "In the initial frame, where is the white SUV located relative to the white RV?",
+      "options": {
+        "A": "Above the RV",
+        "B": "To the right of the RV",
+        "C": "Below the RV",
+        "D": "To the left of the RV"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_005386",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "How does the orientation of the white RV compare to the orientation of the white sedan parked next to it?",
+      "options": {
+        "A": "The RV is oriented in the opposite direction to the sedan",
+        "B": "The RV is oriented perpendicular to the sedan",
+        "C": "The RV is oriented at a 45-degree angle to the sedan",
+        "D": "The RV is oriented parallel to the sedan"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_005387",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Geometric Relation",
+      "question": "In the initial frame, how does the distance between the white RV and the white SUV in the lower right compare to the distance between the white RV and the white sedan parked next to it?",
+      "options": {
+        "A": "The white SUV in the lower right is farther from the RV than the white sedan.",
+        "B": "The white SUV in the lower right is closer to the RV than the white sedan.",
+        "C": "The white SUV in the lower right is approximately the same distance from the RV as the white sedan.",
+        "D": "The white SUV in the lower right is adjacent to the RV."
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_005388",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the spatial arrangement of the parked vehicles in the parking lot best described?",
+      "options": {
+        "A": "Radial",
+        "B": "Clustered",
+        "C": "Grid-like",
+        "D": "Scattered"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_005389",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "How is the road network pattern organized in the parking lot as seen from the aerial view?",
+      "options": {
+        "A": "Interconnected grid with intersecting pathways",
+        "B": "Clustered sections with irregular pathways",
+        "C": "Linear rows with parallel parking lanes",
+        "D": "Radial pattern converging towards a central point"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "qa_id": "train_005390",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera viewpoint classification in the video?",
+      "options": {
+        "A": "top-down (90 degrees)",
+        "B": "high angle (>45 degrees)",
+        "C": "high angle (<45 degrees)",
+        "D": "ground-level (0 degrees)"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_005391",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What type of camera motion is primarily used in the video to capture the parking lot?",
+      "options": {
+        "A": "Rotating",
+        "B": "Zooming in",
+        "C": "Panning right",
+        "D": "Panning left"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_005392",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Causal Reasoning",
+      "task": "Causation Reasoning",
+      "question": "What caused the patches of dark discoloration on the pavement in the parking lot?",
+      "options": {
+        "A": "The long-term accumulation of oil and fluid leaks from parked vehicles",
+        "B": "The natural aging process of the asphalt surface over time",
+        "C": "The use of a chemical treatment to clean the parking lot",
+        "D": "Recent rainfall that created puddles and stained the asphalt"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_005393",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Causal Reasoning",
+      "task": "Consequence Reasoning",
+      "question": "Given the current state of the parking lot with numerous vehicles and people present, what is likely to happen if the lot continues to fill up at the same rate?",
+      "options": {
+        "A": "The parking lot will remain mostly empty due to a sudden decrease in vehicle arrivals.",
+        "B": "The lot will be closed for maintenance, resulting in no further vehicle entries.",
+        "C": "The lot will be repurposed into a green space, eliminating parking spaces.",
+        "D": "The parking lot will reach full capacity, potentially leading to overflow into adjacent streets."
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_005394",
+      "video_path": "ERA_Select/NonEvent/NonEvent_017.mp4",
+      "subdir": "NonEvent",
+      "dataset_name": "ERA_Tra",
+      "category": "Causal Reasoning",
+      "task": "Hypothetical Reasoning",
+      "question": "What would happen to the visibility of the parking lot's layout if the camera were positioned at ground level instead of from an aerial view?",
+      "options": {
+        "A": "The layout would be more difficult to discern due to limited perspective",
+        "B": "The layout would be obscured by shadows cast by the parked vehicles",
+        "C": "The layout would become clearer because of closer proximity to the vehicles",
+        "D": "The layout would remain unchanged regardless of camera height"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_010806",
+      "video_path": "Hawk_UAV/BE/DJI_0391.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "How long is the building with the black roof visible in the video?",
+      "options": {
+        "A": "Approximately 7 seconds",
+        "B": "Approximately 5 seconds",
+        "C": "Approximately 12 seconds",
+        "D": "Approximately 9 seconds"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "qa_id": "train_010807",
+      "video_path": "Hawk_UAV/BE/DJI_0391.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Temporal Grounding",
+      "question": "At what point in the video does the building with the black roof and white air conditioning units first appear?",
+      "options": {
+        "A": "At 4.0 seconds",
+        "B": "At 2.0 seconds",
+        "C": "At 6.0 seconds",
+        "D": "At 8.0 seconds"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "qa_id": "train_010808",
+      "video_path": "Hawk_UAV/BE/DJI_0391.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Temporal Understanding",
+      "task": "Trend and Pattern",
+      "question": "How do the cars on the street move relative to the camera's position?",
+      "options": {
+        "A": "away from camera",
+        "B": "in circles around the camera",
+        "C": "towards the camera",
+        "D": "parallel to the camera"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_010809",
+      "video_path": "Hawk_UAV/BE/DJI_0391.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Structural Layout",
+      "question": "What is the pattern of the road network in the urban area shown in the video?",
+      "options": {
+        "A": "Grid-like",
+        "B": "Radial",
+        "C": "Circular",
+        "D": "Organic"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "qa_id": "train_010810",
+      "video_path": "Hawk_UAV/BE/DJI_0391.mp4",
+      "subdir": "BE",
+      "dataset_name": "Hawk_UAV",
+      "category": "Spatial Reasoning",
+      "task": "Perspective and Viewpoint",
+      "question": "What is the camera viewpoint classification during the video?",
+      "options": {
+        "A": "90° downward view",
+        "B": "15° downward view",
+        "C": "60° downward view",
+        "D": "45° downward view"
+      },
+      "correct_answer": "D"
+    }
+  ]
+}

@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReVA Universal Evaluation Report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset",
+    "split",
+    "model",
+    "status",
+    "ground_truth_labeled",
+    "metrics",
+    "category_metrics",
+    "task_metrics",
+    "runtime",
+    "score_metadata",
+    "validation",
+    "generated_at_utc"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "split": {
+      "type": "string"
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "run_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "unlabeled_ground_truth",
+        "failed"
+      ]
+    },
+    "ground_truth_labeled": {
+      "type": "boolean"
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "total_samples",
+        "provided_predictions",
+        "valid_predictions",
+        "prediction_coverage",
+        "valid_prediction_coverage",
+        "missing_predictions",
+        "invalid_predictions",
+        "unexpected_predictions",
+        "duplicate_prediction_occurrences"
+      ],
+      "properties": {
+        "total_samples": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provided_predictions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "valid_predictions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "correct": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "incorrect": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "accuracy": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "prediction_coverage": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "valid_prediction_coverage": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "missing_predictions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "invalid_predictions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unexpected_predictions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicate_prediction_occurrences": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "category_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "category",
+          "total",
+          "coverage"
+        ],
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "correct": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "incorrect": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "accuracy": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "coverage": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        }
+      }
+    },
+    "task_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "task",
+          "total",
+          "coverage"
+        ],
+        "properties": {
+          "task": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "correct": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "incorrect": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "accuracy": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "coverage": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "timed_samples"
+      ],
+      "properties": {
+        "timed_samples": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mean_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0
+        },
+        "median_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0
+        },
+        "p95_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0
+        }
+      }
+    },
+    "score_metadata": {
+      "type": "object",
+      "required": [
+        "score_semantics",
+        "samples_with_scores"
+      ],
+      "properties": {
+        "score_semantics": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "samples_with_scores": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "errors",
+        "warnings"
+      ],
+      "properties": {
+        "errors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warnings": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}
+

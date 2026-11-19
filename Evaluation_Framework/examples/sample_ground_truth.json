@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "dataset": "ReVA",
+  "split": "validation",
+  "source_annotation_file": "synthetic_fixture_only",
+  "samples": [
+    {
+      "sample_id": "valid_000001",
+      "video_path": "VisDrone/example_001.mp4",
+      "dataset_name": "VisDrone",
+      "subdir": "VisDrone",
+      "question": "Synthetic example: Which option is correct?",
+      "options": {
+        "A": "Choice A",
+        "B": "Choice B",
+        "C": "Choice C",
+        "D": "Choice D"
+      },
+      "category": "Factual Perception",
+      "task": "Synthetic task label — replace with actual annotation",
+      "ground_truth": "A"
+    },
+    {
+      "sample_id": "valid_000002",
+      "video_path": "UAVDT/example_002.mp4",
+      "dataset_name": "UAVDT",
+      "subdir": "UAVDT",
+      "question": "Synthetic example: Which event happened first?",
+      "options": {
+        "A": "Choice A",
+        "B": "Choice B",
+        "C": "Choice C",
+        "D": "Choice D"
+      },
+      "category": "Temporal Understanding",
+      "task": "Synthetic task label — replace with actual annotation",
+      "ground_truth": "B"
+    },
+    {
+      "sample_id": "valid_000003",
+      "video_path": "Hawk_UAV/NJ/example_003.mp4",
+      "dataset_name": "Hawk_UAV",
+      "subdir": "NJ",
+      "question": "Synthetic example: Which spatial relation is shown?",
+      "options": {
+        "A": "Choice A",
+        "B": "Choice B",
+        "C": "Choice C",
+        "D": "Choice D"
+      },
+      "category": "Spatial Reasoning",
+      "task": "Synthetic task label — replace with actual annotation",
+      "ground_truth": "D"
+    },
+    {
+      "sample_id": "valid_000004",
+      "video_path": "ERA_Select/example_004.mp4",
+      "dataset_name": "ERA_Tra",
+      "subdir": "TrafficCongestion",
+      "question": "Synthetic example: What caused the observed outcome?",
+      "options": {
+        "A": "Choice A",
+        "B": "Choice B",
+        "C": "Choice C",
+        "D": "Choice D"
+      },
+      "category": "Causal Reasoning",
+      "task": "Synthetic task label — replace with actual annotation",
+      "ground_truth": "C"
+    }
+  ]
+}

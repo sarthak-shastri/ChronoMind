@@ -1,0 +1,24 @@
+# ReVA Universal Evaluation Framework - Default Configuration
+
+validation:
+  allow_duplicates: false
+  strict_probabilities: true
+  probability_sum_tolerance: 0.0001
+  valid_labels:
+    - A
+    - B
+    - C
+    - D
+  max_reported_sample_ids: 50
+
+metrics:
+  class_order:
+    - A
+    - B
+    - C
+    - D
+
+reporting:
+  save_plots: true
+  figure_dpi: 300
+

@@ -1,0 +1,53 @@
+{
+  "annotation_file": "val.json (Hugging Face cache; local path omitted)",
+  "records": 2000,
+  "top_level_keys": [
+    "category",
+    "correct_answer",
+    "dataset_name",
+    "options",
+    "qa_id",
+    "question",
+    "subdir",
+    "task",
+    "video_path"
+  ],
+  "duplicate_sample_ids": 0,
+  "missing_core_fields": {
+    "qa_id": 0,
+    "video_path": 0,
+    "question": 0,
+    "options": 0
+  },
+  "invalid_option_records": 0,
+  "category_counts": {
+    "Temporal Understanding": 500,
+    "Factual Perception": 670,
+    "Spatial Reasoning": 610,
+    "Causal Reasoning": 220
+  },
+  "task_counts": {
+    "Temporal Grounding": 320,
+    "Change Detection": 250,
+    "Trend and Pattern": 180,
+    "Geometric Relation": 200,
+    "Perspective and Viewpoint": 240,
+    "Consequence Reasoning": 50,
+    "Hypothetical Reasoning": 80,
+    "Object and Land Cover Recognition": 330,
+    "Structural Layout": 170,
+    "Causation Reasoning": 90,
+    "General Understanding": 90
+  },
+  "answer_counts": {
+    "B": 500,
+    "A": 500,
+    "C": 500,
+    "D": 500
+  },
+  "missing_video_reference": 0,
+  "unique_video_paths": 379,
+  "questions_per_video_min": 1,
+  "questions_per_video_max": 14,
+  "paths_missing_from_manifest": 0
+}
